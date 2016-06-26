@@ -1,0 +1,46 @@
+Day 4
+=====
+
+I did three 3-minute drills for the right hand this morning:
+
+- index and middle finger keys (not *).
+- add the ring finger keys.
+- just the index and pinky home keys.
+
+Two or three more sets and I should have the right hand pretty
+comfortable.  I'm practicing with a nice slow rhythm, trying to be near
+perfect but keeping the timing between strokes pretty even.  And the
+speed is slowly creeping up even as I add keys: this last one
+(admittedly with less keys) averaged out to just about 100 strokes per
+minute.  But it's been hovering around 75.
+
+Yeah...six minutes with the eight right-hand keys is harder.  Still not
+quite there yet.  I averaged 76 strokes per minute, but I probably
+should have gone a little slower.  I really wish it would track errors,
+even if just a count.  I'll have to add that next.  And speed per key
+would be awesome as well.
+
+-----
+
+I think if you had adaptive drills which added keys gradually, you could
+(well, *I* could) probably get reasonably comfortable with all the keys
+in a couple of hours.  It would be fun to make a game.  Of course, the
+question with a typing game is how to make it truly interactive rather
+than just a pointless graphical wrapper around a completely linear
+typing lesson.  Maybe a choose-your-own-adventure story?
+
+And you want to give the user some choice of speed, but not hold them to
+absolutely fixed timing.  I was thinking about a horizontally scrolling
+space shooter.  You could have several words on screen at once, so the
+user has some flex, but can't just skip words they don't like, because
+they'll attack you or whatever.  And you can control the overall pace,
+and monitor how the user is doing: if they're consistently hitting
+everything the moment it appears, you'll speed up a bit.
+
+So to combine the two...maybe the story branches are laid out in space
+so they go off in different directions, and you follow the ones you
+choose to type.  Oh, this would be a good use for my "Oxygen Trail"
+idea: have space in our solar system be colonized, and you fly around
+here for a while, then maybe help set up something with one of the outer
+planets, then take off to colonize a new solar system.  I think that
+could make for an interesting story.

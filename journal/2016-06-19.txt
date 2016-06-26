@@ -1,0 +1,30 @@
+Day 7
+=====
+
+- 8:00 Consonant-Vowel @ 37 SPM, creeping toward 40+ at the end.
+- 7:00 Vowel-Consonant (first 5 @ 37 SPM, last 2 @41).
+
+Hmm...I need to add some way to show the stroke.  It's really annoying
+to make an error and not know how you screwed up.  You don't know if
+your fingers have slipped off, or which key of the chord you screwed up,
+or anything.  If you make two or more mis-strokes you can look at the
+keyboard table to see which keys you're actually pressing, but for the
+first mis-stroke I have always released it before I have a chance to
+look.
+
+- 5:00 Consonant-Vowel-Consonant @ 21 SPM.
+- 2:00 Individual Keys @ 72 SPM
+- 5:00 Consonant-Vowel-Consonant @ 21 SPM.
+
+So... 27 minutes today brings us to 2:21 total.
+
+- 9:00 Consonant-Vowel-Consonant @18 SPM.
+
+Bleh.  I might have to go back and drill some old stuff.  Mostly I'm
+mixing up 'K' and 'W', I think.  Also a few of these three-key chords
+have rollover problems already.  Guess I'll have to get serious about
+building some sort of keyboard.  Or maybe I should just break down and
+get a Zalman K600S for now.
+
+Yeah, let's do that.  OK, it's supposed to be here in 5 days, on the
+24th.  

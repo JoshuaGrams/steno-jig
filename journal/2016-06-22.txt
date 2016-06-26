@@ -1,0 +1,42 @@
+Day 10 - 4:37
+=============
+
+- 4:27 Three-letter words @ 21 WPM w/7 mis-strokes.
+- 5:09 Three-letter words @ 18 WPM w/3 mis-strokes.
+- 4:51 Three-letter words @ 19 WPM w/2 mis-strokes.
+- 5:13 Three-letter words @ 18 WPM w/5 mis-strokes.
+- 5:39 Three-letter words @ 16 WPM w/10 mis-strokes.
+- 5:44 Three-letter words @ 16 WPM w/4 mis-strokes.
+
+That's correcting for the two or three mis-strokes I made due to
+inadequate rollover on my laptop keyboard.  I'm starting to get it
+memorized which ones conflict, but...also I don't want to get *too* far
+into bad habits that I'll have to correct later on.  I think it will be
+reasonably easy to fix when I get my Zalman keyboard (supposedly in two
+days).
+
+It definitely helps to move/feel the chord and give it a double-check
+before I actually hit it.  And...I think 30 minutes is too long.  I
+should probably try four 15-minute sessions a day instead of two
+30-minute ones.
+
+- 5:34 Three-letter words @ 17 WPM w/10 mis-strokes.
+
+Hmm... I think I ran up against something weird in Plover there: I kept
+stroking TEL and it kept spitting out "tel" instead of "tell".  Very
+odd.  But then I banged some nonsense and removed it and then it finally
+worked.
+
+- 5:43 Three-letter words @ 16 WPM w/13 mis-strokes.
+- 5:44 Three-letter words @ 16 WPM w/3 mis-strokes.
+- 5:45 Three-letter words @ 16 WPM w/5 mis-strokes.
+- 6:16 Three-letter words @ 16 WPM w/5 mis-strokes.
+
+And...it's definitely helpful to stroke them as a chord rather than
+rolling them.  Those last two were pressing and holding the chord, and
+then rolling the other keys if I hear the beep which says that it missed
+a key.  So until my Zalman comes, I think I should either find a
+customizable drill program (so I can remove the words which conflict),
+or go back to drilling two-character chords.
+
+63:05 today, 5:40 total

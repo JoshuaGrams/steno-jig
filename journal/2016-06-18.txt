@@ -1,0 +1,31 @@
+Day 6
+=====
+
+All individual keys: 5 minutes at 67 strokes per minute.
+
+That's coming at it cold, and it was the same speed as yesterday morning
+and it felt easier.  Cool.  I think I should drill some sets where it
+goes left/thumb/right, and then start on some actual two and three key
+strokes.
+
+Ditto after lunch: another 5 minutes.
+
+OK, I need to do multi-key strokes.  I'm pretty sure that a lot of my
+trouble is getting the wrong hand.  Hmm... Do I want to mess with the
+code?  It's really not set up for that... Maybe I can just add all the
+combinations.  Seven initial consonants, four vowels, ten final
+consonants.  280 three-key chords.  Plus 28 consonant-vowels, 40
+vowel-consonants, and 70 double-consonants.  418 total?  That's
+reasonable.
+
+I tried all two-key chords for 5 minutes (four and one) and averaged
+about 30 SPM.  Again, I feel like it's deciding whether a consonant is
+initial or final that's slowing me down and distracting me, so maybe I
+should drill the combinations individually first?
+
+Huh.  Drilling just one doesn't seem much easier or faster.  4 minutes
+at 33 SPM.  Oh...but drilling three-letter chords is much harder: 5
+minutes at 18 SPM.
+
+OK, that's 24 minutes, right?  Let's call it a day.  1:54 total over 6
+days.

@@ -1,0 +1,124 @@
+Day 1
+=====
+
+Yesterday I ran across [Plover][], a piece of open-source stenotype
+software.  I was looking up some details of the algorithms for matching
+regular expressions, and somehow got from there to steno.  But I trawled
+through my browser history and didn't see the actual connection, so i'm
+not exactly sure how that happened.
+
+[Plover]: http://www.openstenoproject.org/plover/
+
+Anyway.  Seems like a fun thing to try, and it's relatively simple.
+It's a chorded keyboard system where you enter (more or less) a syllable
+at a stroke.  Your left-hand fingers enter the beginning consonant(s),
+your right-hand fingers enter the final consonant(s), and the vowels are
+split between your thumbs.  But it's just mnemonic (vaguely phonetic),
+not exact letters.  So then you have a big dictionary which translates
+your abbreviations to actual words.  And there are competing theories
+about how translate from strokes to text, and it sounds like practising
+stenographers will make temporary additions to their dictionaries for
+each job.  Kind of a fluid thing.
+
+Plover lets you do it on a normal QWERTY keyboard with N-key rollover.
+Apparently there's a readily-available one for $40 US.  And you can
+stick caps on your keys to make it easier to press two keys with one
+finger and reduce the slant of a normal keyboard.  But...I don't know if
+I'm that interested.  And Plover seems to have the obvious chording
+algorithm, which means you don't have to hold down all the keys at once.
+So I'm going to try it on my laptop and see how far I can get with just
+arpeggiating the chords.
+
+There seem to be a bunch of lessons and interactive steno tutors and
+such.  But all the ones I've found seem to start you right off typing
+words.  And that's the way Plover's default dictionary is set up: most
+one- to four-key chords are mapped (but not all).  So it's hard to tell
+which chord you actually hit.  And it just seems...overwhelming and
+probably an inefficient way to learn.
+
+I just want to drill the finger-to-phoneme connections until those are
+solid.  Hooking them together into words seems pretty straightforward
+and somewhat personal.  And even if it is difficult, it seems like it's
+a separate process which builds on the muscle memory for keying the
+phonemes, and mixing the two seems...again, inefficient.
+
+So.  I found that you can just drop the main Plover dictionary from the
+configuration.  This leaves an empty "user" dictionary and a small
+"command" dictionary which looks like it shouldn't get in the way.
+And if you remove all dictionaries it resets to the default
+configuration, so it's easy to get that back.  This sends through each
+stroke as an uppercased word so you can see exactly what you typed.
+
+I spent a bunch of time hooking up some rudimentary JavaScript to
+present exercises and accept input.  It's really clunky and needs a
+bunch more work, but it's getting there.  I put in a whole bunch
+(30-50?) of 10-30 second tests to see if it was working, and the top row
+on the left hand is starting to become automatic (the STPH keys).
+
+Hrm.  Maybe it was taking longer than that.  I just timed myself and it
+took almost 40 seconds to enter 60 single-key chords.  And I know I was
+*much* slower than that.  But I didn't spend that much time on it...
+Hmm.  Let's say I've put in somewhere in the region of half an hour of
+actual practice?  30 runs averaging a minute each?   That's probably
+about right.
+
+Currently a run is `S T P H  S T P H  S S S  T T T  P P P  H H H`,
+followed by 10 randomly generated sets of four chords (all four chords
+shuffled into random order).  The initial line does a good job of making
+sure your fingers are in the right place and then reminding you where
+each one is.  But I don't think that jumping straight into random
+quadruplets is a good approach.  It would be better to do some
+alternation.  Maybe keep one the same and switch up the others?  `S P S
+P  T H T H  S T S P S H T H S H P H`, that sort of thing.  I suspect
+that would work better.
+
+I'll have to code that up and try it for the next set.  Which...should I
+finish these four fingers, or move to the other hand for the sake of
+balance?  I think I should finish this hand.  I'm fighting the tendency
+to slip into a home position on the top row, and it really needs to be
+between the rows.  Drilling the bottom row should help with that.
+
+Then the question is whether to do a separate drill with only the new
+keys, or introduce them individually into the ones I already know.  I'm
+leaning toward the latter.  I don't know the first four that well yet,
+so adding new keys one at a time should reinforce the rest while really
+emphasizing the new one and burning it into my fingers.  Sort of like
+the whole timed-repetition thing.  Only not really.
+
+-----
+
+I guess I should say something about myself.  My name is Joshua Grams,
+I'm 36 years old, I've been a serious mostly-hobby programmer since my
+family got our first computer when I was 13.
+
+I had violin lessons for a couple of years when I was about 4 (3-1/2?)
+and then switched to piano and had lessons until I went away to college,
+and have played somewhat consistently ever since.
+
+I'm also fluently bifingual (QWERTY and Dvorak).  The version of Mavis
+Beacon that we had (version 3, I'm almost certain) offered Dvorak as an
+option.  So of course I ran through the Dvorak lessons once I hit 45-50
+wpm on QWERTY.  I liked the smaller amount of finger motion with Dvorak,
+so it has been my preferred keyboard layout ever since.  I've trained my
+brain to switch automatically, so when I'm on someone else's computer,
+the typing comes out in QWERTY.  On the occasions when someone else has
+Dvorak, I have to consciously switch back...
+
+I've messed with Colemak very briefly.  And I got about halfway through
+learning the one-handed Dvorak layouts when we had my brother's
+5-month-old daughter living with us.  So my fingers are pretty
+well-trained.  And my brain...I'm not fluent in any other languages, but
+I had four years of high-school Spanich, two semesters of Latin and
+three of classical Greek in college, along with several semesters of
+linguistics.  And I sing a lot of early music so I can butcher the
+pronunciation of French, German and Italian.  And I often trounce
+English majors at word games. ;)  So...I'm expecting to pick up steno
+quickly, but we'll see how it goes.
+
+Anything else?  Oh, typing speed.  Mid-60s?  I'm no speed-demon, but as
+a programmer I do quite a bit of typing.
+
+Heh.  I guess I've come up in speed over the years.  75-80 wpm is *very*
+relaxed, and I can consistently do 98-101 wpm for 60 seconds almost
+perfectly (random common words, 0-2 errors).  That's in Dvorak: I'm not
+going to bother testing QWERTY since I don't use it much.

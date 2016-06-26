@@ -1,0 +1,78 @@
+Day 12 - 6:41
+=============
+
+- 3:29 Three-letter words @ 27 WPM w/1 mis-strokes.
+- 3:33 Three-letter words @ 27 WPM w/9 mis-strokes.
+
+No, really.  I can't try for speed: it only messes up my rhythm and
+slows me down.  OK, pay attention now.
+
+- 3:33 Three-letter words @ 27 WPM w/3 mis-strokes.
+- 3:31 Perfect three-letter words @ 27 WPM.
+- 3:37 Three-letter words @ 26 WPM w/6 mis-strokes.
+
+17:43
+
+------
+
+Session two:
+
+- 3:26 Three-letter words @ 27 WPM w/8 mis-strokes.
+- 3:09 Three-letter words @ 30 WPM w/4 mis-strokes.
+- 3:10 Three-letter words @ 30 WPM w/4 mis-strokes.
+- 3:20 Three-letter words @ 28 WPM w/8 mis-strokes.
+
+Ouch. Time to take a break.  But I'm starting to be able to think and
+finger the chords as a unit rather than individual keys.
+
+13:05 + 17:43 = 30:48
+
+But I have to remember to re-load Di's Plover, Learn! every time.  It
+doesn't re-randomize when you re-start, and I find myself recognizing
+the sequence.  Also, I wonder if I'm hitting the end of the easy speed
+gains while just looking at one item.  And while it has some lookahead,
+the extra words are *well* off to the side and in a smaller font, so I
+can't spare the concentration to look over there.  Also I think I should
+add the one- and two-key words to the list.
+
+So I really need to get off my butt and write my own drill page.
+
+-----
+
+3:15 Three-letter words @ 29 WPM w/2 misstrokes.
+2:58 Three-letter words @ 32 WPM w/9 misstrokes.
+2:53 Three-letter words @ 33 WPM w/9 misstrokes.
+3:02 Three-letter words @ 31 WPM w/7 misstrokes.
+3:11 Three-letter words @ 30 WPM w/5 misstrokes.
+
+15:19 + 30:48 = 46:07
+
+Aha!  Finally found one of the weird strokes.  `KAR/TEL` is "cartel", so
+if the random order turns up "car" followed by "tell", you get "tel"
+instead.  So...random drilling probably *still* needs to know about the
+dictionary...grr.  Well, if you actually *read* through the whole of the
+first Learn Plover lesson, he *does* say that you should just back up
+and use S-P to insert a word break.  But I think I'd rather only give
+users examples like that on purpose.  I guess it will be better with a
+drill that does multiple words at a time, because then you'll see
+"cartel" and at least know what's going on.  With Di's Plover, Learn! it
+just eats the "car" and you're left with an unexplained "tel", which is
+*not* beginner-friendly.
+
+-----
+
+Oops, it's getting late.  I should finish up my practice.
+
+- 3:20 Three-letter words @ 28 WPM w/12 misstrokes.
+
+Hrm.  Maybe I'm too tired?
+
+- 3:11 Three-letter words @ 30 WPM w/9 misstrokes.
+
+OK, maybe I'll press on.  Only three more to go.
+
+- 2:59 Three-letter words @ 32 WPM w/4 misstrokes.
+- 3:09 Three-letter words @ 30 WPM w/6 misstrokes.
+- 3:02 Three-letter words @ 31 WPM w/7 misstrokes.
+
+15:41 + 46:07 = 61:48 today, 7:43 total.

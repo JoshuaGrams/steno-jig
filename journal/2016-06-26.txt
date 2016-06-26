@@ -1,0 +1,31 @@
+Day 14 - 8:07
+=============
+
+- 3:37 - 100 three-letter words @ 24 WPM w/6 misstrokes.
+- 3:22 - 100 three-letter words @ 25 WPM w/5 misstrokes.
+- 3:51 - 100 three-letter words @ 22 WPM w/9 misstrokes.
+- 4:02 - 100 three-letter words @ 21 WPM w/13 misstrokes.
+- 0:54 - 30 three-letter words @ 29 WPM w/no uncorrected errors.
+- 3:51 - 100 three-letter words @ 22 WPM w/7 misstrokes.
+
+19:37
+
+Hmm...it's still remembering errors that have been corrected.  I thought
+I fixed that.  Oh...it's not removing the error if you backspace it,
+only if you go from correct to incorrect.  Which...is that even
+possible?  Oh well, it's fixed now.
+
+Ideally I would track the errors made for purposes of finding patterns,
+but wouldn't use corrected errors for calculating adjusted WPM.  Also it
+would be good to report "pet instead of put" and that sort of thing.
+
+Also it might be to scrolling unnecessarily at the end of the input.
+
+-----
+
+I updated it so you can run an exercise for a period of time.  And I
+added the one- and two-key words.
+
+- 15:00 - one-, two-, and three-key words @ 21 WPM w/16 errors.
+
+Hmm...it should report the final word count...?  379 words.

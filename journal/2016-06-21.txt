@@ -1,0 +1,80 @@
+Day 9 - 3:30
+============
+
+OK, the QWERTY Steno code is pretty clumsy.  So...while I'm always
+impressed when people who don't know how to code have the perseverance
+to push through and make things which work that well... I'm scrapping it
+and starting over.
+
+But I need a little bit of a plan.  So.  I want it to work either with
+Plover or some other input system that just spits out the actual text.
+I also want it to work with a QWERTY (or Dvorak?) keyboard and do the
+translation itself.  For starters it can just use the raw strokes as
+text, but eventually it would be good to have a dictionary?  Maybe?  At
+any rate, that would be a good practice run for putting the Plover logic
+onto a microcontroller.
+
+The input method should be separate from the answer checking.  So it
+would be better not to rely on knowing what a stroke is.  But we want to
+allow uncorrected errors.  So I guess the most sensible thing is to
+split on whitespace and work word-by-word.
+
+If we want to allow *correcting* errors, then we need a buffer behind as
+well as ahead.  But...I don't want to mess with text while the user is
+editing it: it's too much of a nuisance trying to get the cursor to
+behave properly.  Hmm.  OK, the input box can be irrelevant, and display
+the input in a separate scrolling div just like the input.  Yeah, I like
+that idea.
+
+But that still leaves the question of how to deal with the input box.
+We want to clear it frequently but still allow backspacing past the
+beginning?  Bah.  Forget about correcting errors.  That's better for
+learning anyway: you want to drill at a speed where you can do it
+perfectly, and get into a rhythm, and just continue on after an error.
+So then the input box only contains words we haven't checked yet: leave
+the last one in case it's incomplete: otherwise check each word and
+remove it.
+
+Hrm.  But that still needs to remove *some* of the text rather than just
+clearing all of it.  So we still need to mess with the cursor.  And
+Plover may input a word and then change it...does it ever put a space at
+the end?  I'm pretty sure that it theoretically could, though I don't
+know if any default dictionary entries do.  So we still need to deal
+with that.  OK.  I guess I have to deal with the cursor.  Fine then.
+
+No, I really don't want to handle that.  Just have a number of
+look-behind words: delete anything more than that and reset the cursor.
+Which shouldn't be a big deal since we won't be handling separate spans
+or anything: just a single input field.
+
+-----
+
+OK, in the meantime I still need to do some drills.  Maybe I'm ready for
+some words?  Let's try Di's Plover, Learn!  I did 1-syllable words, at
+17 and 22 WPM, respectively.  The first time I didn't realize that it
+had timing, so I was timing by hand and trying to count the words, so
+that's probably why it was slow...  Oh.  Also wrapping my brain around
+the translating and guessing at some of the less obvious vowels.  That's
+about 9.5 minutes total for today.
+
+- 6:24 Three-letter words @ 17 WPM.
+- 4:11 Three-letter words @ 22 WPM.
+- 4:29 Three-letter words @ 21 WPM.
+- 4:29 Three-letter words @ 21 WPM.
+- 2:44 Consonant Clusters @ 5 WPM.
+- 4:48 Three-letter words @ 20 WPM w/14 mis-strokes.
+- 4:11 Three-letter words @ 22 WPM w/6 mis-strokes.
+- 4:07 Three-letter words @ 23 WPM w/11 mis-strokes.
+- 3:53 Three-letter words @ 24 WPM w/10 mis-strokes.
+- 4:18 Three-letter words @ 22 WPM w/16 mis-strokes.
+- 4:25 Three-letter words @ 21 WPM w/20 mis-strokes.
+
+Yeah, I'm running out of steam.  OK, 47 minutes today + 3:30 is 4:17
+total.
+
+- 5:17 Three-letter words @ 18 WPM w/13 mis-strokes.
+- 4:41 Three-letter words @ 20 WPM w/6 mis-strokes.
+- 5:10 Three-letter words @ 18 WPM w/7 mis-strokes.
+- 5:16 Three-letter words @ 18 WPM w/11 mis-strokes.
+
+4:37 total.

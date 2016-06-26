@@ -1,0 +1,35 @@
+Day 3
+=====
+
+Aha.  [Qwerty Steno][] lets you drill individual keys.  Only the sets
+they choose to give you, and they only display one word at a time, so
+you can't see what's coming.  But it's all javascript, so I'll just
+download the scripts and fix them to work in a less stupid fashion.
+That should be much less work than trying to re-create things from
+scratch.  Yay.  Don't know how I missed trying that one.
+
+[Qwerty Steno]: http://qwertysteno.com/Home/
+
+Still, even with the way it is, I got pretty comfortable with the vowels
+in about 8 or 10 minutes.
+
+-----
+
+OK, it only took an hour or two to display more drill items, and most of
+that was figuring out the stupid web browser stuff so I could do a bit
+of a transition instead of just popping items out of existence.  It's
+still not great, but at least there's *some* visual indication that the
+text is scrolling left.
+
+I also entered a steno keyboard layout with checkboxes.  Now I need to
+populate the drill data from those checkboxes, and I'll have a nice key
+drilling page.
+
+-----
+
+Ah...sweet.  Got the checkboxes working, so now I can drill arbitrary
+sets of keys.  Of course...it would be *really* cool to just give a
+sequence in which keys should be introduced, and have it add them
+one-by-one as your speed and accuracy reaching a threshold.  But that
+would need error tracking and weighted probabilities, so it's probably
+not worth coding right now.  Maybe someday.

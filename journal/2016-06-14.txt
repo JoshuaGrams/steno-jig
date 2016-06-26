@@ -1,0 +1,19 @@
+Day 2
+=====
+
+
+OK.  JavaScript thing for running typing exercises.  Basically a text
+comparison routine.  But we want it to mark up the thing you're typing
+and it needs to preserve the cursor position.  And ideally it shouldn't
+change more than it needs to.
+
+Note that it's *not* a full-fledged `diff` algorithm.  It only needs to
+iterate through both trees and match up the text character by character.
+So we need a tree iterator.  Ah, looks like there's a `NodeIterator`
+object.
+
+-----
+
+Gah.  Web browsers are such complete crap.  Well, I'm getting closer to
+having a thing which will let you input text and mark up the errors.
+Didn't do any real practice today though.
