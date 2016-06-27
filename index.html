@@ -5,6 +5,7 @@
 	<title>Steno Drills</title>
 	<link href="style.css" rel="stylesheet" type="text/css">
 	<script src="type-jig.js"></script>
+	<script src="word-sets.js"></script>
 </head>
 <body>
 
@@ -13,27 +14,14 @@
 
 <script>
 var exercise = {
-	seconds: 30,
+	seconds: 15*60,
 	randomize: true,
-	lookahead: 10, inputLength: 20,
-	words: [
-		// single-key words
-		'is', 'it', 'you',
-		// two-key words
-		'add', 'app', 'are', 'as', 'easy', 'ebb', 'egg', 'he', 'odd', 'off',
-		'or', 'so', 'to', 'up', 'us', 'we',
-		// three-key words
-	    'sap', 'sag', 'sat', 'sass', 'sad', 'sop', 'sob', 'sell', 'set', 'says',
-		'tar', 'tap', 'tab', 'tag', 'tad', 'tour', 'top', 'toll', 'tell', 'tough',
-		'tub', 'tug', 'car', 'cap', 'cab', 'cat', 'cad', 'core', 'cop', 'cog',
-		'cot', 'cod', 'keg', 'cuff', 'cur', 'cup', 'cub', 'cull', 'cut', 'cuss',
-		'pal', 'pat', 'pass', 'pad', 'pour', 'poll', 'pot', 'pod', 'pep', 'peg',
-		'pet', 'puff', 'pup', 'pub', 'pull', 'pug', 'put', 'pus', 'war', 'wag',
-		'wad', 'was', 'wore', 'web', 'well', 'wet', 'wed', 'half', 'hag', 'hat',
-		'had', 'has', 'hop', 'hog', 'hot', 'her', 'hell', 'head', 'huff', 'hub',
-		'hull', 'hug', 'hut', 'rap', 'rag', 'rat', 'roar', 'rob', 'roll', 'rot',
-		'rod', 'red', 'rough', 'rub', 'rug', 'rut',
-	],
+	lookahead: 7, inputLength: 20,
+	words: [].concat(
+		TypeJig.WordSets.oneAndTwoKeys,
+		TypeJig.WordSets.singleStrokeCVC,
+		TypeJig.WordSets.multiStrokeCVC
+	),
 	init: function() {
 		if(this.randomize) shuffle(this.words);
 		this.count = 0;

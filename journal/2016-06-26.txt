@@ -29,3 +29,45 @@ added the one- and two-key words.
 - 15:00 - one-, two-, and three-key words @ 21 WPM w/16 errors.
 
 Hmm...it should report the final word count...?  379 words.
+
+-----
+
+Heh.  I grepped the dictionary and found all the words which are single
+or multiple strokes of consonant, vowel, consonant.  That's fun but much
+harder.
+
+- 15:00 short + all CVC @ 13 WPM
+
+Also I learned a few things.  Most obviously, the first stroke of a
+multi-stroke word will always output something and it's usually not a
+prefix of the word.  For instance, TOR/TUR gives "tour" and then
+"torture".  So my error checking needs a lot of work.  And some strokes
+may give multiple words, I think.  So I'm not quite sure how to handle
+that.  For now maybe I'll refrain from recording a word until there's a
+space after it?  But that's not great for regular typing.  Hrm.
+
+The other thing is that a lot of the multi-stroke CVC words I found can
+be stroked without a consonant on some syllables, but some need
+consonants on both ends of the later syllables.  So for instance KAR/OT
+and KAR/ROT both give "carrot", and the dictionary has the former one
+first.  It makes sense that the one with fewer keys would be preferred.
+
+But take POS/SES or POS/ES which both give "possess", but of the
+things I tried only POS/SES/SOR gives "possessor" (POS/ES/OR gives
+"possess or", while POS/ES/SOR gives possess sore).  Hmm.  And looking
+at the dictionary gives a million options for possess.  The first one is
+POE/SESZ, but there are a whole bunch of combinations of PO or POE or
+POS with ES or SES or SESZ or even S*ESZ.  But *all* four of the
+phonetic "possessor" forms require SES/SOR or SES/O*R.  And why not
+SES/OR?  There isn't anything to conflict with it, so why use the
+asterisk to denote an alternate form?  Oh, `O*R` is the "-or" suffix.
+
+Yeah...now that I think about it, I've seen several posts on the google
+group about the inconsistencies in the default dictionary.  Well, I
+guess it mostly is just Mirabai's personal dictionary.
+
+OK, one more set today.
+
+- 15:00 short + all CVC @ 17 WPM.
+
+64:37 today, 9:12 total.

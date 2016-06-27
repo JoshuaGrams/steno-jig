@@ -146,7 +146,7 @@ TypeJig.prototype.endExercise = function() {
 	if(this.errorCount === 0) results += ' with no uncorrected errors!';
 	else results += ', adjusting for ' + this.errorCount + ' incorrect word' + plural + ' gives '
 		+ Math.round(correctedWPM) + ' WPM.'
-	results += '  Errors: ' + JSON.stringify(this.errors, null, ' ');
+	// results += '  Errors: ' + JSON.stringify(this.errors, null, ' ');
 	this.ans.firstChild.nodeValue = results;
 }
 
