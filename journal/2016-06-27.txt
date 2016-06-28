@@ -1,0 +1,72 @@
+Day 15 - 9:12
+=============
+
+- 15:00 short + all CVC @ 18 WPM.
+
+I'm getting *really* curious to run some analysis on the dictionary and
+see if you can't remove some keys from some of these chords.  It feels
+like a *lot* of the multi-stroke CVC words with matching consonants
+don't let you leave them out.  I mentioned that KAR/ROT and KAR/OT both
+work, as do POS/SES and POS/ES, but it seems like they're in the
+minority.  I wonder if it would be possible to even those out without
+causing conflicts...
+
+- 15:00 short + all CVC @ 20 WPM.
+
+Yeah.  This is really coming together.  And I'm thinking (from my
+memories of learning Dvorak) that 20 WPM might be good enough to move
+on.  I had been thinking that I should go to 40 since steno is
+ultimately faster than a normal keyboard layout, but I think the mental
+side is a similar amount of effort.  And 20 feels like I know it fairly
+solidly.  It's not automatic: I definitely have to think about it, but
+it feels like it's at about the same amount of mental effort as typing
+QWERTY or Dvorak was when I was at 20 WPM, which seemed like a good time
+to add a new thing.
+
+-----
+
+I'm starting on the multi-key consonants.  Neither of Mirabai's posters
+organized things in the way I wanted to memorize and drill them (by
+shape), so I spent a while sorting them out.  I'm starting with the left
+hand vertical chords.  I made a wordset from the single-syllable words
+starting with those consonants (D B and L, keyed as TK, PW, and HR) and
+using short vowels.
+
+- 5:00 Single-syllable DBL-words @ 17 WPM.
+
+That worked well.  The Zalman's terraced design is annoying: it's a
+little tricky to get two keys in different rows with the same finger.
+I imagine it will soon come to feel natural.  But a real steno keyboard
+would obviously be better.
+
+Lets add the top-row horizontal chords?  Those are F, M, and N, keyed as
+TP, PH, and TPH.  Oh, let's pull words for Q, Y, J, and V as well (the
+bottom row; KW, KWR, SKWR, and SR).
+
+- 5:00 Single-syllable FMN-words @ 25 WPM.
+
+Yeah!  That's what I'm talkin' about.  OK, now QYJV.  Heh.  That was a
+flop because I don't actually know what the chords are.  Let's figure
+that out first.
+
+- 5:00 Single-syllable QYJV-words @ 13 WPM.
+
+Yikes.  OK, I accidentally put a couple of "-aw" (-AU) words in there.
+And I spent way too much time trying to figure out "yacht".  Which is
+apparently "YOT" and not "YAT".  But I thought I tried that and it
+didn't work?  I dunno.  It works now.  Oh, and "gel" threw me because
+it's not spelled with a 'j'.
+
+Let's try that again.  Yeah, there we go.  But J is over-represented.  I
+might need to separate them so I can drill just the others.
+
+- 5:00 Single-syllable QYJV-words @ 25 WPM.
+- 3:00 Single-syllable QYV-words @  28 WPM.
+
+OK, all together now.
+
+- 7:00 Single-syllable DBL|FMN|QYVJ-words @ 22 WPM.
+
+Sweet!  I was expecting that to slow *way* down, but it wasn't bad.
+
+1 hour today, 10:12 total.

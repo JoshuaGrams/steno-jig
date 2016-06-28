@@ -1,0 +1,56 @@
+Day 16 - 10:12
+==============
+
+- 5:00 Single-syllable QYVJ-words @ 25 WPM.
+- 10:00 Single-syllable DBL-, FMN-, and QYVJ- words @ 23 WPM.
+- 3:00 Single-syllable words with all consonants so far @ 27 WPM.
+
+Hmm...it's scrolling backwards sometimes.  Need to fix that.
+
+- 15:00 All words @ 23 WPM.
+
+I really need to analyze the Plover dictionary.  Making these word-lists
+by hand is annoying.  I just want to be able to say: "give me all the
+phonetically-spelled words that use these pseudo-steno consonants."
+It's not *too* bad grepping for matching strokes and then walking
+through and taking out the ones which are briefs, but if I want to drill
+combinations...there will be a combinatorial explosion of pieces needed.
+Or maybe it's easier that way because each piece is small enough to
+quickly look through by hand...?  But it would sure be nice to just
+requist the ones I want and have them automagically found.
+
+-----
+
+Starting to mock up some keyboard design in SketchUp.  I think 2.1 mm of
+travel will be fine (3 times 0.7mm of switch travel).  My laptop
+keyboard is less than 2mm, and it's perfectly comfortable. It's much
+heavier though: about 70 grams, judging by the 27-28 pennies I have to
+pile on a key in order to depress it.  I wonder if it will be *too*
+light?  The switches come in 0.74 N (75.5g force) and 1.30 N (132.5g
+force).  I was thinking of using the lighter ones, but that brings
+us in at 25g activation force.  The heavier ones would come in at 44g.
+Which would probably be fine.  Josh Lifton [says][1] he and Mirabai both
+independently chose the 35g switches from a bunch of prototypes that
+Matias sent them.  That's about halfway in between...
+
+[1]: http://stenosaurus.blogspot.com/2014/11/countdown-to-launch.html
+
+Hmm.  I could get to 30g with the lighter switch and a 2.5:1 lever arm
+(1.75mm throw).  Or 35 with about a 3.75:1 arm and the heavier switch
+(giving a 2.6mm throw).  Yeah...it only makes a few millimeters
+difference in the length of the levers.  Interesting.  As you get more
+leverage, the small ones are longer, but the increment between sizes is
+less.
+
+The heavier switch with 35g force and 2.6mm throw might be really nice.
+I think I'll try that first.  That's split at about 1.9mm travel to the
+activation point and 0.7mm over-travel.
+
+-----
+
+I have Northfield rehearsal tonight, so I just one more exercise and
+I'll have to call it quits for the day.
+
+- 15:00 all words so far @ 24 WPM.
+
+48:00 today, 11:00 total.

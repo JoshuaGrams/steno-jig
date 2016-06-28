@@ -9,16 +9,25 @@
 </head>
 <body>
 
-<div class="scroll-bounds"><div id="exercise"></div></div>
+<div class="scroll-bounds"><div id="exercise" class="white-space: nowrap"></div></div>
 <div id="answer" style="margin-left: 7em" class="answer" contenteditable="true"><span class="prompt">Type here...</span></div>
 
 <script>
 var exercise = {
 	seconds: 15*60,
 	randomize: true,
-	lookahead: 7, inputLength: 20,
+	lookahead: 8, inputLength: 20,
 	words: [].concat(
-		TypeJig.WordSets.oneAndTwoKeys,
+		TypeJig.WordSets.D_SingleSyllable,
+		TypeJig.WordSets.B_SingleSyllable,
+		TypeJig.WordSets.L_SingleSyllable,
+		TypeJig.WordSets.F_SingleSyllable,
+		TypeJig.WordSets.M_SingleSyllable,
+		TypeJig.WordSets.N_SingleSyllable,
+		TypeJig.WordSets.Q_SingleSyllable,
+		TypeJig.WordSets.Y_SingleSyllable,
+		TypeJig.WordSets.V_SingleSyllable,
+		TypeJig.WordSets.J_SingleSyllable,
 		TypeJig.WordSets.singleStrokeCVC,
 		TypeJig.WordSets.multiStrokeCVC
 	),
@@ -28,7 +37,9 @@ var exercise = {
 	},
 	nextWord: function() {
 		var word = this.words[this.count++ % this.words.length];
-		if(this.count % this.words.length === 0) shuffle.this.words;
+		if(this.randomize && this.count % this.words.length === 0) {
+			shuffle(this.words);
+		}
 		if(this.numWords && this.count >= numWords) return false;
 		else return word;
 	}

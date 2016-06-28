@@ -219,7 +219,7 @@ ScrollBox.prototype.scrollTo = function(elt, instantly) {
 	var sec = this.time ? (now - this.time) / 1000 : 0;
 	this.time = now;
 	if(sec > 0.001) {
-		var pxPerSec = px / sec;
+		var pxPerSec = Math.min(px / sec, 0);
 		var k = Math.pow(this.k, sec);
 		this.pxPerSec = k*this.pxPerSec + (1-k)*pxPerSec;
 	}

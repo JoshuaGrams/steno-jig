@@ -67,3 +67,68 @@ TypeJig.WordSets.multiStrokeCVC = [
 	"tortoise", "torture", "tosser", "turret", "walrus",
 	"warhead", "well-read", "welter"
 ];
+
+TypeJig.WordSets.D_SingleSyllable = [
+	"dab", "dad", "dead", "deaf", "debt",
+	"does", "dog", "doll", "dot", "dove",
+	"dub", "dud", "dug", "dull",
+];
+
+TypeJig.WordSets.B_SingleSyllable = [
+	"above", "bad", "bag", "bar", "bass",
+	"bed", "beg", "bell", "bet", "bob",
+	"bod", "bog", "boll", "bop", "bore",
+	"boss", "bot", "bra", "bub", "bud",
+	"buff", "bull", "burr", "bus", "but"
+];
+
+TypeJig.WordSets.L_SingleSyllable = [
+	"lab", "lad", "lag", "lap", "lass",
+	"lat", "laugh", "led", "leg", "less",
+	"let", "load", "lob", "log", "lop",
+	"lore", "loss", "lot", "love", "lug",
+	"lull"
+];
+
+TypeJig.WordSets.F_SingleSyllable = [
+	"fab", "fad", "fag", "fall", "far",
+	"fat", "February", "fed", "fell", "fess",
+	"fete", "fez", "fob", "fog", "fop",
+	"for", "fro", "full", "fur", "fuss",
+	"fuzz"
+];
+
+TypeJig.WordSets.M_SingleSyllable = [
+	"mad", "magazine", "map", "mar", "mass",
+	"mat", "medicine", "mess", "met", "mob",
+	"mod", "moll", "mop", "more", "move",
+	"mud", "muff", "mug", "mull", "muss",
+	"mutt"
+];
+
+TypeJig.WordSets.N_SingleSyllable = [
+	"knob", "nab", "nag", "nap", "national",
+	"necessary", "neglect", "net", "never", "news",
+	"nod", "nor", "not", "nub", "null",
+	"nut"
+];
+
+TypeJig.WordSets.Q_SingleSyllable = [
+	"equal", "quad", "quaff", "quell", "quod"
+];
+
+TypeJig.WordSets.Y_SingleSyllable = [
+	"yacht", "yap", "yar", "yell", "yep",
+	"yet", "yob", "your"
+];
+
+TypeJig.WordSets.J_SingleSyllable = [
+	"Jed", "Jeff", "Jess", "Joss", "Judd",
+	"July", "gel", "jab", "jag", "jar",
+	"jazz", "jet", "job", "jog", "jot",
+	"jug", "jury", "jut"
+];
+
+TypeJig.WordSets.V_SingleSyllable = [
+	"val", "var", "vase", "vat", "vet", "volume"
+];
