@@ -1,0 +1,25 @@
+Day 32 - 22:35
+==============
+
+15:00 1&2 key, 1-syl CVC, DBLFMN-, and -N words @35WPM w/25 errors (96%).
+
+Not too bad.  But I definitely have a ways to go before moving on.
+And...there are a few words in these sets that aren't in the CVC
+pattern, and those are definitely harder to stroke.  So I need to find a
+bunch of those to practice with...  Yeah, I definitely need a way to
+auto-generate this stuff.
+
+15:00 1&2 key, 1-syl CVC, DBLFMN-, and -MN words @35WPM w/15 errors (97%).
+
+Sweet.  That felt really good.  I got a little tired/sloppy toward the
+end.  Maybe I should go to 10-minute exercises?  But it really helped to
+notice that some of my errors are when I let it go automatic and try to
+hit the Dvorak key instead of the steno chord for a sound.
+
+-----
+
+15:00 1&2 key, 1-syl CVC, DBLFMN-, and -MN words @33WPM w/17 errors (96%).
+
+Not quite as good. But it's late, and I'm tired. I probably shouldn't have done another round, but that would have left me with just 30 minutes, and I wanted more than that. Sweet. I wrote this whole paragraph in Plover.
+
+0:45 today, 23:20 total.

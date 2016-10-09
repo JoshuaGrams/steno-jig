@@ -1,0 +1,52 @@
+Day 19 - 12:15
+==============
+
+OK, let's try this actual typing thing again?  What about Fox in Socks?
+The first bit will drill my new sounds, having all the 'x' and 'ch' and
+so on.
+
+- 15:00 Fox in Socks
+
+OK, that took a while, and I didn't get very far.  And it was really
+lopsided as well.  How about something more general?  Let's try Dusty
+and the Fiddlers.
+
+- 25:00 Dusty and the Fiddlers
+
+Man, that was hard.  And there are a lot of things I don't understand.
+Some very common pronouns and stuff don't let you spell them out.
+Though partly that's me mixing up short and long vowels.  But *why* is
+THOT undefined instead of giving you "thought"?  THAUT is way less
+intuitive for me.  I definitely need to look up how to interactively add
+things to the dictionary.  And...then I deleted the whole thing.
+Plover's toggle stroke does bad things in Vim if you're not in insert
+mode...  OK, try it again.
+
+- 15:00 Dusty and the Fiddlers.
+
+Sweet.  Got through the first page in 15 minutes flat.  Oh, the feeling
+when you write "grandchildren" correctly for the first time.  Especially
+the first syllable.  What's that, TKPWRAPBD?  Awkward.  But I imagine
+I'll get used to it.
+
+- 20:00 Dusty and the Fiddlers.
+
+Man.  This is ridiculous.  There are *so* many words that there's no way
+to spell out, even though the obvious stroke is unused.  You just gave
+to memorize the (often totally arbitrary) brief.  This is starting to
+really piss me off.
+
+OK, where would I start on fixing this?  Need to parse the Plover
+dictionary, of course.  But Plover obviously has Python code for that.
+Then parse the CMU Pronouncing Dictionary and use that and the maximum
+onset principle to divide words into syllables?  Map steno to
+pseudosteno, then use the possible sounds to match it up against the CMU
+entries.  If we have a match, it's somewhat phonetic, so put it in a
+phonetic dictionary.  Otherwise it's probably a brief, so put it in a
+"briefs" dictionary.  That should be a start.  *Then* we can start going
+the other way: filter for words that are in the Plover dictionary but
+which don't have a set of strokes which match up phonetically.  Use the
+CMU pronounciation to make up an ideal phonetic stroke sequence.  If
+that's available, add it to a dictionary of phonetic additions.
+
+1:15 today, 13:30 total.

@@ -1,0 +1,48 @@
+Day 27 - 18:35
+==============
+
+15:00 1&2 key, 1-syl CVC, DBL- and -N words @ 34 WPM w/28 errors (94% accuracy).
+
+Bleh.
+
+------
+
+15:00 1&2 key, 1-syl CVC, DBL- and -N words @ 34 WPM w/17 errors (96% accuracy).
+
+OK, that's coming back.  If I put in two more careful 15-minute runs
+today I should be there.
+
+I got a countdown timer added.  And I think I finished getting all the
+basic items added to the steno-to-pseudosteno translator.  And...it
+looks like first-longest is good enough for now.  So next I need to go
+through and mark the canonical strokes.  The next coding task is to
+divide pseudo-steno into individual sounds and write filtering code to
+select words which require only the currently-known sounds.
+
+15:00 1&2 key, 1-syl CVC, DBL- and -N words @ 30 WPM w/16 errors (96% accuracy).
+
+Well... *maybe* I'll be there.
+
+15:00 1&2 key, 1-syl CVC, DBL- and -N words @ 33 WPM w/14 errors (97% accuracy).
+
+Nope, not quite.  Still need a third fewer errors (9 at that speed).  Oh
+well, maybe tomorrow.
+
+------
+
+Gah.  I'm going to have one more try.  Accuracy this time.
+
+15:00 1&2 key, 1-syl CVC, DBL- and -N words @ 33 WPM w/10 errors (97.9% accuracy).
+
+Yeah, that's better.  *Just* missed it.
+
+So...I was looking up and it seems like the professional touch typing
+places suggest that with efficient study, you can be typing 15-20 WPM in
+10 hours of study, and up to 35-45 WPM in about 30 hours.
+
+Considering that I took a five-week break, and that before the break I
+had almost all of the basic sounds...I don't think steno is all *that*
+much slower to learn.  Maybe not even twice if you were really
+disciplined and had a good course of study?
+
+1:15 today, 19:50 total.

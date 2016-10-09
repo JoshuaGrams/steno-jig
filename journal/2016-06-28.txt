@@ -17,7 +17,7 @@ through and taking out the ones which are briefs, but if I want to drill
 combinations...there will be a combinatorial explosion of pieces needed.
 Or maybe it's easier that way because each piece is small enough to
 quickly look through by hand...?  But it would sure be nice to just
-requist the ones I want and have them automagically found.
+request the ones I want and have them automagically found.
 
 -----
 

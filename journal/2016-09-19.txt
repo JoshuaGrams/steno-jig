@@ -1,0 +1,14 @@
+Day 31 - 22:05
+==============
+
+15:00 1-syl F-, M-, N-, and -M words @ 29 WPM w/17 errors (96%)
+
+7:30 1-syl F-, M-, N-, and -M words @ 35 WPM w/12 errors (97%)
+
+Hrm.  I added an accuracy count to the report, but it's saying 95%,
+where my calculations say it should be high 97%.  Oh.  On 7.5 minutes
+that could easily be rounding error.  OK, let's floor everything.
+
+7:30 1-syl F-, M-, N-, and -M words @ 37 WPM w/9 errors (96%)
+
+0:30 today, 22:35 total.

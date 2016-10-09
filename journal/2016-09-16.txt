@@ -1,0 +1,33 @@
+Day 28 - 19:50
+==============
+
+15:00 - 1&2 key, 1-syl CVC, DBL-, and -N words @ 36 WPM w/15 errors (97% accuracy).
+
+OK, I *think* I have fully working Python code to split the pseudosteno
+into individual sounds.  I need that on the JavaScript side as well, so
+I'll have to port it.  That should be quick.  Then I can put all my
+wordlists together and filter them (once I add the pseudosteno to the
+lists).  I did a bunch of that by hand, but I'm thinking that since I've
+come this far, I might as well take a quick pass and try to identify the
+phonetic strokes automatically.  If I can get a good approximation then
+I can add most of the SCOWL-35 list at one go.
+
+15:00 - 1&2 key, 1-syl CVC, DBL-, and -N words @ 36 WPM w/16 errors (97% accuracy).
+
+Man. Having a hard time staying slow and pushing the accuracy.
+
+15:00 1&2 key, 1-syl CVC, DBL-, and -N words @ 37 WPM w/11 errors (98% accuracy).
+
+Finally.  98% is surprisingly hard.
+
+OK, I think the next step in programming is to take my existing word
+sets and automatically grab pseudosteno from the Plover dictionary.
+Then I can just drop all the non-canonical strokes and get the jig back
+to the previous level of functionality and add filtering.  Or...given
+that I grabbed the existing words mostly automatically, maybe I should
+generate pseudosteno for everything in the Plover dictionary and then
+grab the words again based on the pseudosteno.
+
+15:00 1&2 key, 1-syl CVC, DBL-, and -N words @ 30 WPM w/9 errors (98% accuracy).
+
+1:00 today, 20:50 total.
