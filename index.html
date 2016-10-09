@@ -2,53 +2,56 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<title>Steno Drills</title>
+	<title>Steno Jig</title>
 	<link href="style.css" rel="stylesheet" type="text/css">
 	<script src="type-jig.js"></script>
 	<script src="word-sets.js"></script>
 </head>
 <body>
 
-<div class="scroll-bounds"><div id="exercise" class="white-space: nowrap"></div></div>
+<div class="scroll-bounds"><div id="exercise" style="white-space: nowrap"></div></div>
 <div id="answer" style="margin-left: 7em" class="answer" contenteditable="true"><span class="prompt">Type here...</span></div>
+
+<p id="clock" class="clock"></p>
 
 <script>
 var exercise = {
 	seconds: 15*60,
 	randomize: true,
-	lookahead: 8, inputLength: 20,
+	// FIXME - lookahead is in words, should be chars like inputLength.
+	lookahead: 20, inputLength: 17,
 	words: [].concat(
+		TypeJig.WordSets.Q_SingleSyllable,
+		TypeJig.WordSets.Y_SingleSyllable,
+		TypeJig.WordSets.J_SingleSyllable,
+		TypeJig.WordSets.V_SingleSyllable,
 		TypeJig.WordSets.D_SingleSyllable,
 		TypeJig.WordSets.B_SingleSyllable,
 		TypeJig.WordSets.L_SingleSyllable,
 		TypeJig.WordSets.F_SingleSyllable,
 		TypeJig.WordSets.M_SingleSyllable,
 		TypeJig.WordSets.N_SingleSyllable,
-		TypeJig.WordSets.Q_SingleSyllable,
-		TypeJig.WordSets.Y_SingleSyllable,
-		TypeJig.WordSets.V_SingleSyllable,
-		TypeJig.WordSets.J_SingleSyllable,
-		TypeJig.WordSets.singleStrokeCVC,
-		TypeJig.WordSets.multiStrokeCVC
+		TypeJig.WordSets.SingleSyllable_M,
+		TypeJig.WordSets.SingleSyllable_N,
+		TypeJig.WordSets.CommonBriefs_1_20,
+		TypeJig.WordSets.CommonBriefs_21_40
 	),
 	init: function() {
-		if(this.randomize) shuffle(this.words);
+		if(this.randomize) randomize(this.words);
 		this.count = 0;
+		this.clock = new TypeJig.Countdown(document.getElementById('clock'), this.seconds);
 	},
 	nextWord: function() {
-		var word = this.words[this.count++ % this.words.length];
-		if(this.randomize && this.count % this.words.length === 0) {
-			shuffle(this.words);
-		}
+		rotateAndShuffle(this.words);
 		if(this.numWords && this.count >= numWords) return false;
-		else return word;
-	}
+		else return this.words[0];
+	},
+	start: function() { this.clock.start(); }
 };
 var output = document.getElementById('exercise');
 var input = document.getElementById('answer');
 
 var jig = new TypeJig(exercise, output, input);
-
 </script>
 
 </body>

@@ -6,6 +6,10 @@
  * `inputLength` (number of characters) properties.
  */
 
+// TODO:
+// - Lookahead should be in characters, not words.
+// - Show steno strokes.
+
 function TypeJig(exercise, output, input) {
 	this.ex = exercise;
 	if(exercise.init) exercise.init();
@@ -23,6 +27,7 @@ function TypeJig(exercise, output, input) {
 TypeJig.prototype.answerChanged = function() {
 	if(!this.start) {
 		this.start = Date.now();
+		if(this.ex.start) this.ex.start();
 		if(this.ex.seconds) {
 			window.setTimeout(this.endExercise.bind(this), 1000 * this.ex.seconds);
 		}
@@ -134,18 +139,22 @@ TypeJig.prototype.endExercise = function() {
 	if(document.activeElement != document.body) document.activeElement.blur();
 	this.ans.setAttribute('contenteditable', false);
 	this.ans.className = '';
-	var minutes = (Date.now() - this.start) / (60 * 1000);
-	var standardWPM = (this.charCount / 5) / minutes;
-	var plural = this.errorCount===1 ? '' : 's';
-	var correctedWPM = standardWPM - (this.errorCount / minutes);
-	var seconds = '' + Math.floor((minutes * 60) % 60);
-	if(seconds.length === 1) seconds = '0' + seconds;
+
+	var seconds = (Date.now() - this.start) / 1000;
+	var minutes = seconds / 60;
+	seconds = Math.floor(seconds % 60);
+	if(seconds < 10) seconds = '0' + seconds;
 	var time = Math.floor(minutes) + ':' + seconds;
-	var results = 'Time: ' + time
-		+ ' -  ' + Math.round(standardWPM) + ' WPM (CPM/5)';
+
+	var standardWords = this.charCount / 5;
+	var standardWPM = Math.floor(standardWords / minutes);
+	var plural = this.errorCount===1 ? '' : 's';
+	var accuracy = Math.floor(100 * (1 - this.errorCount / standardWords));
+	var correctedWPM = Math.round(standardWPM - (this.errorCount / minutes));
+	var results = 'Time: ' + time + ' -  ' + standardWPM + ' WPM (CPM/5)';
 	if(this.errorCount === 0) results += ' with no uncorrected errors!';
-	else results += ', adjusting for ' + this.errorCount + ' incorrect word' + plural + ' gives '
-		+ Math.round(correctedWPM) + ' WPM.'
+	else results += ', adjusting for ' + this.errorCount + ' incorrect word' + plural
+		+ ' (' + accuracy + '%) gives ' + correctedWPM + ' WPM.'
 	// results += '  Errors: ' + JSON.stringify(this.errors, null, ' ');
 	this.ans.firstChild.nodeValue = results;
 }
@@ -240,6 +249,17 @@ ScrollBox.prototype.scrollTo = function(elt, instantly) {
 // -----------------------------------------------------------------------
 // Helper functions
 
+isOwnPlural = { 'cod': true };
+
+function pluralize(word) {
+	if(isOwnPlural.hasOwnProperty(word)) return word;
+	switch(word[word.length-1]) {
+		case 's': return word + 'es';
+		case 'y': return word.slice(0, -1) + 'ies';
+		default: return word + 's';
+	}
+}
+
 function bindEvent(elt, evt, fn) {
 	if(elt.addEventListener) elt.addEventListener(evt, fn, false);
 	else if(elt.attachEvent) elt.attachEvent('on'+evt, fn);
@@ -268,6 +288,28 @@ function shuffle(a) {
         var a_i=a[i]; a[i]=a[j];  a[j]=a_i;
     }
     return a;
+}
+
+function randomIntLessThan(n) { return Math.floor(n * Math.random()) % n; }
+
+function shuffleTail(a, n) {
+	n = Math.min(n, a.length);
+	var i = n, b = a.length - n;  // current and base indices
+	while(--i > 0) {
+		var other = randomIntLessThan(i+1);
+		var t = a[i+b];  a[i+b] = a[other+b];  a[other+b] = t;
+	}
+}
+
+function randomize(a) {
+	shuffleTail(a, a.length);
+	a.used = 0;
+}
+
+function rotateAndShuffle(a) {
+	a.push(a.shift());
+	if(++a.used > 2/3 * a.length) { shuffleTail(a, a.used);  a.used = 0; }
+	return a[0];
 }
 
 // http://stackoverflow.com/a/13950376/2426692
@@ -339,4 +381,30 @@ if (window.getSelection && document.createRange) {
         textRange.moveStart("character", savedSel.start);
         textRange.select();
     };
+}
+
+TypeJig.Countdown = function(elt, seconds) {
+	this.elt = elt;
+	this.seconds = seconds;
+	this.fn = this.update.bind(this);
+	this.showTime(seconds);
+}
+
+TypeJig.Countdown.prototype.start = function() {
+	this.end = new Date().getTime() + 1000*this.seconds;
+	window.setTimeout(this.fn, 1000);
+}
+
+TypeJig.Countdown.prototype.update = function() {
+	var ms = Math.max(0, this.end - new Date().getTime());
+	if(ms) {
+		this.showTime(Math.round(ms / 1000));
+		window.setTimeout(this.fn, ms % 1000);
+	}
+};
+
+TypeJig.Countdown.prototype.showTime = function(s) {
+	var m = Math.floor(s / 60);
+	s = s % 60; if(s < 10) s = '0' + s;
+	this.elt.innerHTML = m + ':' + s;
 }
