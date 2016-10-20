@@ -15,32 +15,9 @@
 <p id="clock" class="clock"></p>
 
 <script>
-var exercise = {
-	seconds: 15*60,
-	randomize: true,
-	// FIXME - lookahead is in words, should be chars like inputLength.
-	lookahead: 20, inputLength: 17,
-	words: TypeJig.WordSets.NGSL.slice(0, 100),
-	init: function() {
-		if(this.randomize) randomize(this.words);
-		this.count = 0;
-		this.clock = new TypeJig.Countdown(document.getElementById('clock'), this.seconds);
-	},
-	nextWord: function() {
-		rotateAndShuffle(this.words);
-		if(this.numWords && this.count >= numWords) return false;
-		else {
-			var word = this.words[0];
-			if(typeof(word) === 'string') return word;
-			else return word[randomIntLessThan(word.length)];
-		}
-	},
-	start: function() { this.clock.start(); }
-};
-var output = document.getElementById('exercise');
-var input = document.getElementById('answer');
-
-var jig = new TypeJig(exercise, output, input);
+var words = TypeJig.WordSets.NGSL.slice(0, 100);
+var exercise = new TypeJig.Exercise(words, 15*60, true);
+var jig = new TypeJig(exercise, 'exercise', 'answer', 'clock');
 </script>
 
 </body>

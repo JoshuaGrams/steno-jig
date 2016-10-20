@@ -1,18 +1,22 @@
 /* -----------------------------------------------------------------------
  * TypeJig - run a typing lesson.
  *
- * `output` and `input` are elements, `exercise` is an object with a
- * `nextWord()` method and optional `lookahead` (number of words) and
- * `inputLength` (number of characters) properties.
+ * `output`, `input`, and `clock` are elements (or element ID strings),
+ * `exercise` is a TypeJig.Exercise object.
  */
 
 // TODO:
 // - Lookahead should be in characters, not words.
 // - Show steno strokes.
 
-function TypeJig(exercise, output, input) {
+function TypeJig(exercise, output, input, clock) {
+	if(typeof(output) === 'string') output = document.getElementById(output);
+	if(typeof(input) === 'string') input = document.getElementById(input);
+	if(typeof(clock) === 'string') clock = document.getElementById(clock);
+	this.running = false;
+	this.haveFinalWord = false;
 	this.ex = exercise;
-	if(exercise.init) exercise.init();
+	this.clock = new TypeJig.Timer(clock, this.ex.seconds);
 	this.out = new ScrollBox(output, 5, input);
 	this.ans = input;
 	this.lookahead = [];
@@ -26,11 +30,12 @@ function TypeJig(exercise, output, input) {
 
 TypeJig.prototype.answerChanged = function() {
 	if(!this.start) {
+		this.clock.start();
 		this.start = Date.now();
-		if(this.ex.start) this.ex.start();
 		if(this.ex.seconds) {
 			window.setTimeout(this.endExercise.bind(this), 1000 * this.ex.seconds);
 		}
+		this.running = true;
 	}
 
 	// Get the string and split it into words.
@@ -65,8 +70,10 @@ TypeJig.prototype.answerChanged = function() {
 		if(out) out = out.nextSibling;
 	}
 
-	// Are we finished with the exercise?
-	if(this.done && !prefix && answer.length == this.lookahead.length) {
+	// Are we finished with the exercise (is the final word correct)?
+	var lastWordCorrect = (answer[n-1] === this.lookahead[n-1]);
+	var answerLonger = (answer.length > this.lookahead.length);
+	if(this.haveFinalWord && (lastWordCorrect || answerLonger)) {
 		this.endExercise();
 		return;
 	}
@@ -108,7 +115,7 @@ TypeJig.prototype.getWords = function(n) {
 	n -= this.lookahead.length;
 	for(var i=0; i<n; ++i) {
 		var word = this.ex.nextWord();
-		if(word === false) { this.done = true;  break; }
+		if(word === false) { this.haveFinalWord = true;  break; }
 		this.wordCount++;
 		this.charCount += word.length + (this.charCount ? 1 : 0);
 		this.lookahead.push(word);
@@ -135,12 +142,14 @@ TypeJig.prototype.addError = function(word, error) {
 }
 
 TypeJig.prototype.endExercise = function() {
+	if(this.running) this.running = false;
+	else return;
 	this.ans.firstChild.nodeValue = '';
 	if(document.activeElement != document.body) document.activeElement.blur();
 	this.ans.setAttribute('contenteditable', false);
 	this.ans.className = '';
 
-	var seconds = (Date.now() - this.start) / 1000;
+	var seconds = this.clock.stop();
 	var minutes = seconds / 60;
 	seconds = Math.floor(seconds % 60);
 	if(seconds < 10) seconds = '0' + seconds;
@@ -155,7 +164,6 @@ TypeJig.prototype.endExercise = function() {
 	if(this.errorCount === 0) results += ' with no uncorrected errors!';
 	else results += ', adjusting for ' + this.errorCount + ' incorrect word' + plural
 		+ ' (' + accuracy + '%) gives ' + correctedWPM + ' WPM.'
-	// results += '  Errors: ' + JSON.stringify(this.errors, null, ' ');
 	this.ans.firstChild.nodeValue = results;
 }
 
@@ -303,7 +311,7 @@ function shuffleTail(a, n) {
 
 function randomize(a) {
 	shuffleTail(a, a.length);
-	a.used = 0;
+	a.randomEltsUsed = 0;
 }
 
 // Rotate the first word out to the end of the array.
@@ -312,12 +320,18 @@ function randomize(a) {
 // which ensures that the last word can't be shuffled to be the next
 // one in the queue.
 function rotateAndShuffle(a) {
+	if(typeof(a.used) === 'undefined') a.used = 0;
+
 	a.push(a.shift());
-	if(typeof(a.used) !== 'undefined') {
-		a.used += 1;
-		if(a.used > 2/3 * a.length) {
-			shuffleTail(a, a.used);
-			a.used = 0;
+	a.used += 1;
+
+	if(typeof(a.randomEltsUsed) === 'undefined') {
+		if(a.used >= a.length) return false;
+	} else {
+		a.randomEltsUsed += 1;
+		if(a.randomEltsUsed > 2/3 * a.length) {
+			shuffleTail(a, a.randomEltsUsed);
+			a.randomEltsUsed = 0;
 		}
 	}
 	return a[0];
@@ -394,28 +408,66 @@ if (window.getSelection && document.createRange) {
     };
 }
 
-TypeJig.Countdown = function(elt, seconds) {
+TypeJig.Timer = function(elt, seconds) {
 	this.elt = elt;
-	this.seconds = seconds;
+	this.setting = seconds || 0;
+	this.seconds = this.setting;
 	this.fn = this.update.bind(this);
-	this.showTime(seconds);
+	this.showTime();
 }
 
-TypeJig.Countdown.prototype.start = function() {
-	this.end = new Date().getTime() + 1000*this.seconds;
+TypeJig.Timer.prototype.start = function() {
+	this.beginning = new Date().getTime();
+	if(this.setting > 0) this.end = this.beginning + 1000 * this.setting;
 	window.setTimeout(this.fn, 1000);
 }
 
-TypeJig.Countdown.prototype.update = function() {
-	var ms = Math.max(0, this.end - new Date().getTime());
-	if(ms) {
-		this.showTime(Math.round(ms / 1000));
+TypeJig.Timer.prototype.stop = function() {
+	var elapsed = this.end ? this.setting - this.seconds : this.seconds;
+	delete this.beginning;
+	delete this.end;
+	return elapsed;
+}
+
+TypeJig.Timer.prototype.update = function() {
+	if(this.beginning) {
+		var ms, now = new Date().getTime();
+		if(this.end) {
+			ms = this.end - now;
+			if(ms === 0) delete this.beginning;
+		} else ms = now - this.beginning;
+
+		ms = Math.max(ms, 0);
+		this.seconds = Math.round(ms/1000);
+
+		this.showTime();
 		window.setTimeout(this.fn, ms % 1000);
 	}
 };
 
-TypeJig.Countdown.prototype.showTime = function(s) {
-	var m = Math.floor(s / 60);
-	s = s % 60; if(s < 10) s = '0' + s;
+TypeJig.Timer.prototype.showTime = function() {
+	var m = Math.floor(this.seconds / 60);
+	var s = this.seconds % 60; if(s < 10) s = '0' + s;
 	this.elt.innerHTML = m + ':' + s;
+}
+
+
+
+TypeJig.Exercise = function(words, seconds, shuffle) {
+	this.words = words;
+	this.seconds = seconds;
+	this.shuffle = shuffle;
+
+	if(shuffle) randomize(this.words);
+
+	// FIXME - is words, should be chars like inputLength.
+	this.lookahead = 20;
+	this.inputLength = 17;
+}
+
+TypeJig.Exercise.prototype.nextWord = function() {
+	var word = rotateAndShuffle(this.words);
+	if(word instanceof Array) {
+		return word[randomIntLessThan(word.length)];
+	} else return word;
 }
