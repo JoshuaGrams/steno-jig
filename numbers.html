@@ -67,7 +67,6 @@ exercise.nextSentence = function() {
 		var num = 2 + randomIntLessThan(98);
 		var noun = pluralize(rotateAndShuffle(this.nouns));
 		var action = rotateAndShuffle(this.actions);
-		var tense = randomIntLessThan(2);
 		s = s.concat(this.nextClause(num, noun, action, tense));
 		s[s.length-1] += '.';
 	}
