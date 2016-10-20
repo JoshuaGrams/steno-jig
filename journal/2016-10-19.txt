@@ -1,0 +1,53 @@
+Day 52 - 36:45
+==============
+
+15:00 - Top 140 words @ 33 WPM w/93% accuracy.
+
+Ouch. Felt really good, so I rushed it, and bam! It all fell
+apart. Maybe I should do another one right away and fix it.
+
+15:00 - Top 140 words @ 32 WPM w/96% accuracy.
+
+Still not terrific accuracy, but good enough. And I hardly lost
+any speed. Funny how that works. Errors cost you time (well, they
+cost *me* time) in going, "what did I just do wrong?".
+
+15:00 - Top 140 words @ 30 WPM w/96% accuracy.
+
+15:00 - Number sentences @ 25 WPM w/94% accuracy.
+
+-----
+
+15:00 - Top 140 words @ 33 WPM w/96% accuracy.
+
+Hmm. Almost time to move on. But...two days (three hours) to learn
+40 new words? That's annoyingly slow. It's probably better to go
+find words of a particular shape and drill those. I'm noticing
+that when in starts working better is when I start connecting a
+hand shape with a half-syllable instead of working out the finger
+placements for each sound. And *that* would be much more efficient
+if I picked a couple instead of adding a whole bunch like this.
+
+Oh well. I *still* don't really have working code to pick out
+words by shape, so I guess I'll keep on with this. But it's
+definitely another thing to note for my steno course design.
+
+Hrm.  Actually, I *do* have code to pick out words that use
+particular sounds. It's the dictionary that's the problem. Only
+this top 1000 words might contain sounds I haven't drilled to
+death yet. I have machine-generated pseudo-steno for the rest of
+the Plover dictionary, but there are lots of misstrokes and
+mistranslations to pseudo-steno.
+
+But...I ran into that with selecting my CVC words, and it wasn't a
+big deal. You just select by sound until you get a small enough
+set that you can eyeball it and prune out the misstrokes. So maybe
+I can do that here as well. And now I have all the strokes for
+each word collected in one place, so that makes it much easier to
+see what the canonical strokes are and why each one was included.
+
+15:00 - Top 140 words @ 32 WPM w/97% accuracy.
+
+15:00 - Top 140 words @ 34 WPM w/97% accuracy.
+
+1:45 today, 38:30 total.

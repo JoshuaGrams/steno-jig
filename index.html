@@ -20,22 +20,7 @@ var exercise = {
 	randomize: true,
 	// FIXME - lookahead is in words, should be chars like inputLength.
 	lookahead: 20, inputLength: 17,
-	words: [].concat(
-		TypeJig.WordSets.Q_SingleSyllable,
-		TypeJig.WordSets.Y_SingleSyllable,
-		TypeJig.WordSets.J_SingleSyllable,
-		TypeJig.WordSets.V_SingleSyllable,
-		TypeJig.WordSets.D_SingleSyllable,
-		TypeJig.WordSets.B_SingleSyllable,
-		TypeJig.WordSets.L_SingleSyllable,
-		TypeJig.WordSets.F_SingleSyllable,
-		TypeJig.WordSets.M_SingleSyllable,
-		TypeJig.WordSets.N_SingleSyllable,
-		TypeJig.WordSets.SingleSyllable_M,
-		TypeJig.WordSets.SingleSyllable_N,
-		TypeJig.WordSets.CommonBriefs_1_20,
-		TypeJig.WordSets.CommonBriefs_21_40
-	),
+	words: TypeJig.WordSets.NGSL.slice(0, 100),
 	init: function() {
 		if(this.randomize) randomize(this.words);
 		this.count = 0;
@@ -44,7 +29,11 @@ var exercise = {
 	nextWord: function() {
 		rotateAndShuffle(this.words);
 		if(this.numWords && this.count >= numWords) return false;
-		else return this.words[0];
+		else {
+			var word = this.words[0];
+			if(typeof(word) === 'string') return word;
+			else return word[randomIntLessThan(word.length)];
+		}
 	},
 	start: function() { this.clock.start(); }
 };

@@ -1,0 +1,24 @@
+Day 53 - 38:30
+==============
+
+15:00 - Top 140 words @ 35 WPM w/95% accuracy.
+
+Heh. Yes, Virginia, you still have to pay attention. Well. Good
+enough. Let's move on to the next bunch.
+
+Ugh. Those are awful and web-polluted.  Let's import the NGSL words.
+They're in a spreadsheet, it should be easy enough to export as CSV and
+convert to JSON. And...I think I'll group them all under the "lemma",
+and randomly choose a form.
+
+-----
+
+Yeah, that was easy enough to set up.
+
+And yeah, there are a bunch of things in there that I haven't learned
+yet. Also I learned that "many" is "MAEN" and that "MAIN" is "main", but
+Plover doesn't have a dictionary stroke for "mane".
+
+15:00 - NGSL Top 100 @ 11 WPM.
+
+15:00 - NGSL Top 100 @ 20 WPM.

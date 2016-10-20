@@ -306,9 +306,20 @@ function randomize(a) {
 	a.used = 0;
 }
 
+// Rotate the first word out to the end of the array.
+// If the array has been `randomize`d (has a `used` property defined),
+// shuffle the used words when more than 2/3 of them have been used,
+// which ensures that the last word can't be shuffled to be the next
+// one in the queue.
 function rotateAndShuffle(a) {
 	a.push(a.shift());
-	if(++a.used > 2/3 * a.length) { shuffleTail(a, a.used);  a.used = 0; }
+	if(typeof(a.used) !== 'undefined') {
+		a.used += 1;
+		if(a.used > 2/3 * a.length) {
+			shuffleTail(a, a.used);
+			a.used = 0;
+		}
+	}
 	return a[0];
 }
 
