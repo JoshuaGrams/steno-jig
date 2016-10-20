@@ -16,6 +16,10 @@
 
 <script>
 var words = TypeJig.WordSets.NGSL.slice(0, 100);
+// or you could do things like:
+// var words = [].concat(
+//	TypeJig.WordSets.singleStrokeCVC,
+//	TypeJig.WordSets.multiStrokeCVC);
 var exercise = new TypeJig.Exercise(words, 15*60, true);
 var jig = new TypeJig(exercise, 'exercise', 'answer', 'clock');
 </script>
