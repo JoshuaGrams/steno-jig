@@ -9,12 +9,23 @@
 // in `style.css`.
 
 
-function StenoDisplay(container) {
+function StenoDisplay(container, translations, showEmpty) {
 	if(typeof(container) === 'string') {
 		container = document.getElementById(container);
 	}
 	this.container = container;
 	this.strokes = [new StenoDisplay.Stroke(container, true)];
+	this.pseudoStenoFor = translations;
+	this.lastText = false;
+	this.showEmpty = showEmpty;
+}
+
+StenoDisplay.prototype.update = function(text, showEmpty) {
+	if(text !== this.lastText) {
+		lastText = text;
+		if(typeof showEmpty === 'undefined') showEmpty = this.showEmpty;
+		this.set(this.pseudoStenoFor[text] || '', showEmpty);
+	}
 }
 
 StenoDisplay.prototype.set = function(pseudoSteno, showEmpty) {

@@ -19,15 +19,21 @@
 <p id="clock" class="clock"></p>
 
 <script>
-var hint = new StenoDisplay('strokes');
-hint.set('FISH/-G');
-var words = TypeJig.WordSets.NGSL.slice(0, 100);
-// or you could do things like:
+var translations = {
+	a: 'AEU', and: 'SKP', the: '-T', in: 'N',
+	fish: 'FISH', steal: 'STEAL', last: 'LAFT',
+	sagging: 'SAG/-G', them: 'THEM'
+};
+var hint = new StenoDisplay('strokes', translations, true);
+var words = ['a', 'and', 'the', 'them', 'in', 'fish', 'steal', 'last', 'sagging'];
+// or:
+// var words = TypeJig.WordSets.NGSL.slice(0, 100);
+// or:
 // var words = [].concat(
 //	TypeJig.WordSets.singleStrokeCVC,
 //	TypeJig.WordSets.multiStrokeCVC);
-var exercise = new TypeJig.Exercise(words, 15*60, true);
-var jig = new TypeJig(exercise, 'exercise', 'answer', 'clock');
+var exercise = new TypeJig.Exercise(words, 60, true);
+var jig = new TypeJig(exercise, 'exercise', 'answer', 'clock', hint);
 </script>
 
 </body>

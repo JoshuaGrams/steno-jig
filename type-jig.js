@@ -5,19 +5,21 @@
  * `exercise` is a TypeJig.Exercise object.
  */
 
-function TypeJig(exercise, output, input, clock) {
-	if(typeof(output) === 'string') output = document.getElementById(output);
-	if(typeof(input) === 'string') input = document.getElementById(input);
-	if(typeof(clock) === 'string') clock = document.getElementById(clock);
+function TypeJig(exercise, output, input, clock, hint) {
+	if(typeof output === 'string') output = document.getElementById(output);
+	if(typeof input === 'string') input = document.getElementById(input);
+	if(typeof clock === 'string') clock = document.getElementById(clock);
 	this.running = false;
 	this.haveFinalWord = false;
 	this.ex = exercise;
-	this.clock = new TypeJig.Timer(clock, this.ex.seconds);
 	this.out = new ScrollBox(output, 5, input);
 	this.ans = input;
+	this.clock = new TypeJig.Timer(clock, this.ex.seconds);
+	this.hint = hint;
 	this.lookahead = [];
 	this.errors = {};  this.errorCount = 0;
 	this.getWords();
+	if(this.hint && this.hint.update) this.hint.update(this.lookahead[0] || '');
 	this.scrollTo = this.out.firstChild;
 	bindEvent(input, 'input', this.answerChanged.bind(this));
 	input.focus();
@@ -32,7 +34,7 @@ TypeJig.prototype.answerChanged = function() {
 			window.setTimeout(this.endExercise.bind(this), 1000 * this.ex.seconds);
 		}
 		this.droppedChars = 0;
-		this.untypedWordIndex = 0;
+		this.nextWordIndex = 0;
 		this.running = true;
 	}
 
@@ -51,7 +53,7 @@ TypeJig.prototype.answerChanged = function() {
 		var ans = answer[i];
 		var validPrefix = false;
 		if(i === answer.length-1 && ans.length < ex.length) {
-			validPrefix = ans === ex.slice(0, ans.length);
+			validPrefix = (ans === ex.slice(0, ans.length));
 		}
 		if(validPrefix || i >= answer.length) {
 			if(hasClass(out, 'incorrect')) this.removeError(ex);
@@ -69,7 +71,8 @@ TypeJig.prototype.answerChanged = function() {
 	}
 
 	// Are we finished with the exercise (is the final word correct)?
-	var lastWordCorrect = (answer[n-1] === String(this.lookahead[n-1]));
+	var m = answer.length - 1;
+	var lastWordCorrect = (answer[m] === String(this.lookahead[m]));
 	var answerLonger = (answer.length > this.lookahead.length);
 	if(this.haveFinalWord && (lastWordCorrect || answerLonger)) {
 		this.endExercise();
@@ -104,7 +107,10 @@ TypeJig.prototype.answerChanged = function() {
 		this.out.scrollTo(this.scrollTo);
 	}
 
-	this.untypedWordIndex = answer.length - (lastWordCorrect ? 0 : 1);
+	this.nextWordIndex = answer.length - (lastWordCorrect ? 0 : 1);
+	if(this.hint && this.hint.update) {
+		this.hint.update(this.lookahead[this.nextWordIndex]);
+	}
 }
 
 // Ensure that `words` (and `out`) contain at least `n` words (unless
