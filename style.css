@@ -12,15 +12,12 @@ div { margin-top: 0.3em; margin-bottom: 0.3em; }
 
 .clock { font-size: 300%; text-align: center; }
 
+
+/* Configure these to tune the stroke display to your liking. */
+
+/* Setting it to `smaller` usually means about 83% (1 / 1.2) but
+ * there's no standard. */
 #strokes { font-size: smaller; }
-
-#strokes > * { vertical-align: middle; }
-
-#strokes table { display: inline-block; empty-cells: hide; }
-
-#strokes td.wide { width: 1.5em; }
-
-#strokes span.big-slash { font-size: 300%; }
 
 #strokes td {
 	background: #666;
@@ -29,6 +26,8 @@ div { margin-top: 0.3em; margin-bottom: 0.3em; }
 	padding: 0.25ex;
 	text-align: center;
 }
+
+#strokes td.wide { width: 1.5em; }
 
 #strokes table tr td.pressed {
 	color: #400;
@@ -39,3 +38,13 @@ div { margin-top: 0.3em; margin-bottom: 0.3em; }
 	color: #444;
 	background: #999;
 }
+
+#strokes > * { vertical-align: top; }
+
+#strokes span.big-slash { font-size: 300%; }
+
+/* But don't change these ones */
+
+#strokes .hide { display: none; }
+
+#strokes table { display: inline-block; empty-cells: hide; }

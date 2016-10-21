@@ -6,7 +6,7 @@
 	<link href="style.css" rel="stylesheet" type="text/css">
 	<script src="type-jig.js"></script>
 	<script src="word-sets.js"></script>
-	<script src="stroke-display.js"></script>
+	<script src="steno-display.js"></script>
 </head>
 <body>
 
@@ -19,8 +19,8 @@
 <p id="clock" class="clock"></p>
 
 <script>
-var hint = new StrokeDisplay('strokes');
-hint.setStroke('FISH');
+var hint = new StenoDisplay('strokes');
+hint.set('FISH/-G');
 var words = TypeJig.WordSets.NGSL.slice(0, 100);
 // or you could do things like:
 // var words = [].concat(

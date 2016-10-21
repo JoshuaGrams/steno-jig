@@ -1,34 +1,60 @@
-function StrokeDisplay(elt) {
-	if(typeof(elt) === 'string') elt = document.getElementById(elt);
-	this.stroke = new StrokeDisplay.Stroke();
-	elt.appendChild(this.stroke.html);
+// Display keys for arbitrary steno stroke sequences.
+
+// To use, simply create a new StenoDisply for your container
+// element (can pass element id name or the element itself) and
+// then call the set method with the steno or pseudo-steno string
+// (strokes separated by slashes).
+//
+// It needs a bunch of help from styles: see the `#stroke` entries
+// in `style.css`.
+
+
+function StenoDisplay(container) {
+	if(typeof(container) === 'string') {
+		container = document.getElementById(container);
+	}
+	this.container = container;
+	this.strokes = [new StenoDisplay.Stroke(container, true)];
 }
 
-StrokeDisplay.prototype.setStroke = function(stroke) {
-	var steno = pseudoStrokeToSteno(stroke);
-	var left = steno[0], vowel = steno[1], right = steno[2];
-	removeClassFromAllPropertiesOf(this.stroke.leftCells, 'pressed');
-	removeClassFromAllPropertiesOf(this.stroke.rightCells, 'pressed');
-	removeClassFromAllPropertiesOf(this.stroke.vowelCells, 'pressed');
-	for(var i=0; i<left.length; ++i) {
-		addClass(this.stroke.leftCells[left.charAt(i)], 'pressed');
+StenoDisplay.prototype.set = function(pseudoSteno, showEmpty) {
+	var strokes;
+	if(pseudoSteno === '' && !showEmpty) strokes = [];
+	else strokes = pseudoSteno.split('/');
+
+	// Set the keys for each stroke (making sure that we have
+	// enough strokes and that they're not hidden).
+	for(i=0; i<strokes.length; ++i) {
+		if(i >= this.strokes.length) {
+			this.strokes.push(new StenoDisplay.Stroke(this.container));
+		}
+		this.strokes[i].set(strokes[i]);
+		this.strokes[i].show();
 	}
-	for(var i=0; i<right.length; ++i) {
-		addClass(this.stroke.rightCells[right.charAt(i)], 'pressed');
-	}
-	for(var i=0; i<vowel.length; ++i) {
-		addClass(this.stroke.vowelCells[vowel.charAt(i)], 'pressed');
+
+	// Hide any extra strokes.
+	for(i=strokes.length; i<this.strokes.length; ++i) {
+		this.strokes[i].hide();
 	}
 }
 
-StrokeDisplay.Stroke = function() {
-	var table = document.createElement('table');
+
+// ---------------------------------------------------------------------
+
+StenoDisplay.Stroke = function(container, first) {
+	if(!first) {
+		this.separator = document.createElement('span');
+		this.separator.appendChild(document.createTextNode('/'));
+		this.separator.className = 'big-slash';
+		container.appendChild(this.separator);
+	}
+	this.keys = document.createElement('table');
 	var upper = document.createElement('tr');
 	var lower = document.createElement('tr');
 	var vowel = document.createElement('tr');
-	table.appendChild(upper);
-	table.appendChild(lower);
-	table.appendChild(vowel);
+	this.keys.appendChild(upper);
+	this.keys.appendChild(lower);
+	this.keys.appendChild(vowel);
 	var upperKeys = ['S', 'T', 'P', 'H', '*', 'F', 'P', 'L', 'T', 'D'];
 	var lowerKeys =      ['K', 'W', 'R',      'R', 'B', 'G', 'S', 'Z'];
 	var vowelKeys = ['', 'A', 'O', '', 'E', 'U'];
@@ -41,7 +67,7 @@ StrokeDisplay.Stroke = function() {
 	upperCells[9].className = 'alt';
 	lowerCells[7].className = 'alt';
 	vowelCells[0].colSpan = 2;
-	this.html = table;
+	container.appendChild(this.keys);
 	this.leftCells = {
 		S: upperCells[0], T: upperCells[1], P: upperCells[2], H: upperCells[3],
 		                  K: lowerCells[0], W: lowerCells[1], R: lowerCells[2]
@@ -55,6 +81,37 @@ StrokeDisplay.Stroke = function() {
 	};
 }
 
+StenoDisplay.Stroke.prototype.hide = function() {
+	if(this.separator) addClass(this.separator, 'hide');
+	addClass(this.keys, 'hide');
+}
+
+StenoDisplay.Stroke.prototype.show = function() {
+	if(this.separator) removeClass(this.separator, 'hide');
+	removeClass(this.keys, 'hide');
+}
+
+StenoDisplay.Stroke.prototype.clear = function() {
+	removeClassFromAllPropertiesOf(this.leftCells, 'pressed');
+	removeClassFromAllPropertiesOf(this.rightCells, 'pressed');
+	removeClassFromAllPropertiesOf(this.vowelCells, 'pressed');
+}
+
+StenoDisplay.Stroke.prototype.set = function(stroke) {
+	this.clear();
+	var steno = pseudoStrokeToSteno(stroke);
+	var left = steno[0], vowel = steno[1], right = steno[2];
+	for(var i=0; i<left.length; ++i) {
+		addClass(this.leftCells[left.charAt(i)], 'pressed');
+	}
+	for(var i=0; i<right.length; ++i) {
+		addClass(this.rightCells[right.charAt(i)], 'pressed');
+	}
+	for(var i=0; i<vowel.length; ++i) {
+		addClass(this.vowelCells[vowel.charAt(i)], 'pressed');
+	}
+}
+
 function addCells(row, contents) {
 	cells = [];
 	for(var i=0; i<contents.length; ++i) {
@@ -66,6 +123,10 @@ function addCells(row, contents) {
 		cells.push(td);
 	}
 	return cells;
+}
+
+function addClass(elt, className) {
+	if(elt) elt.className += ' ' + className;
 }
 
 function removeClass(elt, className) {
@@ -82,9 +143,8 @@ function removeClassFromAllPropertiesOf(obj, className) {
 	}
 }
 
-function addClass(elt, className) {
-	if(elt) elt.className += ' ' + className;
-}
+
+// ---------------------------------------------------------------------
 
 var leftFromPseudo = {
 	'D': 'TK', 'B': 'PW', 'L': 'HR',
