@@ -5,10 +5,6 @@
  * `exercise` is a TypeJig.Exercise object.
  */
 
-// TODO:
-// - Lookahead should be in characters, not words.
-// - Show steno strokes.
-
 function TypeJig(exercise, output, input, clock) {
 	if(typeof(output) === 'string') output = document.getElementById(output);
 	if(typeof(input) === 'string') input = document.getElementById(input);
@@ -35,6 +31,8 @@ TypeJig.prototype.answerChanged = function() {
 		if(this.ex.seconds) {
 			window.setTimeout(this.endExercise.bind(this), 1000 * this.ex.seconds);
 		}
+		this.droppedChars = 0;
+		this.untypedWordIndex = 0;
 		this.running = true;
 	}
 
@@ -49,7 +47,7 @@ TypeJig.prototype.answerChanged = function() {
 	var out = this.scrollTo;
 	var n = this.lookahead.length;
 	for(var i=0; i<n; ++i) {
-		var ex = this.lookahead[i];
+		var ex = String(this.lookahead[i]);
 		var ans = answer[i];
 		var validPrefix = false;
 		if(i === answer.length-1 && ans.length < ex.length) {
@@ -71,7 +69,7 @@ TypeJig.prototype.answerChanged = function() {
 	}
 
 	// Are we finished with the exercise (is the final word correct)?
-	var lastWordCorrect = (answer[n-1] === this.lookahead[n-1]);
+	var lastWordCorrect = (answer[n-1] === String(this.lookahead[n-1]));
 	var answerLonger = (answer.length > this.lookahead.length);
 	if(this.haveFinalWord && (lastWordCorrect || answerLonger)) {
 		this.endExercise();
@@ -92,32 +90,39 @@ TypeJig.prototype.answerChanged = function() {
 			var newAnswer = answerString.replace(/^\s*[\S]+(\s|$)+/, '');
 			answerString = newAnswer;
 			this.scrollTo = this.scrollTo.nextSibling;
+			answer.shift();
 			this.lookahead.shift();
 		}
 		// Set the new text and restore the (adjusted) selection.
 		this.ans.firstChild.nodeValue = answerString;
 		var dropped = oldLen - answerString.length;
+		this.droppedChars += dropped;
 		sel.start -= dropped;
 		sel.end -= dropped;
 		restoreSelection(this.ans, sel);
 		// Update the output scrolling.
 		this.out.scrollTo(this.scrollTo);
 	}
+
+	this.untypedWordIndex = answer.length - (lastWordCorrect ? 0 : 1);
 }
 
 // Ensure that `words` (and `out`) contain at least `n` words (unless
 // we're at the end of the exercise).
 TypeJig.prototype.getWords = function(n) {
-	if(!this.wordCount) { this.wordCount = 0;  this.charCount = 0; }
-
-	var min_n = this.ex.lookahead || 1;
-	if(n === undefined) n = min_n; else n = Math.max(n, min_n);
+	if(n === undefined) n = 1; else n = Math.max(n, 1);
 	n -= this.lookahead.length;
-	for(var i=0; i<n; ++i) {
+
+	// count chars already in lookahead
+	var charCount = 0;
+	for(var i=0; i<this.lookahead.length; ++i) {
+		charCount += this.lookahead[i].length + (charCount ? 1 : 0);
+	}
+
+	while(n-- > 0 || charCount < this.ex.lookahead) {
 		var word = this.ex.nextWord();
 		if(word === false) { this.haveFinalWord = true;  break; }
-		this.wordCount++;
-		this.charCount += word.length + (this.charCount ? 1 : 0);
+		charCount += word.length + (charCount ? 1 : 0);
 		this.lookahead.push(word);
 		var text = document.createTextNode(' ' + word);
 		var span = document.createElement('span');
@@ -155,7 +160,8 @@ TypeJig.prototype.endExercise = function() {
 	if(seconds < 10) seconds = '0' + seconds;
 	var time = Math.floor(minutes) + ':' + seconds;
 
-	var standardWords = this.charCount / 5;
+	var charsTyped = this.droppedChars + this.ans.textContent.length;
+	var standardWords = charsTyped / 5;
 	var standardWPM = Math.floor(standardWords / minutes);
 	var plural = this.errorCount===1 ? '' : 's';
 	var accuracy = Math.floor(100 * (1 - this.errorCount / standardWords));
@@ -446,6 +452,7 @@ TypeJig.Timer.prototype.update = function() {
 };
 
 TypeJig.Timer.prototype.showTime = function() {
+	if(!this.elt) return;
 	var m = Math.floor(this.seconds / 60);
 	var s = this.seconds % 60; if(s < 10) s = '0' + s;
 	this.elt.innerHTML = m + ':' + s;
@@ -460,9 +467,10 @@ TypeJig.Exercise = function(words, seconds, shuffle) {
 
 	if(shuffle) randomize(this.words);
 
-	// FIXME - is words, should be chars like inputLength.
-	this.lookahead = 20;
-	this.inputLength = 17;
+	// Characters of the exercise to load ahead.
+	this.lookahead = 150;
+	// Characters of input to accumulate before shifting.
+	this.inputLength = 20;
 }
 
 TypeJig.Exercise.prototype.nextWord = function() {
