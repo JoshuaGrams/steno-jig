@@ -11,3 +11,31 @@ body { font-size: 1.5em; }
 div { margin-top: 0.3em; margin-bottom: 0.3em; }
 
 .clock { font-size: 300%; text-align: center; }
+
+#strokes { font-size: smaller; }
+
+#strokes > * { vertical-align: middle; }
+
+#strokes table { display: inline-block; empty-cells: hide; }
+
+#strokes td.wide { width: 1.5em; }
+
+#strokes span.big-slash { font-size: 300%; }
+
+#strokes td {
+	background: #666;
+	border: thin solid black;
+	border-radius: 0.5ex;
+	padding: 0.25ex;
+	text-align: center;
+}
+
+#strokes table tr td.pressed {
+	color: #400;
+	background: #dd4;
+}
+
+#strokes td.alt {
+	color: #444;
+	background: #999;
+}
