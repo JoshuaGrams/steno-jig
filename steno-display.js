@@ -184,7 +184,7 @@ var rightFromPseudo = {
 	'J': 'PBLG', 'RBGS': 'RBGS'
 };
 var left_re = /L|G|Z|N|J|X|B|V|F|Y|Q|D|M|0|1|2|3|4|5|6|7|8|9|S|T|K|P|W|H|R/g;
-var vowel_re = /AY|OA|AW|EA|EE|OH|UU|OI|IE|OW|I|0|1|2|3|4|5|6|7|8|9|A|O|E|U/g;
+var vowel_re = /AY|OA|OO|AW|EA|EE|OH|UU|OI|IE|OW|I|0|1|2|3|4|5|6|7|8|9|A|O|E|U/g;
 var right_re = /RBGS|KSHN|SHN|RCH|CH|SH|NG|NK|TH|K|J|N|M|0|1|2|3|4|5|6|7|8|9|\*|F|R|P|B|L|G|T|S|D|Z/g;
 var separation_re = /([^AOEUI-]*)([AOEUI-][AOEUIHYW]*|)(.*)/;
 
