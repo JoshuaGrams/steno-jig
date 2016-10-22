@@ -1124,7 +1124,7 @@ TypeJig.Translations.Plover = {
 	"place": "PLAYS",
 	"places": "PLAYSZ",
 	"placed": ["PLAYS/-D","PLAYFD"],
-	"placing": ["PLAYS/-G","PLAFG"],
+	"placing": ["PLAYS/-G","PLAYFG"],
 	"plan": "PLAN",
 	"planning": ["PLAN/-G","PLANG"],
 	"plans": ["PLAN/-S","PLANS"],
