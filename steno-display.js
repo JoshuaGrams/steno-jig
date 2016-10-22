@@ -14,7 +14,7 @@ function StenoDisplay(container, translations, showEmpty) {
 		container = document.getElementById(container);
 	}
 	this.container = container;
-	this.strokes = [new StenoDisplay.Stroke(container, true)];
+	this.strokes = [new StenoDisplay.Stroke(container)];
 	this.pseudoStenoFor = translations;
 	this.lastText = false;
 	this.showEmpty = showEmpty;
@@ -29,36 +29,43 @@ StenoDisplay.prototype.update = function(text, showEmpty) {
 }
 
 StenoDisplay.prototype.set = function(pseudoSteno, showEmpty) {
-	var strokes;
-	if(pseudoSteno === '' && !showEmpty) strokes = [];
-	else strokes = pseudoSteno.split('/');
+	if(pseudoSteno !== '' || showEmpty) {
+		var i0 = 0;
 
-	// Set the keys for each stroke (making sure that we have
-	// enough strokes and that they're not hidden).
+		if(typeof pseudoSteno === 'string') pseudoSteno = [pseudoSteno];
+		for(var j=0; j<pseudoSteno.length; ++j) {
+			var separator = i0 ? ' or ' : false;
+			i0 += this.showTranslation(pseudoSteno[j], i0, separator);
+		}
+
+		// Hide any extra strokes.
+		for(i=i0; i<this.strokes.length; ++i) {
+			this.strokes[i].hide();
+		}
+	}
+}
+
+StenoDisplay.prototype.showTranslation = function(pseudoSteno, i0, separator) {
+	var strokes = pseudoSteno.split('/');
 	for(i=0; i<strokes.length; ++i) {
-		if(i >= this.strokes.length) {
+		if(i+i0 >= this.strokes.length) {
 			this.strokes.push(new StenoDisplay.Stroke(this.container));
 		}
-		this.strokes[i].set(strokes[i]);
-		this.strokes[i].show();
+		this.strokes[i+i0].set(strokes[i], separator);
+		this.strokes[i+i0].show();
+		separator = '/';
 	}
-
-	// Hide any extra strokes.
-	for(i=strokes.length; i<this.strokes.length; ++i) {
-		this.strokes[i].hide();
-	}
+	return strokes.length;
 }
 
 
 // ---------------------------------------------------------------------
 
-StenoDisplay.Stroke = function(container, first) {
-	if(!first) {
-		this.separator = document.createElement('span');
-		this.separator.appendChild(document.createTextNode('/'));
-		this.separator.className = 'big-slash';
-		container.appendChild(this.separator);
-	}
+StenoDisplay.Stroke = function(container) {
+	this.separator = document.createElement('span');
+	this.separator.appendChild(document.createTextNode('/'));
+	this.separator.className = 'big-slash';
+	container.appendChild(this.separator);
 	this.keys = document.createElement('table');
 	var upper = document.createElement('tr');
 	var lower = document.createElement('tr');
@@ -108,8 +115,9 @@ StenoDisplay.Stroke.prototype.clear = function() {
 	removeClassFromAllPropertiesOf(this.vowelCells, 'pressed');
 }
 
-StenoDisplay.Stroke.prototype.set = function(stroke) {
+StenoDisplay.Stroke.prototype.set = function(stroke, separator) {
 	this.clear();
+	this.separator.firstChild.nodeValue = separator || '';
 	var steno = pseudoStrokeToSteno(stroke);
 	var left = steno[0], vowel = steno[1], right = steno[2];
 	for(var i=0; i<left.length; ++i) {

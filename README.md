@@ -23,13 +23,13 @@ words with variations, so I've kept it that way, and set the code
 up so that each entry can be an array of words instead of just a
 single word. In this case, it will randomly shuffle the entries,
 and then randomly choose from the words in the current entry. But
-you could also flatten the array first:
+you could also flatten the array first with `TypeJig.flattenWordSet`.
 
-	function flattenArray(a) {
-		out = [];
-		for(var i=0; i<a.length; ++i) out.push.apply(out, a[i]);
-		return out;
-	}
+There are also a bunch of translations in `plover-translations.js` so it
+can display hints for the next word. Many words have more than one set
+of legitimate strokes, and it will show all of them unless you filter
+the given options with `TypeJig.longestTranslations` or
+`TypeJig.shortestTranslations`.
 
 -----
 

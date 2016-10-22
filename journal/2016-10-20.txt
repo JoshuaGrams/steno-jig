@@ -6,19 +6,38 @@ Day 53 - 38:30
 Heh. Yes, Virginia, you still have to pay attention. Well. Good
 enough. Let's move on to the next bunch.
 
-Ugh. Those are awful and web-polluted.  Let's import the NGSL words.
-They're in a spreadsheet, it should be easy enough to export as CSV and
-convert to JSON. And...I think I'll group them all under the "lemma",
-and randomly choose a form.
+Ugh. Those are awful and web-polluted.  Let's import the NGSL
+words.  They're in a spreadsheet, it should be easy enough to
+export as CSV and convert to JSON. And...I think I'll group them
+all under the "lemma", and randomly choose a form.
 
 -----
 
 Yeah, that was easy enough to set up.
 
-And yeah, there are a bunch of things in there that I haven't learned
-yet. Also I learned that "many" is "MAEN" and that "MAIN" is "main", but
-Plover doesn't have a dictionary stroke for "mane".
+And yeah, there are a bunch of things in there that I haven't
+learned yet. Also I learned that "many" is "MAEN" and that "MAIN"
+is "main", but Plover doesn't have a dictionary stroke for "mane".
 
 15:00 - NGSL Top 100 @ 11 WPM.
 
 15:00 - NGSL Top 100 @ 20 WPM.
+
+-----
+
+I spent a bunch of time moving all the default exercise code into
+the TypeJig. And then I got chatting with Jason on Discord so I
+posted it to GitHub for him. I think the next thing I want to
+experiment with is a "next-stroke" display. I wonder if I can
+just make a table and give the cells rounded corners?
+
+-----
+
+Oops. I ran out all my spare time today working on the steno jig
+code, and didn't get ll my practice in. So 1:45 practice for these
+three days will leave me a half-hour shy of 45 hours. Hmm. So how
+about we add an extra day. That's there days of 1:30 and one day
+of 1:15. And I can do the short day today so I can try to finish
+up the stroke display and put in a bit of work on the game.
+
+0:45 today, 39:15 total.

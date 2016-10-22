@@ -1,5 +1,3 @@
-TypeJig.WordSets = {};
-
 // Wrap everything in a function to avoid polluting the global namespace.
 (function() {
 

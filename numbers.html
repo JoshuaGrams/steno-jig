@@ -5,9 +5,13 @@
 	<title>Steno Jig - Number Sentences</title>
 	<link href="style.css" rel="stylesheet" type="text/css">
 	<script src="type-jig.js"></script>
+	<script src="steno-display.js"></script>
 	<script src="word-sets.js"></script>
+	<script src="plover-translations.js"></script>
 </head>
 <body>
+
+<div style="margin-left: 7em"><div id="strokes"></div></div>
 
 <div class="scroll-bounds"><div id="exercise" style="white-space: nowrap"></div></div>
 <div id="answer" style="margin-left: 7em" class="answer" contenteditable="true"><span class="prompt">Type here...</span></div>
@@ -15,6 +19,7 @@
 <p id="clock" class="clock"></p>
 
 <script>
+var translations = TypeJig.shortestTranslations(TypeJig.Translations.Plover);
 var exercise = new TypeJig.Exercise([], 15*60);
 exercise.nouns = [].concat(TypeJig.WordSets.Nouns);
 exercise.actions = [].concat(
@@ -73,7 +78,8 @@ exercise.nextSentence = function() {
 	return s;
 }
 
-var jig = new TypeJig(exercise, 'exercise', 'answer', 'clock');
+var hint = new StenoDisplay('strokes', translations, true);
+var jig = new TypeJig(exercise, 'exercise', 'answer', 'clock', hint);
 </script>
 
 </body>

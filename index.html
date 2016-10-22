@@ -5,8 +5,9 @@
 	<title>Steno Jig</title>
 	<link href="style.css" rel="stylesheet" type="text/css">
 	<script src="type-jig.js"></script>
-	<script src="word-sets.js"></script>
 	<script src="steno-display.js"></script>
+	<script src="word-sets.js"></script>
+	<script src="plover-translations.js"></script>
 </head>
 <body>
 
@@ -19,20 +20,14 @@
 <p id="clock" class="clock"></p>
 
 <script>
-var translations = {
-	a: 'AEU', and: 'SKP', the: '-T', in: 'N',
-	fish: 'FISH', steal: 'STEAL', last: 'LAFT',
-	sagging: 'SAG/-G', them: 'THEM'
-};
+var translations = TypeJig.shortestTranslations(TypeJig.Translations.Plover);
 var hint = new StenoDisplay('strokes', translations, true);
-var words = ['a', 'and', 'the', 'them', 'in', 'fish', 'steal', 'last', 'sagging'];
-// or:
-// var words = TypeJig.WordSets.NGSL.slice(0, 100);
+var words = TypeJig.WordSets.NGSL.slice(0, 100);
 // or:
 // var words = [].concat(
 //	TypeJig.WordSets.singleStrokeCVC,
 //	TypeJig.WordSets.multiStrokeCVC);
-var exercise = new TypeJig.Exercise(words, 60, true);
+var exercise = new TypeJig.Exercise(words, 15*60, true);
 var jig = new TypeJig(exercise, 'exercise', 'answer', 'clock', hint);
 </script>
 

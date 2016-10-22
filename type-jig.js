@@ -26,6 +26,40 @@ function TypeJig(exercise, output, input, clock, hint) {
 	window.scroll(0, scrollOffset(output));
 }
 
+// Can contain a text-to-pseudosteno dictionary for each steno theory.
+// Pseudosteno can be a single string or an array of strings, with
+// longest entries first and shortest briefs last.
+TypeJig.Translations = {};
+
+TypeJig.processTranslations = function(t, fn) {
+	var out = {};
+	var has = Object.prototype.hasOwnProperty;
+	for(var text in t) if(has.call(t, text)) {
+		out[text] = fn(t[text], text);
+	}
+	return out;
+}
+
+TypeJig.longestTranslations = function(t) {
+	return TypeJig.processTranslations(t, function(steno, text) {
+		return (steno instanceof Array) ? steno[0] : steno;
+	});
+}
+
+TypeJig.shortestTranslations = function(t) {
+	return TypeJig.processTranslations(t, function(steno, text) {
+		return (steno instanceof Array) ? steno[steno.length-1] : steno;
+	});
+}
+
+// Arrays of strings (or of arrays of strings).
+TypeJig.WordSets = {};
+TypeJig.flattenWordSet = function(a) {
+    out = [];
+    for(var i=0; i<a.length; ++i) out.push.apply(out, a[i]);
+    return out;
+}
+
 TypeJig.prototype.answerChanged = function() {
 	if(!this.start) {
 		this.clock.start();
