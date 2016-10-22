@@ -19,7 +19,6 @@
 <p id="clock" class="clock"></p>
 
 <script>
-var translations = TypeJig.shortestTranslations(TypeJig.Translations.Plover);
 var exercise = new TypeJig.Exercise([], 15*60);
 exercise.nouns = [].concat(TypeJig.WordSets.Nouns);
 exercise.actions = [].concat(
@@ -78,7 +77,9 @@ exercise.nextSentence = function() {
 	return s;
 }
 
+var translations = TypeJig.shortestTranslations(TypeJig.Translations.Plover);
 var hint = new StenoDisplay('strokes', translations, true);
+
 var jig = new TypeJig(exercise, 'exercise', 'answer', 'clock', hint);
 </script>
 
