@@ -421,7 +421,7 @@
 		["start","starts","started","starting"],
 		["talk","talks","talked","talking"],
 		["something"],
-		["put","puts","putted","putting"],
+		["put","puts","putting"],
 		["another"],
 		["become","becomes","became","becoming"],
 		["interest","interests","interested","interesting"],
