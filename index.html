@@ -29,7 +29,7 @@ var words = TypeJig.WordSets.shortAndLongA;
 var exercise = new TypeJig.Exercise(words, 10*60, true, 'shuffled');
 
 var translations = TypeJig.shortestTranslations(TypeJig.Translations.Plover);
-var hint = new StenoDisplay('strokes', translations, true);
+// var hint = new StenoDisplay('strokes', translations, true);
 
 var jig = new TypeJig(exercise, 'exercise', 'answer', 'clock') // , hint);
 </script>
