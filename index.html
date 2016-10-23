@@ -20,12 +20,13 @@
 <p id="clock" class="clock"></p>
 
 <script>
-var words = TypeJig.WordSets.NGSL.slice(0, 100);
+// var words = TypeJig.WordSets.NGSL.slice(100, 120);
 // or:
 // var words = [].concat(
 //	TypeJig.WordSets.singleStrokeCVC,
 //	TypeJig.WordSets.multiStrokeCVC);
-var exercise = new TypeJig.Exercise(words, 15*60, true);
+var words = TypeJig.WordSets.shortAndLongA;
+var exercise = new TypeJig.Exercise(words, 10*60, true, 'shuffled');
 
 var translations = TypeJig.shortestTranslations(TypeJig.Translations.Plover);
 var hint = new StenoDisplay('strokes', translations, true);

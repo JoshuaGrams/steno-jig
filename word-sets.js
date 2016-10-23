@@ -1,6 +1,22 @@
 // Wrap everything in a function to avoid polluting the global namespace.
 (function() {
 
+	TypeJig.WordSets.shortAndLongA = [
+		["Sal", "sail"], ["sag", "saying"], ["sat", "sate"], ["sass", "says"], ["sad", "said"],
+		["tar", "tear"], ["tap", "tape"], ["Tal", "tail"], ["tag", "taking"], ["tat", "Tate"], "tase", "tab", "tad",
+		["car", "care"], ["cap", "cape"], "cab", ["cal", "kale"], "cat", ["Kass", "case"], "cad",
+		["par", "pair"], ["pap", "paper"], ["pal", "pail"], ["pat", "pate"], ["pass", "pace"], ["pad", "paid"], "pays",
+		["wave", "waive"], ["war", "ware"], ["wab", "wabe"], "wail", "wag", ["watt", "wait"], ["wad", "wade"], ["was", "ways"],
+		"half", ["har", "hair"], "happen", ["Hal", "hail"], ["hag", "Hague"], ["hat", "hate"], ["has", "Hayes"], "had", "haze",
+		"rave", ["rar", "rare"], ["rap", "rape"], "raab", "rail", "rag", ["rat", "rate"], ["Ras", "race"], ["rad", "raid"], ["raz", "raise"],
+		"fave", ["far", "fair"], "fab", ["fall", "fail"], ["fat", "fate"], "face", ["fad", "fade"], "phase",
+		["mar", "mayor"], "map", "maybe", "mail", ["magazine", "making"], ["mat", "mate"], ["mass", "mace"], ["mad", "maid"], "maize",
+		"nave", ["nap", "nape"], ["nab", "neighbor"], "nail", ["nag", "neigh"], ["national", "Nate"],
+		"Dave", ["Dar", "dare"], "dap", "dab", ["Dahl", "daily"], "date", ["dad", "Dade"], "daze",
+		["behalf", "behave"], "bar", "babe", ["balance", "bail"], "bag", ["bat", "bait"], ["bass", "base"], ["bad", "bade"],
+		["var", "vary"], "vapor", ["val", "veil"], "vague", "vat", "vase"
+	];
+
 	TypeJig.WordSets.oneAndTwoKey = [
 		"be", "being", "being", "of", "ever",
 		"willing", "an", "are", "recall", "were",
