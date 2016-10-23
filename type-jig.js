@@ -368,16 +368,19 @@ function randomize(a) {
 function rotateAndShuffle(a) {
 	if(typeof(a.used) === 'undefined') a.used = 0;
 
-	a.push(a.shift());
-	a.used += 1;
+	// If we're indexing into an array, don't shuffle yet.
+	if(typeof a[0].i === 'undefined') {
+		a.push(a.shift());
+		a.used += 1;
 
-	if(typeof(a.randomEltsUsed) === 'undefined') {
-		if(a.used >= a.length) return false;
-	} else {
-		a.randomEltsUsed += 1;
-		if(a.randomEltsUsed > 2/3 * a.length) {
-			shuffleTail(a, a.randomEltsUsed);
-			a.randomEltsUsed = 0;
+		if(typeof(a.randomEltsUsed) === 'undefined') {
+			if(a.used >= a.length) return false;
+		} else {
+			a.randomEltsUsed += 1;
+			if(a.randomEltsUsed > 2/3 * a.length) {
+				shuffleTail(a, a.randomEltsUsed);
+				a.randomEltsUsed = 0;
+			}
 		}
 	}
 	return a[0];
@@ -500,10 +503,12 @@ TypeJig.Timer.prototype.showTime = function() {
 
 
 
-TypeJig.Exercise = function(words, seconds, shuffle) {
+TypeJig.Exercise = function(words, seconds, shuffle, select) {
 	this.words = words;
 	this.seconds = seconds;
 	this.shuffle = shuffle;
+	this.select = TypeJig.Exercise.select[select]
+		|| TypeJig.Exercise.select.random;
 
 	if(shuffle) randomize(this.words);
 
@@ -513,9 +518,25 @@ TypeJig.Exercise = function(words, seconds, shuffle) {
 	this.inputLength = 20;
 }
 
+function indexInto(a) {
+	if(typeof a.i === 'undefined') a.i = 0;
+	var word = a[a.i];
+	if(++a.i === a.length) delete a.i;
+	return word;
+}
+
+TypeJig.Exercise.select = {
+	random: function(a) { return a[randomIntLessThan(a.length)]; },
+	root: function(a) { return a[0]; },
+	ordered: indexInto,
+	shuffled: function(a) {
+		if(typeof a.i === 'undefined') randomize(a);
+		return indexInto(a);
+	}
+};
+
 TypeJig.Exercise.prototype.nextWord = function() {
 	var word = rotateAndShuffle(this.words);
-	if(word instanceof Array) {
-		return word[randomIntLessThan(word.length)];
-	} else return word;
+	if(word instanceof Array) return this.select(word);
+	else return word;
 }
