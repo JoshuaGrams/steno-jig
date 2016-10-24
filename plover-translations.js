@@ -399,7 +399,7 @@ TypeJig.Translations.Plover = {
 	"dap": "DAP",
 	"Dar": "DAR",
 	"dare": "DAYR",
-	"data": ["DA/TA","DAET"]
+	"data": ["DA/TA","DAET"],
 	"database": ["DA/TA/BAYS","DBAYS"],
 	"date": "DAYT",
 	"Dave": "DAYF",
