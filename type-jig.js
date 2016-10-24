@@ -527,7 +527,7 @@ function indexInto(a) {
 
 TypeJig.Exercise.select = {
 	random: function(a) { return a[randomIntLessThan(a.length)]; },
-	root: function(a) { return a[0]; },
+	first: function(a) { return a[0]; },
 	ordered: indexInto,
 	shuffled: function(a) {
 		if(typeof a.i === 'undefined') randomize(a);
