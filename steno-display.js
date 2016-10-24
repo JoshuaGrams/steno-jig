@@ -14,7 +14,7 @@ function StenoDisplay(container, translations, showEmpty) {
 		container = document.getElementById(container);
 	}
 	this.container = container;
-	this.strokes = [new StenoDisplay.Stroke(container)];
+	this.strokes = [];
 	this.pseudoStenoFor = translations;
 	this.lastText = false;
 	this.showEmpty = showEmpty;
@@ -29,6 +29,9 @@ StenoDisplay.prototype.update = function(text, showEmpty) {
 }
 
 StenoDisplay.prototype.set = function(pseudoSteno, showEmpty) {
+	for(i=0; i<this.strokes.length; ++i) {
+		this.strokes[i].hide();
+	}
 	if(pseudoSteno !== '' || showEmpty) {
 		var i0 = 0;
 
@@ -36,11 +39,6 @@ StenoDisplay.prototype.set = function(pseudoSteno, showEmpty) {
 		for(var j=0; j<pseudoSteno.length; ++j) {
 			var separator = i0 ? ' or ' : false;
 			i0 += this.showTranslation(pseudoSteno[j], i0, separator);
-		}
-
-		// Hide any extra strokes.
-		for(i=i0; i<this.strokes.length; ++i) {
-			this.strokes[i].hide();
 		}
 	}
 }
