@@ -2145,7 +2145,7 @@
 		["sharp","sharper","sharpest"],
 		["diet","diets","dieted","dieting"],
 		["motion","motions","motioned","motioning"],
-		["gray","grays","grayed","graying","grayer","grayest","grey","greys","greyed","greying","greyer"],"greyest"
+		["gray","grays","grayed","graying","grayer","grayest","grey","greys","greyed","greying","greyer","greyest"],
 		["plastic","plastics"],
 		["complicate","complicates","complicated","complicating"],
 		["discipline","disciplines","disciplined","disciplining"],
@@ -2592,12 +2592,12 @@
 		["resistance","resistances"],
 		["bath","baths"],
 		["frequency","frequencies"],
-		["criticize","criticizes","criticized","criticizing","criticise","criticises","criticised"],"criticising"
+		["criticize","criticizes","criticized","criticizing","criticise","criticises","criticised","criticising"],
 		["tap","taps","tapped","tapping"],
 		["philosophy","philosophies"],
 		["lip","lips","lipped"],
 		["attribute","attributes","attributed","attributing"],
-		["apologize","apologizes","apologized","apologizing","apologise","apologises","apologised"],"apologising"
+		["apologize","apologizes","apologized","apologizing","apologise","apologises","apologised","apologising"],
 		["approval","approvals"],
 		["grab","grabs","grabbed","grabbing"],
 		["entitle","entitles","entitled","entitling"],
@@ -2621,7 +2621,7 @@
 		["seal","seals","sealed","sealing","sealings"],
 		["tube","tubes","tubed","tubing"],
 		["tower","towers","towered","towering"],
-		["characterize","characterizes","characterized","characterizing","characterise","characterises","characterised"],"characterising"
+		["characterize","characterizes","characterized","characterizing","characterise","characterises","characterised","characterising"],
 		["specify","specifies","specified","specifying"],
 		["exact","exacts","exacted","exacting"],
 		["spin","spins","spun","spinning"],
@@ -2633,7 +2633,7 @@
 		["wrap","wraps","wrapped","wrapping","wrappings"],
 		["anticipate","anticipates","anticipated","anticipating"],
 		["dependent","dependents"],
-		["specialize","specializes","specialized","specializing","specialise","specialises","specialised"],"specialising"
+		["specialize","specializes","specialized","specializing","specialise","specialises","specialised","specialising"],
 		["angle","angles","angled","angling"],
 		["chicken","chickens","chickened"],
 		["anxiety","anxieties"],
@@ -2683,7 +2683,7 @@
 		["comprehensive"],
 		["incentive","incentives"],
 		["league","leagues"],
-		["dialog","dialogs","dialoged","dialoging","dialogue","dialogues","dialogued"],"dialoguing"
+		["dialog","dialogs","dialoged","dialoging","dialogue","dialogues","dialogued","dialoguing"],
 		["cream","creams","creamed","creaming"],
 		["rapid"],
 		["cancel","cancels","canceled","canceling","cancelled","cancelling"],
@@ -2743,7 +2743,7 @@
 		["promotion","promotions"],
 		["passion","passions"],
 		["champion","champions","championed","championing"],
-		["fulfill","fulfills","fulfilled","fulfilling","fulfil","fulfils","fulfiled"],"fulfiling"
+		["fulfill","fulfills","fulfilled","fulfilling","fulfil","fulfils","fulfiled","fulfiling"],
 		["dust","dusts","dusted","dusting"],
 		["dedicate","dedicates","dedicated","dedicating"],
 		["roughly"],
@@ -2868,7 +2868,7 @@
 		["shell","shells","shelled"],
 		["damn","damns","damned","damning"],
 		["distinct"],
-		["humor","humors","humored","humoring","humorings","humour","humours"],"humoured"
+		["humor","humors","humored","humoring","humorings","humour","humours","humoured"],
 		["limitation","limitations"],
 		["indication","indications"],
 		["stability","stabilities"],
@@ -2946,7 +2946,7 @@
 		["implementation","implementations"],
 		["bias","biases","biased","biasing"],
 		["differently"],
-		["catalog","catalogs","cataloged","cataloging","catalogue","catalogues","catalogued"],"cataloguing"
+		["catalog","catalogs","cataloged","cataloging","catalogue","catalogues","catalogued","cataloguing"],
 		["continuous"],
 		["golden"],
 		["stamp","stamps","stamped","stamping"],
@@ -3024,7 +3024,7 @@
 		["shade","shades","shaded","shading"],
 		["grain","grains","grained","graining"],
 		["situate","situates","situated","situating"],
-		["summarize","summarizes","summarized","summarizing","summarise","summarises","summarised"],"summarising"
+		["summarize","summarizes","summarized","summarizing","summarise","summarises","summarised","summarising"],
 		["leap","leaps","leaped","leaping","leapt"],
 		["snap","snaps","snapped","snapping"],
 		["probability","probabilities"],
