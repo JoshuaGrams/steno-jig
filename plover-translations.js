@@ -14216,7 +14216,7 @@ TypeJig.Translations.Plover = {
 	"weird": "WEERD",
 	"weirdly": "WEERD/LI",
 	"welcome": ["WEL/KOM","WELG","L-K"],
-	"welcomes": ["WEL/KOMS","L-KS",
+	"welcomes": ["WEL/KOMS","L-KS"],
 	"weld": "WELD",
 	"welded": "WELD/-D",
 	"welfare": "WEFL",
