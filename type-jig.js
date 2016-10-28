@@ -105,7 +105,7 @@ TypeJig.prototype.answerChanged = function() {
 	}
 
 	// Are we finished with the exercise (is the final word correct)?
-	var m = answer.length - 1;
+	var m = this.lookahead.length - 1;
 	var lastWordCorrect = (answer[m] === String(this.lookahead[m]));
 	var answerLonger = (answer.length > this.lookahead.length);
 	if(this.haveFinalWord && (lastWordCorrect || answerLonger)) {
