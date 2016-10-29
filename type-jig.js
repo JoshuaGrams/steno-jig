@@ -88,12 +88,15 @@ TypeJig.prototype.answerChanged = function() {
 		}
 
 		if(i >= answer.length || validPrefix) {
+			// un-mark unanswered or incompletely-answered words
 			if(hasClass(out, 'incorrect')) this.removeError(ex);
 			out.className = '';
 		} else if(ans === ex) {
+			// mark correct words
 			if(hasClass(out, 'incorrect')) this.removeError(ex);
 			out.className = 'correct';
 		} else {
+			// otherwise it must be incorrect
 			if(!hasClass(out, 'incorrect')) {
 				this.addError(ex, ans);
 				out.className = 'incorrect';
