@@ -62,11 +62,8 @@ TypeJig.flattenWordSet = function(a) {
 
 TypeJig.prototype.answerChanged = function() {
 	if(!this.start) {
-		this.clock.start();
+		this.clock.start(this.endExercise.bind(this));
 		this.start = Date.now();
-		if(this.ex.seconds) {
-			window.setTimeout(this.endExercise.bind(this), 1000 * this.ex.seconds);
-		}
 		this.droppedChars = 0;
 		this.nextWordIndex = 0;
 		this.running = true;
@@ -109,7 +106,7 @@ TypeJig.prototype.answerChanged = function() {
 	var lastWordCorrect = (answer[m] === String(this.lookahead[m]));
 	var answerLonger = (answer.length > this.lookahead.length);
 	if(this.haveFinalWord && (lastWordCorrect || answerLonger)) {
-		this.endExercise();
+		this.clock.stop();
 		return;
 	}
 	
@@ -186,7 +183,7 @@ TypeJig.prototype.addError = function(word, error) {
 	} else this.errors[word] = [error];
 }
 
-TypeJig.prototype.endExercise = function() {
+TypeJig.prototype.endExercise = function(seconds) {
 	if(this.running) this.running = false;
 	else return;
 	this.ans.firstChild.nodeValue = '';
@@ -194,8 +191,7 @@ TypeJig.prototype.endExercise = function() {
 	this.ans.setAttribute('contenteditable', false);
 	this.ans.className = '';
 
-	var seconds = this.clock.stop();
-	var minutes = seconds / 60;
+	var minutes = seconds / 60;  // KEEP fractional part for WPM calculation!
 	seconds = Math.floor(seconds % 60);
 	if(seconds < 10) seconds = '0' + seconds;
 	var time = Math.floor(minutes) + ':' + seconds;
@@ -465,7 +461,8 @@ TypeJig.Timer = function(elt, seconds) {
 	this.showTime();
 }
 
-TypeJig.Timer.prototype.start = function() {
+TypeJig.Timer.prototype.start = function(alarm) {
+	this.finished = alarm;
 	this.beginning = new Date().getTime();
 	if(this.setting > 0) this.end = this.beginning + 1000 * this.setting;
 	window.setTimeout(this.fn, 1000);
@@ -473,24 +470,28 @@ TypeJig.Timer.prototype.start = function() {
 
 TypeJig.Timer.prototype.stop = function() {
 	var elapsed = this.end ? this.setting - this.seconds : this.seconds;
+	if(this.finished) this.finished(elapsed);
 	delete this.beginning;
 	delete this.end;
-	return elapsed;
 }
 
 TypeJig.Timer.prototype.update = function() {
 	if(this.beginning) {
-		var ms, now = new Date().getTime();
+		var running = true;
+		var ms, msTilNext, now = new Date().getTime();
 		if(this.end) {
-			ms = this.end - now;
-			if(ms === 0) delete this.beginning;
-		} else ms = now - this.beginning;
-
-		ms = Math.max(ms, 0);
+			ms = Math.max(0, this.end - now);
+			msTilNext = ms % 1000;
+			running = (ms !== 0);
+		} else {
+			ms = Math.max(0, now - this.beginning);
+			msTilNext = 1000 - ms % 1000;
+		}
 		this.seconds = Math.round(ms/1000);
-
 		this.showTime();
-		window.setTimeout(this.fn, ms % 1000);
+
+		if(running) window.setTimeout(this.fn, msTilNext);
+		else this.stop();
 	}
 };
 
