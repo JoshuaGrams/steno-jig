@@ -86,10 +86,11 @@ TypeJig.prototype.answerChanged = function() {
 		if(i === answer.length-1 && ans.length < ex.length) {
 			validPrefix = (ans === ex.slice(0, ans.length));
 		}
-		if(validPrefix || i >= answer.length) {
+
+		if(i >= answer.length) {
 			if(hasClass(out, 'incorrect')) this.removeError(ex);
 			out.className = '';
-		} else if(ans === ex) {
+		} else if(ans === ex || validPrefix) {
 			if(hasClass(out, 'incorrect')) this.removeError(ex);
 			out.className = 'correct';
 		} else {
@@ -102,10 +103,10 @@ TypeJig.prototype.answerChanged = function() {
 	}
 
 	// Are we finished with the exercise (is the final word correct)?
-	var m = this.lookahead.length - 1;
-	var lastWordCorrect = (answer[m] === String(this.lookahead[m]));
-	var answerLonger = (answer.length > this.lookahead.length);
-	if(this.haveFinalWord && (lastWordCorrect || answerLonger)) {
+	var m = answer.length - 1;
+	var lastAnsweredCorrect = (answer[m] === String(this.lookahead[m]));
+	var allAnswered = (answer.length >= this.lookahead.length);
+	if(this.haveFinalWord && lastAnsweredCorrect && allAnswered) {
 		this.clock.stop();
 		return;
 	}
@@ -138,7 +139,7 @@ TypeJig.prototype.answerChanged = function() {
 		this.out.scrollTo(this.scrollTo);
 	}
 
-	this.nextWordIndex = answer.length - (lastWordCorrect ? 0 : 1);
+	this.nextWordIndex = answer.length - (lastAnsweredCorrect ? 0 : 1);
 	if(this.hint && this.hint.update) {
 		this.hint.update(this.lookahead[this.nextWordIndex]);
 	}
