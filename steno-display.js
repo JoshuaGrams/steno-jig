@@ -89,7 +89,7 @@ StenoDisplay.Stroke = function(container) {
 		                  K: lowerCells[0], W: lowerCells[1], R: lowerCells[2]
 	};
 	this.rightCells = {
-		F: upperCells[5], P: upperCells[6], L: upperCells[7], T: upperCells[8], D: upperCells[9],
+		'*': upperCells[4], F: upperCells[5], P: upperCells[6], L: upperCells[7], T: upperCells[8], D: upperCells[9],
 		R: lowerCells[3], B: lowerCells[4], G: lowerCells[5], S: lowerCells[6], Z: lowerCells[7]
 	};
 	this.vowelCells = {
