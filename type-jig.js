@@ -139,7 +139,7 @@ TypeJig.prototype.answerChanged = function() {
 		this.out.scrollTo(this.scrollTo);
 	}
 
-	this.nextWordIndex = answer.length - (lastAnsweredCorrect ? 0 : 1);
+	this.nextWordIndex = Math.max(0, answer.length - (lastAnsweredCorrect ? 0 : 1));
 	if(this.hint && this.hint.update) {
 		this.hint.update(this.lookahead[this.nextWordIndex]);
 	}
