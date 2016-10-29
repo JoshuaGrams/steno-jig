@@ -28,6 +28,8 @@ div { margin-top: 0.3em; margin-bottom: 0.3em; }
 }
 
 #strokes td.wide { width: 1.5em; }
+#strokes .leftVowel { transform: translate(+0.8em, 10%); }
+#strokes .rightVowel { transform: translate(-0.8em, 10%); }
 
 #strokes table tr td.pressed {
 	color: #400;

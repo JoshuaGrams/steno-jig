@@ -77,13 +77,22 @@ StenoDisplay.Stroke = function(container) {
 	var upperCells = addCells(upper, upperKeys);
 	var lowerCells = addCells(lower, lowerKeys);
 	var vowelCells = addCells(vowel, vowelKeys);
+
 	upperCells[0].rowSpan = 2;
 	upperCells[4].rowSpan = 2;
+
 	upperCells[4].className = 'alt wide';
 	upperCells[9].className = 'alt';
 	lowerCells[7].className = 'alt';
+
 	vowelCells[0].colSpan = 2;
+	vowelCells[1].className = 'leftVowel';
+	vowelCells[2].className = 'leftVowel';
+	vowelCells[4].className = 'rightVowel';
+	vowelCells[5].className = 'rightVowel';
+
 	container.appendChild(this.keys);
+
 	this.leftCells = {
 		S: upperCells[0], T: upperCells[1], P: upperCells[2], H: upperCells[3],
 		                  K: lowerCells[0], W: lowerCells[1], R: lowerCells[2]
