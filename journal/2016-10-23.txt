@@ -1,0 +1,36 @@
+Day 56 - 40:15
+==============
+
+OK. Gotta get back to work.
+
+15:00 NGSL lexemes 100-120 @ 26 WPM.
+
+I'm still correcting everything. Maybe one really slow session for
+accuracy and then I can start reporting errors for these words.
+
+Actually I'm thinking I should go back and drill more sound
+combinations. I never really did the long vowels or dipthongs or
+vowel disambiguators. What if I did a hand-made set of drills:
+"car care, far fare", etc.? Or...I could put them together in a
+word set and make an exercise type that does *all* alternatives
+instead of a random one. Hmm. Actually that could be a parameter
+to the exercise constructor: the name of a function to use. Random
+alternative, root (first) alternative, ordered alternatives,
+shuffled alternatives.
+
+-----
+
+Yeah...and then I read an article about not hesitating and keeping
+your fingers moving.
+
+15:00 NGSL lexemes 100-120 @ 30 WPM.
+
+------
+
+OK, did a short-and-long A drill. Still need to add a bunch of them to
+the translations dictionary. But that's much more fun. And definitely
+needs work.
+
+15:00 A/AY words @ 36 WPM.
+
+0:45 today, 41:00 total.
