@@ -364,9 +364,8 @@ function randomize(a) {
 // one in the queue.
 function rotateAndShuffle(a) {
 	if(typeof(a.used) === 'undefined') a.used = 0;
-
-	// If we're indexing into an array, don't shuffle yet.
-	if(typeof a[0].i === 'undefined') {
+	// don't shuffle if the current entry is multiple words
+	else if (typeof a[0].i === 'undefined') {
 		a.push(a.shift());
 		a.used += 1;
 
