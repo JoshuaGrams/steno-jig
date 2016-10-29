@@ -12,7 +12,7 @@ function TypeJig(exercise, output, input, clock, hint) {
 	this.running = false;
 	this.haveFinalWord = false;
 	this.ex = exercise;
-	this.out = new ScrollBox(output, 5, input);
+	this.out = new ScrollBox(output, input);
 	this.ans = input;
 	this.clock = new TypeJig.Timer(clock, this.ex.seconds);
 	this.hint = hint;
@@ -228,7 +228,7 @@ TypeJig.prototype.endExercise = function(seconds) {
  * the input field.
  */
 
-function ScrollBox(contentElt, secondsTo90Percent, alignToElt) {
+function ScrollBox(contentElt, alignToElt) {
 	this.content = contentElt;
 	if(alignToElt) {
 		var style = window.getComputedStyle(alignToElt, null);
@@ -236,7 +236,8 @@ function ScrollBox(contentElt, secondsTo90Percent, alignToElt) {
 	} else this.offset = 0;
 	this.margin = this.offset;
 	this.content.style.marginLeft = this.offset + 'px';
-	this.pxPerSec = 0;
+	this.pxPerSec = -1;
+	var secondsTo90Percent = 30;
 	this.k = secondsTo90Percent ? Math.pow(0.1, 1 / secondsTo90Percent) : 0;
 	this.removeCount = 0;
 	this.removeWidth = 0;
@@ -251,8 +252,9 @@ function ScrollBox(contentElt, secondsTo90Percent, alignToElt) {
 ScrollBox.prototype.endTransition = function() {
 	this.content.style.transition = '';
 	if(this.removeCount > 0) {
-		do this.content.removeChild(this.content.firstChild);
-		while(--this.removeCount > 0);
+		do {
+			this.content.removeChild(this.content.firstChild);
+		} while(--this.removeCount > 0);
 		this.margin += this.removeWidth;
 		this.removeWidth = 0;
 		this.content.style.marginLeft = this.margin + 'px';
@@ -279,7 +281,7 @@ ScrollBox.prototype.scrollTo = function(elt, instantly) {
 	// IIR low-pass filter.
 	var px = this.margin - oldMargin;
 	var now = Date.now();
-	var sec = this.time ? (now - this.time) / 1000 : 0;
+	var sec = 1.5; // this.time ? (now - this.time) / 1000 : 0;
 	this.time = now;
 	if(sec > 0.001) {
 		var pxPerSec = Math.min(px / sec, 0);
@@ -288,12 +290,12 @@ ScrollBox.prototype.scrollTo = function(elt, instantly) {
 	}
 
 	// Start the transition.
-	if(Math.abs(px) > 0.001) {
+	if(Math.abs(px) > 0.1 && (instantly || Math.abs(this.pxPerSec) > 0.1)) {
 		var style = this.content.style;
-		if(instantly || Math.abs(this.pxPerSec) < 0.001) style.transition = '';
+		if(instantly) style.transition = '';
 		else {
-			var transitionSec = px / this.pxPerSec;
-			style.transition = 'margin-left ' + transitionSec + 's linear';
+			var transitionSec = Math.abs(px / this.pxPerSec);
+			style.transition = 'margin-left ' + transitionSec + 's ease-out';
 		}
 		style.marginLeft = this.margin + 'px';
 	}
