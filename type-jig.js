@@ -87,10 +87,10 @@ TypeJig.prototype.answerChanged = function() {
 			validPrefix = (ans === ex.slice(0, ans.length));
 		}
 
-		if(i >= answer.length) {
+		if(i >= answer.length || validPrefix) {
 			if(hasClass(out, 'incorrect')) this.removeError(ex);
 			out.className = '';
-		} else if(ans === ex || validPrefix) {
+		} else if(ans === ex) {
 			if(hasClass(out, 'incorrect')) this.removeError(ex);
 			out.className = 'correct';
 		} else {
