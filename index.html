@@ -20,18 +20,37 @@
 <p id="clock" class="clock"></p>
 
 <script>
-// var words = TypeJig.WordSets.NGSL.slice(100, 120);
+var words = TypeJig.WordSets.NGSL_all_forms.slice(0, 100);
 // or:
 // var words = [].concat(
-//	TypeJig.WordSets.singleStrokeCVC,
-//	TypeJig.WordSets.multiStrokeCVC);
-var words = TypeJig.WordSets.shortAndLongA;
-var exercise = new TypeJig.Exercise(words, 10*60, true, 'shuffled');
+// 	TypeJig.WordSets.singleStrokeCVC,
+// 	TypeJig.WordSets.CommonBriefs_1_20,
+// 	TypeJig.WordSets.CommonBriefs_21_40
+// 	);
+
+
+// new Exercise(words, time limit (seconds), shuffled?)
+//
+// If the time limit is 0 or omitted, the exercise will run until
+// all words have been used up.
+// 
+// If the `shuffled` flag is `true` it will randomize the order
+// and keep playing until the time runs out. If it is `false` or
+// omitted, it will run the words once in order and then stop.
+//
+// So if you just pass a word list, it will treat it as a static
+// text and the timer will count up until you are done.
+//
+// If you pass a word list, a time limit, and `true`, it will
+// present the words randomly until the time runs out.
+
+var exercise = new TypeJig.Exercise(words, 0);
+
 
 var translations = TypeJig.shortestTranslations(TypeJig.Translations.Plover);
-// var hint = new StenoDisplay('strokes', translations, true);
+var hint = new StenoDisplay('strokes', translations, true);
 
-var jig = new TypeJig(exercise, 'exercise', 'answer', 'clock') // , hint);
+var jig = new TypeJig(exercise, 'exercise', 'answer', 'clock', hint);
 </script>
 
 </body>
