@@ -237,8 +237,9 @@ function ScrollBox(contentElt, alignToElt) {
 	this.margin = this.offset;
 	this.content.style.marginLeft = this.offset + 'px';
 	this.pxPerSec = -1;
-	var secondsTo90Percent = 30;
-	this.k = secondsTo90Percent ? Math.pow(0.1, 1 / secondsTo90Percent) : 0;
+	var secondsTo90Percent = 2;
+	this.lagSeconds = 1.5;
+	this.k = Math.pow(0.1, this.lagSeconds / secondsTo90Percent);
 	this.removeCount = 0;
 	this.removeWidth = 0;
 
@@ -266,7 +267,7 @@ ScrollBox.prototype.scrollTo = function(elt, instantly) {
 	var oldMargin = parseFloat(curStyle.getPropertyValue('margin-left'));
 	this.removeCount = 0;
 	this.removeWidth = 0;
-	this.margin = this.offset;
+	this.margin = this.offset - 40;
 	if(elt) {
 		while((elt = elt.previousSibling)) {
 			if(this.margin < 0) {
@@ -280,14 +281,8 @@ ScrollBox.prototype.scrollTo = function(elt, instantly) {
 	// Compute the desired transition rate and smooth it with an
 	// IIR low-pass filter.
 	var px = this.margin - oldMargin;
-	var now = Date.now();
-	var sec = 1.5; // this.time ? (now - this.time) / 1000 : 0;
-	this.time = now;
-	if(sec > 0.001) {
-		var pxPerSec = Math.min(px / sec, 0);
-		var k = Math.pow(this.k, sec);
-		this.pxPerSec = k*this.pxPerSec + (1-k)*pxPerSec;
-	}
+	var pxPerSec = Math.min(px / this.lagSeconds, 0);
+	this.pxPerSec = this.k*this.pxPerSec + (1-this.k)*pxPerSec;
 
 	// Start the transition.
 	if(Math.abs(px) > 0.1 && (instantly || Math.abs(this.pxPerSec) > 0.1)) {
