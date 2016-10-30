@@ -27,7 +27,7 @@ div { margin-top: 0.3em; margin-bottom: 0.3em; }
 	text-align: center;
 }
 
-#strokes td.wide { width: 1.5em; }
+#strokes td.wide { width: 2em; }
 #strokes .leftVowel { transform: translate(+0.8em, 10%); }
 #strokes .rightVowel { transform: translate(-0.8em, 10%); }
 
