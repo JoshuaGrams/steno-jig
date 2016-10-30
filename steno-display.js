@@ -18,13 +18,17 @@ function StenoDisplay(container, translations, showEmpty) {
 	this.pseudoStenoFor = translations;
 	this.lastText = false;
 	this.showEmpty = showEmpty;
+	this.errorLog = document.getElementById('error-log');
 }
 
 StenoDisplay.prototype.update = function(text, showEmpty) {
 	if(text !== this.lastText) {
-		lastText = text;
+		this.lastText = text;
 		if(typeof showEmpty === 'undefined') showEmpty = this.showEmpty;
 		this.set(this.pseudoStenoFor[text] || '', showEmpty);
+		if(this.errorLog && !this.pseudoStenoFor[text]) {
+			this.errorLog.innerHTML += 'No strokes for: ' + text + '<br>';
+		}
 	}
 }
 
