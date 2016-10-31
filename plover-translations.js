@@ -1,4 +1,8 @@
 TypeJig.Translations.Plover = {
+	".": "TP-PL",
+	",": "KW-BG",
+	"!": "TP-BG",
+	"?": "KW-PL",
 	"'cause": "KAW*S",
 	"'em": "E*M",
 	"'til": "TIL",

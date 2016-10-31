@@ -27,6 +27,7 @@ div { margin-top: 0.3em; margin-bottom: 0.3em; }
 	text-align: center;
 }
 
+#strokes .numberBar { height: 0.5em; margin: 0; padding: 0; }
 #strokes td.wide { width: 2em; }
 #strokes .leftVowel { transform: translate(+0.8em, 10%); }
 #strokes .rightVowel { transform: translate(-0.8em, 10%); }
