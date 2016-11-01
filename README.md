@@ -3,7 +3,9 @@ Steno Jig
 
 This is a little browser-based widget for typing drills. I'm using
 it to teach myself stenotype. It's still early in development, but
-you may find it useful and/or fun.
+you may find it useful and/or fun. I have it set up with only a
+`gh-pages` branch which means it will show up on the web at:
+https://joshuagrams.github.io/steno-jig/
 
 `index.html` has the basic structure you need to use it: for basic
 exercises you can pass an array of strings (each of which *must*
@@ -19,11 +21,12 @@ recycled until the time runs out.
 I have a bunch of existing word sets in `word-sets.js`. One of
 these sets is the New General Service List: 2800 root words in
 common use, aimed at ESL students. It's organized as a set of root
-words with variations, so I've kept it that way, and set the code
-up so that each entry can be an array of words instead of just a
-single word. In this case, it will randomly shuffle the entries,
-and then randomly choose from the words in the current entry. But
-you could also flatten the array first with `TypeJig.flattenWordSet`.
+words with variations, so I've kept the base set that way, and set
+the code up so that each entry can be an array of words instead of
+just a single word. In this case, it will randomly shuffle the
+entries, and then randomly choose from the words in the current
+entry. But it may be better to use the `NGSL_all_forms` list which
+has been flattened and sorted by frequency.
 
 There are also a bunch of translations in `plover-translations.js` so it
 can display hints for the next word. Many words have more than one set
