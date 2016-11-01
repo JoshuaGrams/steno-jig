@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Steno Jig</title>
+	<link href="style.css" rel="stylesheet" type="text/css">
+	<script src="type-jig.js"></script>
+	<script src="steno-display.js"></script>
+	<script src="word-sets.js"></script>
+	<script src="plover-translations.js"></script>
+</head>
+<body>
+
+<div id="form" style="display: none">
+	<h1>Choose a drill...</h1>
+	<div class="form-section">
+		<div class="caption">Phonetic words that use exactly one starting consonant key, exactly one vowel key and exactly one ending consonant</div>
+		<button onclick="simple_drill('singleStrokeCVC', true ,  180)"> 3 minutes (hints)</button>
+		<button onclick="simple_drill('singleStrokeCVC', false,  180)"> 3 minutes</button>
+		<button onclick="simple_drill('singleStrokeCVC', true ,  300)"> 5 minutes (hints)</button>
+		<button onclick="simple_drill('singleStrokeCVC', false,  300)"> 5 minutes</button>
+		<button onclick="simple_drill('singleStrokeCVC', true ,  600)">10 minutes (hints)</button>
+		<button onclick="simple_drill('singleStrokeCVC', false,  600)">10 minutes</button>
+		<button onclick="simple_drill('singleStrokeCVC', true ,  900)">15 minutes (hints)</button>
+		<button onclick="simple_drill('singleStrokeCVC', false,  900)">15 minutes</button>
+		<button onclick="simple_drill('singleStrokeCVC', true , 1200)">20 minutes (hints)</button>
+		<button onclick="simple_drill('singleStrokeCVC', false, 1200)">20 minutes</button>
+	</div>
+	<div class="form-section">
+		<div class="caption">Numbers 1-99 in simple sentences</div>
+		<button onclick="nums_drill(true ,  180)"> 3 minutes (hints)</button>
+		<button onclick="nums_drill(false,  180)"> 3 minutes</button>
+		<button onclick="nums_drill(true ,  300)"> 5 minutes (hints)</button>
+		<button onclick="nums_drill(false,  300)"> 5 minutes</button>
+		<button onclick="nums_drill(true ,  600)">10 minutes (hints)</button>
+		<button onclick="nums_drill(false,  600)">10 minutes</button>
+		<button onclick="nums_drill(true ,  900)">15 minutes (hints)</button>
+		<button onclick="nums_drill(false,  900)">15 minutes</button>
+		<button onclick="nums_drill(true , 1200)">20 minutes (hints)</button>
+		<button onclick="nums_drill(false, 1200)">20 minutes</button>
+	</div>
+	<div class="form-section">
+		<div class="caption">Most used words (once, in random order)</div>
+		<button onclick="simple_drill('NGSL_all_forms', true,  0,    0, 100)"> 1st 100 (hints)</button>
+		<button onclick="simple_drill('NGSL_all_forms', false, 0,    0, 100)"> 1st 100</button>
+		<button onclick="simple_drill('NGSL_all_forms', true,  0,  100, 100)"> 2nd 100 (hints)</button>
+		<button onclick="simple_drill('NGSL_all_forms', false, 0,  100, 100)"> 2nd 100</button>
+		<button onclick="simple_drill('NGSL_all_forms', true,  0,  200, 100)"> 3rd 100 (hints)</button>
+		<button onclick="simple_drill('NGSL_all_forms', false, 0,  200, 100)"> 3rd 100</button>
+		<button onclick="simple_drill('NGSL_all_forms', true,  0,  300, 100)"> 4th 100 (hints)</button>
+		<button onclick="simple_drill('NGSL_all_forms', false, 0,  300, 100)"> 4th 100</button>
+		<button onclick="simple_drill('NGSL_all_forms', true,  0,  400, 100)"> 5th 100 (hints)</button>
+		<button onclick="simple_drill('NGSL_all_forms', false, 0,  400, 100)"> 5th 100</button>
+		<button onclick="simple_drill('NGSL_all_forms', true,  0,  500, 100)"> 6th 100 (hints)</button>
+		<button onclick="simple_drill('NGSL_all_forms', false, 0,  500, 100)"> 6th 100</button>
+		<button onclick="simple_drill('NGSL_all_forms', true,  0,  600, 100)"> 7th 100 (hints)</button>
+		<button onclick="simple_drill('NGSL_all_forms', false, 0,  600, 100)"> 7th 100</button>
+		<button onclick="simple_drill('NGSL_all_forms', true,  0,  700, 100)"> 8th 100 (hints)</button>
+		<button onclick="simple_drill('NGSL_all_forms', false, 0,  700, 100)"> 8th 100</button>
+		<button onclick="simple_drill('NGSL_all_forms', true,  0,  800, 100)"> 9th 100 (hints)</button>
+		<button onclick="simple_drill('NGSL_all_forms', false, 0,  800, 100)"> 9th 100</button>
+		<button onclick="simple_drill('NGSL_all_forms', true,  0,  900, 100)">10th 100 (hints)</button>
+		<button onclick="simple_drill('NGSL_all_forms', false, 0,  900, 100)">10th 100</button>
+		<button onclick="simple_drill('NGSL_all_forms', true,  0, 1000, 100)">11th 100 (hints)</button>
+		<button onclick="simple_drill('NGSL_all_forms', false, 0, 1000, 100)">11th 100</button>
+		<button onclick="simple_drill('NGSL_all_forms', true,  0, 1100, 100)">12th 100 (hints)</button>
+		<button onclick="simple_drill('NGSL_all_forms', false, 0, 1100, 100)">12th 100</button>
+		<button onclick="simple_drill('NGSL_all_forms', false, 0,   0, 300)">1st <strong>300</strong></button>
+		<button onclick="simple_drill('NGSL_all_forms', false, 0, 300, 300)">2nd <strong>300</strong></button>
+		<button onclick="simple_drill('NGSL_all_forms', false, 0, 600, 300)">3rd <strong>300</strong></button>
+		<button onclick="simple_drill('NGSL_all_forms', false, 0, 900, 300)">4th <strong>300</strong></button>
+	</div>
+</div>
+
+<div id="lesson" style="display: none">
+	<div style="margin-left: 7em"><div id="strokes"></div></div>
+
+	<div class="scroll-bounds"><div id="exercise" style="white-space: nowrap"></div></div>
+
+	<div id="answer" style="margin-left: 7em" class="answer" contenteditable="true"><span class="prompt">Type here...</span></div>
+
+	<p id="clock" class="clock"></p>
+</div>
+
+<script>
+function display_only(show) {
+	var i, tabs
+	tabs = ['form', 'lesson']
+	for (i in tabs) {
+		document.getElementById(tabs[i]).style.display = tabs[i] === show ? 'block' : 'none'
+	}
+}
+function simple_drill(set, show_hints, time_limit, first, count) {
+	var hints, words, translations, exercise, jig
+
+	display_only('lesson');
+
+	if (show_hints) {
+		translations = TypeJig.shortestTranslations(TypeJig.Translations.Plover)
+		hints = new StenoDisplay('strokes', translations, true)
+	} else {
+		hints = null
+	}
+
+	words = TypeJig.WordSets[set]
+	if (first == null) {
+		first = 0
+	}
+	if (count == null) {
+		count = words.length
+	}
+	if (first != 0 || count != words.length) {
+		words = words.slice(first, first + count)
+	}
+
+	if (time_limit) {
+		exercise = new TypeJig.Exercise(words, time_limit, true)
+	} else {
+		shuffleTail(words, words.length)
+		exercise = new TypeJig.Exercise(words, 0, false)
+	}
+	jig = new TypeJig(exercise, 'exercise', 'answer', 'clock', hints)
+}
+function nums_drill(show_hints, time_limit) {
+	var hint, exercise
+
+	display_only('lesson');
+
+	var exercise = new TypeJig.Exercise([], time_limit);
+
+	exercise.nouns = [].concat(TypeJig.WordSets.Nouns);
+	exercise.actions = [].concat(
+			TypeJig.WordSets.TransitiveVerbs.map(function(v) { return [v, 'v']; }),
+			TypeJig.WordSets.Adjectives.map(function(a) { return [a, 'a']; }));
+	exercise.sentence = [];
+	randomize(exercise.nouns);
+	randomize(exercise.actions);
+
+	exercise.nextWord = function() {
+		if(this.sentence.length == 0) this.sentence = this.nextSentence();
+		return this.sentence.shift();
+	}
+
+	exercise.nextClause = function(num, noun, action, tense) {
+		if(action[1] === 'v') {
+			var verb = action[0][tense].split(' ');
+			var num2 = 1 + randomIntLessThan(99);
+			var noun2 = rotateAndShuffle(this.nouns);
+			if(num2 > 1) noun2 = pluralize(noun2);
+			return [].concat(num+'', noun, verb, num2+'', noun2);
+		} else {
+			verb = ["are", "were"];
+			var adjective = action[0].split(' ');
+			return [].concat(num+'', noun, verb[tense], adjective);
+		}
+	}
+
+	exercise.nextSentence = function() {
+		var type = ['.', '!', '?', ','][randomIntLessThan(4)];
+		var num = 2 + randomIntLessThan(98);
+		var noun = pluralize(rotateAndShuffle(this.nouns));
+		var action = rotateAndShuffle(this.actions);
+		var tense;
+		if(type === '?') tense = 0;
+		else tense = randomIntLessThan(2);
+		var s = this.nextClause(num, noun, action, tense);
+		s[s.length-1] += type;
+		if(type === '?') {
+			if(action[1] === 'v') {
+				s.unshift(['Do', 'Did'][randomIntLessThan(2)]);
+			} else if(action[1] === 'a') {
+				var verb = ['Are', 'Were'][randomIntLessThan(2)];
+				s.splice(2, 1);
+				s.unshift(verb);
+			}
+		} else if(type === ',') {
+			var conj = ['but', 'while', 'so', 'and', 'or'];
+			s.push(conj[randomIntLessThan(conj.length)]);
+			var num = 2 + randomIntLessThan(98);
+			var noun = pluralize(rotateAndShuffle(this.nouns));
+			var action = rotateAndShuffle(this.actions);
+			s = s.concat(this.nextClause(num, noun, action, tense));
+			s[s.length-1] += '.';
+		}
+		return s;
+	}
+
+	var translations = TypeJig.shortestTranslations(TypeJig.Translations.Plover);
+	if (show_hints) {
+		hint = new StenoDisplay('strokes', translations, true);
+	}
+
+	var jig = new TypeJig(exercise, 'exercise', 'answer', 'clock', hint);
+}
+document.getElementById('form').style.display = 'block'
+</script>
+
+</body>
+</html>
