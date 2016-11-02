@@ -81,20 +81,21 @@ StenoDisplay.prototype.numberStrokes = function(text) {
 	for(var i=0; i<text.length; i+=2) {
 		if(strokes !== '') strokes += '/';
 		stroke = text.slice(i, i+2).split('');
-		if(stroke.length === 1) strokes += stroke[1];
-		else {
+		if(stroke.length === 1) {
+			strokes += '#' + (stroke[0] > 5 ? '-' : '') + keys[stroke[0]];
+		} else {
 			if(stroke[0] === stroke[1]) stroke[1] = 'D';
 			else if(cmpStenoNumKeys(stroke[0], stroke[1]) > 0) stroke.push('I');
 			stroke.sort(cmpStenoNumKeys);
-			var right = false;
+			var right;
+			right = false;
 			stroke = stroke.map(function(x) {
 				var out = keys[x] || x;
-				if('AOEU'.indexOf(out) !== -1) right = true;
-				if(+x > 5 && !right) { out = '-' + out; right = true; }
+				if('AOEUI'.indexOf(out) !== -1) right = true;
+				if((out === 'D' || +x > 5) && !right) { out = '-' + out; right = true; }
 				return out;
 			});
 			strokes += '#' + stroke.join('');
-			console.log(strokes);
 		}
 	}
 	return strokes;
