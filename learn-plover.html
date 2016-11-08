@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Learn Plover Lessons</title>
+	<link href="style.css" rel="stylesheet" type="text/css">
+	<script src="type-jig.js"></script>
+	<script src="steno-display.js"></script>
+	<script src="learn-plover.js"></script>
+	<script src="plover-translations.js"></script>
+</head>
+<body>
+
+<div id="form">
+	<h1>Learn Plover Exercises</h1>
+	<div class="form-section"><form id="selectDrill" onsubmit="return startDrill(event)">
+		<ul style="list-style-type: none">
+			<li><select name="drill"></select></li>
+			<li><input id="hints" type="checkbox" checked> Show hints?</li>
+			<li><input id="randomly" name="type" type="radio" value="randomly"> Randomly for <input name="timeLimit" type="text" size="2", value="10" oninput="selectRandomly()"> minutes.</li>
+			<li><input id="ordered" name="type" type="radio" value="once" checked> Once in order.</li>
+			<li><input id="shuffled" name="type" type="radio" value="shuffled"> Once in random order.</li>
+			<li><input type="submit" value="Go"></li>
+		</ul>
+	</div>
+</div>
+
+<div id="lesson" style="display: none">
+	<div style="margin-left: 7em"><div id="strokes"></div></div>
+
+	<div class="scroll-bounds"><div id="exercise" style="white-space: nowrap"></div></div>
+
+	<div id="answer" style="margin-left: 7em" class="answer" contenteditable="true"><span class="prompt">Type here...</span></div>
+
+	<p id="clock" class="clock"></p>
+
+	<p id="error-log"></p>
+</div>
+
+<script>
+var ready = true;
+var form = document.getElementById('selectDrill');
+var drill = form.elements.drill;
+var order = TypeJig.WordSets.LearnPloverOrder;
+for(var i=0; i<order.length; ++i) {
+	var option = document.createElement('option');
+	option.appendChild(document.createTextNode(order[i]));
+	drill.appendChild(option);
+}
+
+window.onload = function() { drill.focus(); }
+
+function selectRandomly() {
+	form.elements.type[0].checked = true;
+}
+
+var hints = null, jig;
+
+function startDrill(e) {
+	e.preventDefault();
+
+	if(ready) {
+		var fields = form.elements;
+
+		var words = TypeJig.WordSets.LearnPlover[fields.drill.value];
+		if(!words) return;
+
+		if(fields.hints.checked) {
+			if(!hints) {
+				translations = TypeJig.shortestTranslations(TypeJig.Translations.Plover);
+				hints = new StenoDisplay('strokes', translations, true);
+			}
+		} else if(hints) {
+			hints.update('', false);
+		}
+
+		var type = document.querySelector('input[name=type]:checked').value;
+		var timeLimit = 0, randomly = false;
+		if(type === 'randomly') {
+			timeLimit = 60 * fields.timeLimit.value;
+			randomly = true;
+		} else if(type === 'shuffled') shuffleTail(words, words.length);
+
+		display_only('lesson');
+		var exercise = new TypeJig.Exercise(words, timeLimit, randomly);
+		jig = new TypeJig(exercise, 'exercise', 'answer', 'clock', hints);
+	}
+
+	return false;
+}
+
+function display_only(show) {
+	var i, tabs
+	tabs = ['form', 'lesson']
+	for (i in tabs) {
+		document.getElementById(tabs[i]).style.display = tabs[i] === show ? 'block' : 'none'
+	}
+}
+</script>
+</body>
+</html>

@@ -12,6 +12,8 @@ div { margin-top: 0.3em; margin-bottom: 0.3em; }
 
 .clock { font-size: 300%; text-align: center; }
 
+.center { text-align: center; }
+
 
 /* Configure these to tune the stroke display to your liking. */
 
