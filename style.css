@@ -1,6 +1,6 @@
 .scroll-bounds { overflow: hidden; }
 
-.answer { background: #ccc; }
+.answer { background: #ccc; display: block; height: 1.2em; }
 .prompt { color: #666; }
 
 .correct { background: #cfc; }
