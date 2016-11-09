@@ -176,7 +176,7 @@
 		'touch', 'etch', 'ratchet', 'hutch',
 		'hatch', 'watch', 'patch', 'catch', 'crutch',
 		'such', 'sketch', 'stretch', 'retch',
-		'shell', 'shuffled', 'shall', ,
+		'shell', 'shuffled', 'shall',
 		'ash', 'rush', 'rash', 'hush', 'hash',
 		'wash', 'push', 'posh', 'crush', 'crash',
 		'trash', 'squash', 'stash',
@@ -213,7 +213,7 @@
 	Plover["Common Compound Clusters"] = [
 		'hemp', 'trump', 'rump', 'romp', 'ramp',
 		'pump', 'camp', 'cramp', 'tamp', 'pomp',
-		'curve', 'carve', 'serve', 'swerve', 'starve', ,
+		'curve', 'carve', 'serve', 'swerve', 'starve',
 		'squelch',
 		'hulk', 'calc', 'sulk', 'talc',
 		'rank', 'honk', 'wonk', 'prank', 'crank', 'tank',
