@@ -60,6 +60,7 @@ window.onload = function() {
 
 		var h = document.getElementById('lesson-name');
 		h.appendChild(document.createTextNode(fields.drill));
+		document.title = fields.drill + ' - ' + document.title;
 
 		var l = document.getElementById('back');
 		l.href = document.location.href.split('?')[0];
