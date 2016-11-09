@@ -75,7 +75,7 @@ window.onload = function() {
 
 		var timeLimit = 0, randomly = false;
 		if(fields.type === 'randomly') {
-			timeLimit = 60 * fields.timeLimit.value;
+			timeLimit = 60 * fields.timeLimit;
 			randomly = true;
 		} else if(fields.type === 'shuffled') shuffleTail(words, words.length);
 
