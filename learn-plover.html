@@ -13,10 +13,10 @@
 
 <div id="form">
 	<h1>Learn Plover Exercises</h1>
-	<div class="form-section"><form id="selectDrill" onsubmit="return startDrill(event)">
+	<div class="form-section"><form id="selectDrill">
 		<ul style="list-style-type: none">
 			<li><select name="drill"></select></li>
-			<li><input id="hints" type="checkbox" checked> Show hints?</li>
+			<li><input name="hints" type="checkbox" value="yes" checked> Show hints?</li>
 			<li><input id="randomly" name="type" type="radio" value="randomly"> Randomly for <input name="timeLimit" type="text" size="2", value="10" oninput="selectRandomly()"> minutes.</li>
 			<li><input id="ordered" name="type" type="radio" value="once" checked> Once in order.</li>
 			<li><input id="shuffled" name="type" type="radio" value="shuffled"> Once in random order.</li>
@@ -26,6 +26,7 @@
 </div>
 
 <div id="lesson" style="display: none">
+	<h3 id="lesson-name" class="center"></h3>
 	<div style="margin-left: 7em"><div id="strokes"></div></div>
 
 	<div class="scroll-bounds"><div id="exercise" style="white-space: nowrap"></div></div>
@@ -34,67 +35,82 @@
 
 	<p id="clock" class="clock"></p>
 
+	<p class="center"><a id="back">Back to Lesson Selection</a></p>
+
 	<p id="error-log"></p>
 </div>
 
 <script>
-var ready = true;
-var form = document.getElementById('selectDrill');
-var drill = form.elements.drill;
-var order = TypeJig.WordSets.LearnPloverOrder;
-for(var i=0; i<order.length; ++i) {
-	var option = document.createElement('option');
-	option.appendChild(document.createTextNode(order[i]));
-	drill.appendChild(option);
-}
+window.onload = function() {
+	if(document.location.search === '') {
+		displayOnly('form');
+		var form = document.getElementById('selectDrill');
+		var drill = form.elements.drill;
+		var order = TypeJig.WordSets.LearnPloverOrder;
+		for(var i=0; i<order.length; ++i) {
+			var option = document.createElement('option');
+			option.appendChild(document.createTextNode(order[i]));
+			drill.appendChild(option);
+		}
+		drill.focus();
+	} else {
+		displayOnly('lesson');
+		var fields = parseQueryString();
+		console.log(fields);
 
-window.onload = function() { drill.focus(); }
+		var h = document.getElementById('lesson-name');
+		h.appendChild(document.createTextNode(fields.drill));
+
+		var l = document.getElementById('back');
+		l.href = document.location.href.split('?')[0];
+
+		var words = TypeJig.WordSets.LearnPlover[fields.drill];
+		if(!words) return;
+
+		if(fields.hints) {
+			var translations = TypeJig.shortestTranslations(TypeJig.Translations.Plover);
+			var hints = new StenoDisplay('strokes', translations, true);
+		}
+
+		var timeLimit = 0, randomly = false;
+		if(fields.type === 'randomly') {
+			timeLimit = 60 * fields.timeLimit.value;
+			randomly = true;
+		} else if(fields.type === 'shuffled') shuffleTail(words, words.length);
+
+		var exercise = new TypeJig.Exercise(words, timeLimit, randomly);
+		var jig = new TypeJig(exercise, 'exercise', 'answer', 'clock', hints);
+	}
+}
 
 function selectRandomly() {
 	form.elements.type[0].checked = true;
 }
 
-var hints = null, jig;
-
-function startDrill(e) {
-	e.preventDefault();
-
-	if(ready) {
-		var fields = form.elements;
-
-		var words = TypeJig.WordSets.LearnPlover[fields.drill.value];
-		if(!words) return;
-
-		if(fields.hints.checked) {
-			if(!hints) {
-				translations = TypeJig.shortestTranslations(TypeJig.Translations.Plover);
-				hints = new StenoDisplay('strokes', translations, true);
-			}
-		} else if(hints) {
-			hints.update('', false);
-		}
-
-		var type = document.querySelector('input[name=type]:checked').value;
-		var timeLimit = 0, randomly = false;
-		if(type === 'randomly') {
-			timeLimit = 60 * fields.timeLimit.value;
-			randomly = true;
-		} else if(type === 'shuffled') shuffleTail(words, words.length);
-
-		display_only('lesson');
-		var exercise = new TypeJig.Exercise(words, timeLimit, randomly);
-		jig = new TypeJig(exercise, 'exercise', 'answer', 'clock', hints);
-	}
-
-	return false;
-}
-
-function display_only(show) {
+function displayOnly(show) {
 	var i, tabs
 	tabs = ['form', 'lesson']
 	for (i in tabs) {
 		document.getElementById(tabs[i]).style.display = tabs[i] === show ? 'block' : 'none'
 	}
+}
+
+function parseQueryString() {
+	var vars = {};
+	var query = document.location.search.substring(1);
+	var pairs = query.replace(/\+/g,'%20').split('&');
+	for(var i=0; i<pairs.length; ++i) {
+		var name, value='';
+		var n = pairs[i].indexOf('=');
+		if(n === -1) name = decodeURIComponent(pairs[i]);
+		else {
+			name = decodeURIComponent(pairs[i].substring(0, n));
+			value = decodeURIComponent(pairs[i].substring(n+1));
+		}
+		if(vars.hasOwnProperty(name)) vars[name] = [vars[name], value];
+		else vars[name] = value;
+	}
+	return vars;
 }
 </script>
 </body>
