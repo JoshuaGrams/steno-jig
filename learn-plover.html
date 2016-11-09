@@ -58,9 +58,18 @@ window.onload = function() {
 		var fields = parseQueryString();
 		console.log(fields);
 
+		var name = fields.drill;
+		if(fields.type === 'randomly') {
+			var minutes = Math.floor(fields.timeLimit);
+			var seconds = Math.round((fields.timeLimit % 1) * 60);
+			if(seconds < 10) seconds = '0' + seconds;
+			name = minutes + ':' + seconds + ' of Random ' + name;
+		} else if(fields.type === 'shuffled') {
+			name = 'Randomized ' + name;
+		}
 		var h = document.getElementById('lesson-name');
-		h.appendChild(document.createTextNode(fields.drill));
-		document.title = fields.drill + ' - ' + document.title;
+		h.appendChild(document.createTextNode(name));
+		document.title = name + ' - ' + document.title;
 
 		var l = document.getElementById('back');
 		l.href = document.location.href.split('?')[0];
