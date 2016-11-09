@@ -1,0 +1,24 @@
+Day 62 (73) - 45:30
+===================
+
+I think I'll start adding the total days in parentheses, counting
+the missed days since I started again, but not the intentional 9.5
+week break.
+
+10:00 NGSL top 150 @ 23 WPM.
+
+Hrm. A bunch of those don't have translation hints.
+
+-----
+
+OK. Productive day today. Jason and I improved the appearance of
+the stroke display by shifting the vowels down and inward. I
+smoothed out the scrolling quite a bit. And I wrote a script to
+find all the bad translations in `plover-translations.js`. So on
+that note I think I'll do one more round of drill and go to bed.
+
+10:00 - NGSL top 500 root words @ 22 WPM.
+
+Or rather, a random selection of about 220 of them.
+
+0:20 today, 45:50 total.
