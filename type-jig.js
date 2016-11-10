@@ -358,10 +358,10 @@ function randomize(a) {
 }
 
 // Rotate the first word out to the end of the array.
-// If the array has been `randomize`d (has a `used` property defined),
-// shuffle the used words when more than 2/3 of them have been used,
-// which ensures that the last word can't be shuffled to be the next
-// one in the queue.
+// If the array has been `randomize`d (has a `randomEltsUsed` property
+// defined), shuffle the used words when more than 2/3 of them have been used,
+// which ensures that the last word can't be shuffled to be the next one in the
+// queue.
 function rotateAndShuffle(a) {
 	if(typeof(a.used) === 'undefined') a.used = 0;
 	// don't shuffle if the current entry is multiple words
