@@ -112,8 +112,8 @@ window.onload = function() {
 		var exercise, timeLimit = 60 * fields.timeLimit;
 		if(TypeJig.WordSets[fields.drill]) {
 			var words = TypeJig.WordSets[fields.drill];
-			var first = fields.first || 0;
-			var count = fields.count || words.length;
+			var first = +fields.first || 0;
+			var count = +fields.count || words.length;
 			if(first !== 0 || count !== words.length) {
 				words = words.slice(first, first+count);
 			}
