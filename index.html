@@ -4,54 +4,20 @@
 	<meta charset="utf-8">
 	<title>Steno Jig</title>
 	<link href="style.css" rel="stylesheet" type="text/css">
-	<script src="type-jig.js"></script>
-	<script src="steno-display.js"></script>
-	<script src="word-sets.js"></script>
-	<script src="plover-translations.js"></script>
 </head>
 <body>
 
-<div style="margin-left: 7em"><div id="strokes"></div></div>
+<div style="margin-left:auto; margin-right:auto; width:66ex;">
 
-<div class="scroll-bounds"><div id="exercise" style="white-space: nowrap"></div></div>
+<h1 class="center">Steno Jig</h1>
 
-<div id="answer" style="margin-left: 7em" class="answer" contenteditable="true"><span class="prompt">Type here...</span></div>
+<p>This is a widget for stenography lessons: you can do <a
+href="form.html">our lessons</a> or the <a
+href="learn-plover.html">Learn Plover ones</a>, or fork the <a
+href="https://github.com/JoshuaGrams/steno-jig">GitHub repo</a>
+and customize it to make your own.</p>
 
-<p id="clock" class="clock"></p>
-
-<script>
-var words = TypeJig.WordSets.NGSL_all_forms.slice(0, 100);
-// or:
-// var words = [].concat(
-// 	TypeJig.WordSets.singleStrokeCVC,
-// 	TypeJig.WordSets.CommonBriefs_1_20,
-// 	TypeJig.WordSets.CommonBriefs_21_40
-// 	);
-
-
-// new Exercise(words, time limit (seconds), shuffled?)
-//
-// If the time limit is 0 or omitted, the exercise will run until
-// all words have been used up.
-// 
-// If the `shuffled` flag is `true` it will randomize the order
-// and keep playing until the time runs out. If it is `false` or
-// omitted, it will run the words once in order and then stop.
-//
-// So if you just pass a word list, it will treat it as a static
-// text and the timer will count up until you are done.
-//
-// If you pass a word list, a time limit, and `true`, it will
-// present the words randomly until the time runs out.
-
-var exercise = new TypeJig.Exercise(words, 0);
-
-
-var translations = TypeJig.shortestTranslations(TypeJig.Translations.Plover);
-var hint = new StenoDisplay('strokes', translations, true);
-
-var jig = new TypeJig(exercise, 'exercise', 'answer', 'clock', hint);
-</script>
+</div>
 
 </body>
 </html>
