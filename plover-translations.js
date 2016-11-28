@@ -1,4 +1,5 @@
 TypeJig.Translations.Plover = {
+	"100": "S-Z",
 	".": "TP-PL",
 	",": "KW-BG",
 	"!": "TP-BG",
@@ -3471,7 +3472,7 @@ TypeJig.Translations.Plover = {
 	"conference": ["KON/FRENS","K-FRNS"],
 	"conferring": "K-FRG",
 	"confess": "KAUN/FES",
-	"confidence": "KAWFNS",
+	"confidence": ["KAWFNS","K-F"],
 	"confident": "KAWFNT",
 	"confidential": "KAWFN/DENL",
 	"configuration": "KAUN/FIG/RAYSHN",

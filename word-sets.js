@@ -1,6 +1,38 @@
 // Wrap everything in a function to avoid polluting the global namespace.
 (function() {
 
+	TypeJig.WordSets.twoKeySentences = [
+		"It", "would", "be", "perfect", "if", "we", "could", "have", "it", "at", "about", "100.",
+		"Could", "you", "add", "about", "100", "to", "every", "account", "as", "interest?",
+		"If", "you", "have", "confidence", "you", "are", "as", "odd", "as", "he", "is.",
+		"I", "will", "ask", "you", "if", "you", "can", "recall", "with", "easy", "confidence.",
+		"You", "will", "be", "in", "awe", "of", "the", "account", "we", "have", "with", "the", "company.",
+		"I", "can", "charge", "interest", "if", "it", "is", "something", "that", "he", "did.",
+		"Is", "it", "odd", "that", "I", "have", "confidence", "in", "the", "egg", "company?",
+		"I", "consider", "it", "odd", "that", "you", "could", "be", "in", "awe", "of", "something", "so", "easy.",
+		"If", "the", "interest", "in", "the", "egg", "will", "ebb", "will", "you", "consider", "the", "request?",
+		"Every", "account", "would", "be", "of", "interest", "if", "you", "would", "request", "that", "he", "examine", "it.",
+		"If", "you", "have", "the", "handgun", "it", "ought", "to", "be", "odd.",
+		"He", "can", "charge", "the", "company", "if", "I", "add", "it", "up.",
+		"You", "are", "in", "charge", "of", "the", "account", "if", "you", "have", "confidence.",
+		"Could", "it", "be", "that", "the", "reason", "it'll", "be", "off", "is", "that", "somebody", "had", "something", "to", "ask?",
+		"Recall", "that", "the", "reason", "is", "that", "it's", "about", "100", "kilograms.",
+		"I", "consider", "it", "to", "be", "off", "if", "he", "is", "on", "the", "account.",
+		"We", "ought", "to", "examine", "the", "account", "or", "the", "odd", "charge", "from", "the", "company.",
+		"I", "owe", "about", "100", "or", "so", "interest", "in", "the", "company", "account", "so", "this", "is", "perfect.",
+		"The", "reason", "of", "the", "prognosis", "is", "perfect", "if", "you", "ask", "us.",
+		"Would", "you", "consider", "the", "request", "so", "that", "somebody", "can", "have", "the", "handgun?",
+		"I", "have", "something", "that", "he", "ought", "to", "consider", "about", "the", "company.",
+		"I", "consider", "tuberculosis", "to", "be", "the", "perfect", "prognosis", "as", "will", "you.",
+		"The", "interest", "will", "add", "up", "if", "you", "request", "the", "recall", "from", "us.",
+		"After", "this", "who", "will", "have", "the", "confidence", "to", "examine", "the", "reason?",
+		"He", "would", "be", "with", "you", "if", "you", "would", "have", "confidence.",
+		"You'd", "be", "in", "awe", "of", "this", "if", "you", "could", "recall", "the", "prognosis.",
+		"I", "recall", "that", "you've", "had", "interest", "in", "the", "odd", "account.",
+		"He", "can", "be", "in", "charge", "of", "the", "company", "account", "or", "something.",
+		"Did", "you", "have", "it", "easy", "or", "had", "to", "owe", "with", "interest?"
+	];
+
 	TypeJig.WordSets.shortAndLongA = [
 		["Sal", "sail"], ["sag", "saying"], ["sat", "sate"], ["sass", "says"], ["sad", "said"],
 		["tar", "tear"], ["tap", "tape"], ["Tal", "tail"], ["tag", "taking"], ["tat", "Tate"], "tase", "tab", "tad",
