@@ -5807,7 +5807,7 @@ TypeJig.Translations.Plover = {
 	"footstep": "FOAT/STEP",
 	"footsteps": "FOAT/STEP/-S",
 	"fop": "FOP",
-	"for": "FR",
+	"for": "F-R",
 	"foramen": "FAWR/ME*N",
 	"foray": "FAWR/AY",
 	"forbid": "FAWSHD",
