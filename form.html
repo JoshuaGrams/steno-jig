@@ -72,6 +72,13 @@
 		[<a href="form.html?drill=NGSL_all_forms&type=shuffled&first=600&count=300">3rd <strong>300</strong></a>]
 		[<a href="form.html?drill=NGSL_all_forms&type=shuffled&first=900&count=300">4th <strong>300</strong></a>]
 	</div>
+
+	<hr>
+
+	<ul class="form-section">
+		<li><a href="two-key.html">Sentences which (mostly) only use two keys at once</a></li>
+		<li><a href="form.html?drill=shortAndLongA&type=shuffled&select=shuffled&hints=true">Short and Long A words</a></li>
+	</ul>
 </div>
 
 <div id="lesson" style="display: none">
@@ -122,7 +129,7 @@ window.onload = function() {
 				timeLimit = 60 * fields.timeLimit;
 				randomly = true;
 			} else if(fields.type === 'shuffled') shuffleTail(words, words.length);
-			exercise = new TypeJig.Exercise(words, timeLimit, randomly);
+			exercise = new TypeJig.Exercise(words, timeLimit, randomly, fields.select);
 		} else if(fields.drill === 'Number Sentences') {
 			exercise = new TypeJig.Exercise([], timeLimit);
 			exercise.nouns = TypeJig.WordSets.Nouns.slice();
