@@ -101,7 +101,18 @@ window.onload = function() {
 	if(document.location.search !== '') {
 		var fields = parseQueryString();
 
-		var name = fields.drill;
+		var name = fields.drill, words = TypeJig.WordSets[fields.drill];
+		if(Array.isArray(fields.drill)) {
+			name = ''; words = [];
+			for(var i=0; i<fields.drill.length; ++i) {
+				var w = TypeJig.WordSets[fields.drill[i]];
+				if(!w) continue;
+				if(name.length) name += ', ';
+				if(i === fields.drill.length - 1) name += 'and ';
+				name += fields.drill[i];
+				words = words.concat(w);
+			}
+		}
 		if(fields.type === 'randomly') {
 			var minutes = Math.floor(fields.timeLimit);
 			var seconds = Math.round((fields.timeLimit % 1) * 60);
@@ -117,8 +128,7 @@ window.onload = function() {
 		}
 
 		var exercise, timeLimit = 60 * fields.timeLimit;
-		if(TypeJig.WordSets[fields.drill]) {
-			var words = TypeJig.WordSets[fields.drill];
+		if(words) {
 			var first = +fields.first || 0;
 			var count = +fields.count || words.length;
 			if(first !== 0 || count !== words.length) {
