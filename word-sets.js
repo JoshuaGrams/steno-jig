@@ -314,6 +314,58 @@
 		"Shaw", "Shep", "shade"
 	];
 
+	TypeJig.WordSets["-LD words"] = [
+		"auld", "bald", "bold", "build", "called",
+		"cold", "failed", "field", "filed", "filled",
+		"fold", "gild", "gold", "guild", "held",
+		"hold", "island", "killed", "meld", "mild",
+		"mold", "old", "pulled", "salad", "sealed",
+		"sold", "solid", "told", "valid", "weld",
+		"wield", "wild", "wold", "yield",
+	];
+
+	TypeJig.WordSets["+LD words"] = [
+		"child", "cuckold", "detailed", "emerald", "herald",
+		"scald", "scold", "shield", "skilled", "squalid",
+		"world"
+	];
+
+	TypeJig.WordSets["-LT words"] = [
+		"adult", "belt", "bolt", "built", "colt",
+		"consult", "cult", "dealt", "dolt", "exult",
+		"fault", "felt", "guilt", "halt", "hilt",
+		"jilt", "jolt", "kilt", "knelt", "lilt",
+		"malt", "melt", "molt", "palate", "pelt",
+		"pilot", "quilt", "result", "salt", "silt",
+		"svelte", "tilt", "vault", "volt", "wilt",
+	];
+
+	TypeJig.WordSets["+LT words"] = [
+		"ability", "basalt", "default", "dwelt", "filter",
+		"filth", "health", "insult", "metal", "molten",
+		"portal", "relate", "scarlet", "smelt", "spelt",
+		"spilt", "tablet", "title", "total", "tumult",
+	];
+
+	TypeJig.WordSets["-RT words"] = [
+		"abort", "art", "cart", "court", "curt",
+		"dart", "dirt", "either", "neither", "fart",
+		"fort", "further", "girt", "heart", "hurt",
+		"later", "mart", "mortgage", "nature", "part",
+		"pert", "port", "quart", "sort", "tart",
+		"tort", "wart", "wort", "yurt",
+	];
+
+	TypeJig.WordSets["+RT words"] = [
+		"berth", "birth", "blurt", "both", "chart",
+		"comfort", "convert", "escort", "evert", "expert",
+		"flirt", "fourth", "letter", "master", "matter",
+		"merit", "meter", "north", "pirate", "shirt",
+		"short", "skirt", "snort", "spirit", "sport",
+		"spurt", "squirt", "stalwart", "start", "worst",
+		"worth",
+	];
+
 	TypeJig.WordSets.Nouns = [
 		"cab", "cad", "cap", "car", "cat",
 		"cod", "cog", "cop", "cot", "cub",
