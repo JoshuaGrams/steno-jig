@@ -283,6 +283,37 @@
 		"move", "ask", "unless", "easy", "otherwise"
 	];
 
+	TypeJig.WordSets["ST words"] = [
+		"city", "store", "still", "stock", "staff",
+		"star", "step", "stuff", "stay", "stop",
+		"setup", "stick", "stack", "stem", "stud",
+		"stuck", "stat", "stomach", "stir", "stove",
+		"stiff", "stool", "stag", "stub", "stew",
+		"stab", "intestine", "stun", "stow", "stead",
+		"sty", "sten", "stip", "stet"
+	];
+
+	TypeJig.WordSets["CH words"] = [
+		"check", "chat", "challenge", "chip", "char",
+		"chi", "chuck", "chem", "chess", "chick",
+		"chill", "cha", "chin", "chap", "chop",
+		"chow", "chew", "chit", "chai", "chum",
+		"chore", "chock", "choy", "chaff", "chub",
+		"chug", "Chad", "Chaz", "Chet", "Cho",
+		"Chu"
+	];
+
+	TypeJig.WordSets["SH words"] = [
+		"should", "she", "show", "shop", "shall",
+		"sure", "ship", "sheet", "shot", "shell",
+		"shoe", "shock", "shit", "shore", "shut",
+		"chef", "somehow", "shed", "shy", "chic",
+		"shack", "shave", "shin", "sham", "shove",
+		"shun", "shag", "shad", "shim", "shoo",
+		"shod", "shill", "shat", "shuck", "Shah",
+		"Shaw", "Shep", "shade"
+	];
+
 	TypeJig.WordSets.Nouns = [
 		"cab", "cad", "cap", "car", "cat",
 		"cod", "cog", "cop", "cot", "cub",
