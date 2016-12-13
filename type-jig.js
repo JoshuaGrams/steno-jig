@@ -267,7 +267,7 @@ ScrollBox.prototype.scrollTo = function(elt, instantly) {
 	var oldMargin = parseFloat(curStyle.getPropertyValue('margin-left'));
 	this.removeCount = 0;
 	this.removeWidth = 0;
-	this.margin = this.offset - 40;
+	this.margin = this.offset;
 	if(elt) {
 		while((elt = elt.previousSibling)) {
 			if(this.margin < 0) {
