@@ -6490,7 +6490,7 @@ TypeJig.Translations.Plover = {
 	"handful": "HAND/-FL",
 	"handgun": "H-G",
 	"handing": "HAND/-G",
-	"handle": ["HA*NLD", "HAND/*L"],
+	"handle": ["HAND/*L", "HANL"],
 	"handler": "HAND/LER",
 	"handling": "HAND/LING",
 	"handmaiden": "HAND/MAYD/E*N",
