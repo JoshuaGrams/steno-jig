@@ -994,7 +994,7 @@ TypeJig.Translations.Plover = {
 	"Tyler": "TIEL/E*R",
 	"Tzanck": "ZA*NG",
 	"UK": "U*K",
-	"URL": "URL",
+	"URL": "*URL",
 	"US": "SUCHLT",
 	"UV": "U*F",
 	"UX": "UKS",
