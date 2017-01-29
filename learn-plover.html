@@ -1,134 +1,134 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8">
-    <title>Learn Plover Lessons</title>
-    <link href="style.css" rel="stylesheet" type="text/css">
-    <script src="type-jig.js"></script>
-    <script src="steno-display.js"></script>
-    <script src="learn-plover.js"></script>
-    <script src="plover-translations.js"></script>
-    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Lato|Open+Sans">
+	<meta charset="utf-8">
+	<title>Learn Plover Lessons</title>
+	<link href="style.css" rel="stylesheet" type="text/css">
+	<script src="type-jig.js"></script>
+	<script src="steno-display.js"></script>
+	<script src="learn-plover.js"></script>
+	<script src="plover-translations.js"></script>
+	<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Lato|Open+Sans">
 </head>
 <body>
 
 <div class="wrapper">
-    <div id="form">
-        <h1>Learn Plover Exercises</h1>
-        <div class="form-section"><form id="selectDrill">
-            <ul style="list-style-type: none">
-                <li><select name="drill"></select></li>
-                <li><label><input name="hints" type="checkbox" value="yes" checked> Show hints?</label></li>
-                <li><label><input id="randomly" name="type" type="radio" value="randomly"> Randomly</label> for <input name="timeLimit" type="text" size="2", value="10" oninput="selectRandomly()"> minutes.</li>
-                <li><label><input id="ordered" name="type" type="radio" value="once" checked> Once in order.</label></li>
-                <li><label><input id="shuffled" name="type" type="radio" value="shuffled"> Once in random order.</label></li>
-                <li><input type="submit" value="Go"></li>
-            </ul>
-        </div>
-    </div>
+	<div id="form">
+		<h1>Learn Plover Exercises</h1>
+		<div class="form-section"><form id="selectDrill">
+			<ul style="list-style-type: none">
+				<li><select name="drill"></select></li>
+				<li><label><input name="hints" type="checkbox" value="yes" checked> Show hints?</label></li>
+				<li><label><input id="randomly" name="type" type="radio" value="randomly"> Randomly</label> for <input name="timeLimit" type="text" size="2", value="10" oninput="selectRandomly()"> minutes.</li>
+				<li><label><input id="ordered" name="type" type="radio" value="once" checked> Once in order.</label></li>
+				<li><label><input id="shuffled" name="type" type="radio" value="shuffled"> Once in random order.</label></li>
+				<li><input type="submit" value="Go"></li>
+			</ul>
+		</div>
+	</div>
 </div>
 
 <div id="lesson" style="display: none">
-    <h3 id="lesson-name" class="center"></h3>
-    <div style="margin-left: 7em"><div id="strokes"></div></div>
+	<h3 id="lesson-name" class="center"></h3>
+	<div style="margin-left: 7em"><div id="strokes"></div></div>
 
-    <div class="scroll-bounds"><div id="exercise" style="white-space: nowrap"></div></div>
+	<div class="scroll-bounds"><div id="exercise" style="white-space: nowrap"></div></div>
 
-    <div id="answer" style="margin-left: 7em" class="answer" contenteditable="true"><span class="prompt">Type here...</span></div>
+	<div id="answer" style="margin-left: 7em" class="answer" contenteditable="true"><span class="prompt">Type here...</span></div>
 
-    <p id="clock" class="clock"></p>
+	<p id="clock" class="clock"></p>
 
-    <p class="center">
-        <a id="back">&larr; Back to Menu</a>
-        <a id="again">&#8634; Restart</a>
-    </p>
+	<p class="center">
+		<a id="back">&larr; Back to Menu</a>
+		<a id="again">&#8634; Restart</a>
+	</p>
 
-    <p id="error-log"></p>
+	<p id="error-log"></p>
 </div>
 
 <script>
 window.onload = function() {
-    if(document.location.search === '') {
-        displayOnly('form');
-        var form = document.getElementById('selectDrill');
-        var drill = form.elements.drill;
-        var order = TypeJig.WordSets.LearnPloverOrder;
-        for(var i=0; i<order.length; ++i) {
-            var option = document.createElement('option');
-            option.appendChild(document.createTextNode(order[i]));
-            drill.appendChild(option);
-        }
-        drill.focus();
-    } else {
-        displayOnly('lesson');
-        var fields = parseQueryString();
+	if(document.location.search === '') {
+		displayOnly('form');
+		var form = document.getElementById('selectDrill');
+		var drill = form.elements.drill;
+		var order = TypeJig.WordSets.LearnPloverOrder;
+		for(var i=0; i<order.length; ++i) {
+			var option = document.createElement('option');
+			option.appendChild(document.createTextNode(order[i]));
+			drill.appendChild(option);
+		}
+		drill.focus();
+	} else {
+		displayOnly('lesson');
+		var fields = parseQueryString();
 
-        var name = fields.drill;
-        if(fields.type === 'randomly') {
-            var minutes = Math.floor(fields.timeLimit);
-            var seconds = Math.round((fields.timeLimit % 1) * 60);
-            if(seconds < 10) seconds = '0' + seconds;
-            name = minutes + ':' + seconds + ' of Random ' + name;
-        } else if(fields.type === 'shuffled') {
-            name = 'Randomized ' + name;
-        }
-        var h = document.getElementById('lesson-name');
-        h.appendChild(document.createTextNode(name));
-        document.title = name + ' - ' + document.title;
+		var name = fields.drill;
+		if(fields.type === 'randomly') {
+			var minutes = Math.floor(fields.timeLimit);
+			var seconds = Math.round((fields.timeLimit % 1) * 60);
+			if(seconds < 10) seconds = '0' + seconds;
+			name = minutes + ':' + seconds + ' of Random ' + name;
+		} else if(fields.type === 'shuffled') {
+			name = 'Randomized ' + name;
+		}
+		var h = document.getElementById('lesson-name');
+		h.appendChild(document.createTextNode(name));
+		document.title = name + ' - ' + document.title;
 
-        var back = document.getElementById('back');
-        back.href = document.location.href.split('?')[0];
-        var again = document.getElementById('again');
-        again.href = document.location.href;
+		var back = document.getElementById('back');
+		back.href = document.location.href.split('?')[0];
+		var again = document.getElementById('again');
+		again.href = document.location.href;
 
-        var words = TypeJig.WordSets.LearnPlover[fields.drill];
-        if(!words) return;
+		var words = TypeJig.WordSets.LearnPlover[fields.drill];
+		if(!words) return;
 
-        if(fields.hints) {
-            var translations = TypeJig.shortestTranslations(TypeJig.Translations.Plover);
-            var hints = new StenoDisplay('strokes', translations, true);
-        }
+		if(fields.hints) {
+			var translations = TypeJig.shortestTranslations(TypeJig.Translations.Plover);
+			var hints = new StenoDisplay('strokes', translations, true);
+		}
 
-        var timeLimit = 0, randomly = false;
-        if(fields.type === 'randomly') {
-            timeLimit = 60 * fields.timeLimit;
-            randomly = true;
-        } else if(fields.type === 'shuffled') shuffleTail(words, words.length);
+		var timeLimit = 0, randomly = false;
+		if(fields.type === 'randomly') {
+			timeLimit = 60 * fields.timeLimit;
+			randomly = true;
+		} else if(fields.type === 'shuffled') shuffleTail(words, words.length);
 
-        var exercise = new TypeJig.Exercise(words, timeLimit, randomly);
-        var jig = new TypeJig(exercise, 'exercise', 'answer', 'clock', hints);
-    }
+		var exercise = new TypeJig.Exercise(words, timeLimit, randomly);
+		var jig = new TypeJig(exercise, 'exercise', 'answer', 'clock', hints);
+	}
 }
 
 function selectRandomly() {
-    var form = document.getElementById('selectDrill');
-    form.elements.type[0].checked = true;
+	var form = document.getElementById('selectDrill');
+	form.elements.type[0].checked = true;
 }
 
 function displayOnly(show) {
-    var i, tabs
-    tabs = ['form', 'lesson']
-    for (i in tabs) {
-        document.getElementById(tabs[i]).style.display = tabs[i] === show ? 'block' : 'none'
-    }
+	var i, tabs
+	tabs = ['form', 'lesson']
+	for (i in tabs) {
+		document.getElementById(tabs[i]).style.display = tabs[i] === show ? 'block' : 'none'
+	}
 }
 
 function parseQueryString() {
-    var vars = {};
-    var query = document.location.search.substring(1);
-    var pairs = query.replace(/\+/g,'%20').split('&');
-    for(var i=0; i<pairs.length; ++i) {
-        var name, value='';
-        var n = pairs[i].indexOf('=');
-        if(n === -1) name = decodeURIComponent(pairs[i]);
-        else {
-            name = decodeURIComponent(pairs[i].substring(0, n));
-            value = decodeURIComponent(pairs[i].substring(n+1));
-        }
-        if(vars.hasOwnProperty(name)) vars[name] = [vars[name], value];
-        else vars[name] = value;
-    }
-    return vars;
+	var vars = {};
+	var query = document.location.search.substring(1);
+	var pairs = query.replace(/\+/g,'%20').split('&');
+	for(var i=0; i<pairs.length; ++i) {
+		var name, value='';
+		var n = pairs[i].indexOf('=');
+		if(n === -1) name = decodeURIComponent(pairs[i]);
+		else {
+			name = decodeURIComponent(pairs[i].substring(0, n));
+			value = decodeURIComponent(pairs[i].substring(n+1));
+		}
+		if(vars.hasOwnProperty(name)) vars[name] = [vars[name], value];
+		else vars[name] = value;
+	}
+	return vars;
 }
 </script>
 </body>
