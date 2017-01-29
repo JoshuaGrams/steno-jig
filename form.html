@@ -1,259 +1,271 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="utf-8">
-	<title>Steno Jig</title>
-	<link href="style.css" rel="stylesheet" type="text/css">
-	<script src="type-jig.js"></script>
-	<script src="steno-display.js"></script>
-	<script src="word-sets.js"></script>
-	<script src="plover-translations.js"></script>
+    <meta charset="utf-8">
+    <title>Steno Jig</title>
+    <link href="style.css" rel="stylesheet" type="text/css">
+    <script src="type-jig.js"></script>
+    <script src="steno-display.js"></script>
+    <script src="word-sets.js"></script>
+    <script src="plover-translations.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Lato|Open+Sans">
 </head>
 <body>
 
-<div id="form">
-	<h1>Choose a drill...</h1>
-	<div class="form-section">
-		<div class="caption">Phonetic words that use exactly one starting consonant key, exactly one vowel key and exactly one ending consonant</div>
-		[<a href="form.html?drill=singleStrokeCVC&type=randomly&timeLimit=3&hints=true">3 minutes (hints)</a>]
-		[<a href="form.html?drill=singleStrokeCVC&type=randomly&timeLimit=3">3 minutes</a>]
-		[<a href="form.html?drill=singleStrokeCVC&type=randomly&timeLimit=5&hints=true">5 minutes (hints)</a>]
-		[<a href="form.html?drill=singleStrokeCVC&type=randomly&timeLimit=5">5 minutes</a>]
-		[<a href="form.html?drill=singleStrokeCVC&type=randomly&timeLimit=10&hints=true">10 minutes (hints)</a>]
-		[<a href="form.html?drill=singleStrokeCVC&type=randomly&timeLimit=10">10 minutes</a>]
-		[<a href="form.html?drill=singleStrokeCVC&type=randomly&timeLimit=15&hints=true">15 minutes (hints)</a>]
-		[<a href="form.html?drill=singleStrokeCVC&type=randomly&timeLimit=15">15 minutes</a>]
-		[<a href="form.html?drill=singleStrokeCVC&type=randomly&timeLimit=20&hints=true">20 minutes (hints)</a>]
-		[<a href="form.html?drill=singleStrokeCVC&type=randomly&timeLimit=20">20 minutes</a>]
-	</div>
-	<div class="form-section">
-		<div class="caption">Numbers 1-99 in simple sentences</div>
-		[<a href="form.html?drill=Number+Sentences&type=randomly&timeLimit=3&hints=true">3 minutes (hints)</a>]
-		[<a href="form.html?drill=Number+Sentences&type=randomly&timeLimit=3">3 minutes</a>]
-		[<a href="form.html?drill=Number+Sentences&type=randomly&timeLimit=5&hints=true">5 minutes (hints)</a>]
-		[<a href="form.html?drill=Number+Sentences&type=randomly&timeLimit=5">5 minutes</a>]
-		[<a href="form.html?drill=Number+Sentences&type=randomly&timeLimit=10&hints=true">10 minutes (hints)</a>]
-		[<a href="form.html?drill=Number+Sentences&type=randomly&timeLimit=10">10 minutes</a>]
-		[<a href="form.html?drill=Number+Sentences&type=randomly&timeLimit=15&hints=true">15 minutes (hints)</a>]
-		[<a href="form.html?drill=Number+Sentences&type=randomly&timeLimit=15">15 minutes</a>]
-		[<a href="form.html?drill=Number+Sentences&type=randomly&timeLimit=20&hints=true">20 minutes (hints)</a>]
-		[<a href="form.html?drill=Number+Sentences&type=randomly&timeLimit=20">20 minutes</a>]
-	</div>
-	<div class="form-section">
-		<div class="caption">Most used words (once, in random order)</div>
-		[<a href="form.html?drill=NGSL_all_forms&type=shuffled&first=0&count=100&hints=true">1st 100 (hints)</a>]
-		[<a href="form.html?drill=NGSL_all_forms&type=shuffled&first=0&count=100">1st 100</a>]
-		[<a href="form.html?drill=NGSL_all_forms&type=shuffled&first=100&count=100&hints=true">2nd 100 (hints)</a>]
-		[<a href="form.html?drill=NGSL_all_forms&type=shuffled&first=100&count=100">2nd 100</a>]
-		[<a href="form.html?drill=NGSL_all_forms&type=shuffled&first=200&count=100&hints=true">3rd 100 (hints)</a>]
-		[<a href="form.html?drill=NGSL_all_forms&type=shuffled&first=200&count=100">3rd 100</a>]
-		[<a href="form.html?drill=NGSL_all_forms&type=shuffled&first=300&count=100&hints=true">4th 100 (hints)</a>]
-		[<a href="form.html?drill=NGSL_all_forms&type=shuffled&first=300&count=100">4th 100</a>]
-		[<a href="form.html?drill=NGSL_all_forms&type=shuffled&first=400&count=100&hints=true">5th 100 (hints)</a>]
-		[<a href="form.html?drill=NGSL_all_forms&type=shuffled&first=400&count=100">5th 100</a>]
-		[<a href="form.html?drill=NGSL_all_forms&type=shuffled&first=500&count=100&hints=true">6th 100 (hints)</a>]
-		[<a href="form.html?drill=NGSL_all_forms&type=shuffled&first=500&count=100">6th 100</a>]
-		[<a href="form.html?drill=NGSL_all_forms&type=shuffled&first=600&count=100&hints=true">7th 100 (hints)</a>]
-		[<a href="form.html?drill=NGSL_all_forms&type=shuffled&first=600&count=100">7th 100</a>]
-		[<a href="form.html?drill=NGSL_all_forms&type=shuffled&first=700&count=100&hints=true">8th 100 (hints)</a>]
-		[<a href="form.html?drill=NGSL_all_forms&type=shuffled&first=700&count=100">8th 100</a>]
-		[<a href="form.html?drill=NGSL_all_forms&type=shuffled&first=800&count=100&hints=true">9th 100 (hints)</a>]
-		[<a href="form.html?drill=NGSL_all_forms&type=shuffled&first=800&count=100">9th 100</a>]
-		[<a href="form.html?drill=NGSL_all_forms&type=shuffled&first=900&count=100&hints=true">10th 100 (hints)</a>]
-		[<a href="form.html?drill=NGSL_all_forms&type=shuffled&first=900&count=100">10th 100</a>]
-		[<a href="form.html?drill=NGSL_all_forms&type=shuffled&first=1000&count=100&hints=true">11th 100 (hints)</a>]
-		[<a href="form.html?drill=NGSL_all_forms&type=shuffled&first=1000&count=100">11th 100</a>]
-		[<a href="form.html?drill=NGSL_all_forms&type=shuffled&first=1100&count=100&hints=true">12th 100 (hints)</a>]
-		[<a href="form.html?drill=NGSL_all_forms&type=shuffled&first=1100&count=100">12th 100</a>]
+<div id="form" class="wrapper">
+    <h1>Choose a drill...</h1>
+    <div class="form-section">
+        <div class="caption">Phonetic words that use exactly one starting consonant key, exactly one vowel key and exactly one ending consonant.</div>
 
+        <form class="drill-options" action="form.html">
+            <input type="hidden" name="drill" value="singleStrokeCVC">
+            <input type="hidden" name="type" value="randomly">
 
-		[<a href="form.html?drill=NGSL_all_forms&type=shuffled&first=0&count=300">1st <strong>300</strong></a>]
-		[<a href="form.html?drill=NGSL_all_forms&type=shuffled&first=300&count=300">2nd <strong>300</strong></a>]
-		[<a href="form.html?drill=NGSL_all_forms&type=shuffled&first=600&count=300">3rd <strong>300</strong></a>]
-		[<a href="form.html?drill=NGSL_all_forms&type=shuffled&first=900&count=300">4th <strong>300</strong></a>]
-	</div>
+            <b>Drill Time</b>
+            <input type="number" name="timeLimit" value="3" min="1" max="60">
+            <b>minutes.</b>
+            <br>
 
-	<div class="form-section">
-		<div class="caption">Other drills.</div>
-		<ul>
-			<li><a href="two-key.html">Sentences which (mostly) only use two keys at once</a></li>
-			<li><a href="form.html?drill=shortAndLongA&type=shuffled&select=shuffled&hints=true">Short and Long A words</a></li>
-			<li><a href="form.html?drill=ST%20words&drill=SH%20words&drill=CH%20words&type=shuffled&hints=true">"st-", "sh-", and "ch-" words</a></li>
-		</ul>
-		<ul>
-			<li><a href="form.html?drill=-LD%20words&drill=-LT%20words&drill=-RT%20words&type=shuffled&hints=true">Simple "-ld", "-lt", and "-rt" words</a></li>
-			<li><a href="form.html?drill=%2bLD%20words&drill=%2bLT%20words&drill=%2bRT%20words&type=shuffled&hints=true">Extended "-ld", "-lt", and "-rt" words</a></li>
-			<li><a href="form.html?drill=-LD%20words&drill=-LT%20words&drill=-RT%20words&drill=%2bLD%20words&drill=%2bLT%20words&drill=%2bRT%20words&type=shuffled&hints=true">All "-ld", "-lt", and "-rt" words</a></li>
-		</ul>
-	</div>
+            <select name="hints">
+                <option value="true">Hints</option>
+                <!-- Needs a null value because "false" triggers them anyway -->
+                <option value="">No hints</option>
+            </select>
+
+            <button>Start Drill &rarr;</button>
+        </form>
+    </div>
+    <div class="form-section">
+        <div class="caption">Numbers 1-99 in simple sentences</div>
+
+        <form class="drill-options" action="form.html">
+            <input type="hidden" name="drill" value="NumberSentences">
+            <input type="hidden" name="type" value="randomly">
+
+            <b>Drill Time</b>
+            <input type="number" name="timeLimit" value="3" min="1" max="60">
+            <b>minutes.</b>
+            <br>
+
+            <select name="hints">
+                <option value="true">Hints</option>
+                <!-- Needs a null value because "false" triggers them anyway -->
+                <option value="">No hints</option>
+            </select>
+
+            <button>Start Drill &rarr;</button>
+        </form>
+    </div>
+    <div class="form-section">
+        <div class="caption">Most used words (once, in random order)</div>
+
+        <form class="drill-options" action="form.html">
+            <input type="hidden" name="drill" value="NGSL_all_forms">
+            <input type="hidden" name="type" value="shuffled">
+
+            <b>Number of words:</b>
+            <input type="number" name="count" value="100" min="25" max="1000" step="25">
+            <br>
+
+            <b>Starting at rank</b>
+            <input type="number" name="first" value="0" min="0" max="1100" step="100">
+            <b>of most used words.</b>
+            <br>
+
+            <select name="hints">
+                <option value="true">Hints</option>
+                <!-- Needs a null value because "false" triggers them anyway -->
+                <option value="">No hints</option>
+            </select>
+
+            <button>Start Drill &rarr;</button>
+        </form>
+    </div>
+
+    <div class="form-section">
+        <div class="caption">Other drills.</div>
+        <ul>
+            <li><a href="two-key.html">Sentences which (mostly) only use two keys at once</a></li>
+            <li><a href="form.html?drill=shortAndLongA&type=shuffled&select=shuffled&hints=true">Short and Long A words</a></li>
+            <li><a href="form.html?drill=ST%20words&drill=SH%20words&drill=CH%20words&type=shuffled&hints=true">"st-", "sh-", and "ch-" words</a></li>
+        </ul>
+        <ul>
+            <li><a href="form.html?drill=-LD%20words&drill=-LT%20words&drill=-RT%20words&type=shuffled&hints=true">Simple "-ld", "-lt", and "-rt" words</a></li>
+            <li><a href="form.html?drill=%2bLD%20words&drill=%2bLT%20words&drill=%2bRT%20words&type=shuffled&hints=true">Extended "-ld", "-lt", and "-rt" words</a></li>
+            <li><a href="form.html?drill=-LD%20words&drill=-LT%20words&drill=-RT%20words&drill=%2bLD%20words&drill=%2bLT%20words&drill=%2bRT%20words&type=shuffled&hints=true">All "-ld", "-lt", and "-rt" words</a></li>
+        </ul>
+    </div>
 </div>
 
 <div id="lesson" style="display: none">
-	<h3 id="lesson-name" class="center"></h3>
-	<div style="margin-left: 7em"><div id="strokes"></div></div>
+    <h3 id="lesson-name" class="center"></h3>
+    <div style="margin-left: 7em"><div id="strokes"></div></div>
 
-	<div class="scroll-bounds"><div id="exercise" style="white-space: nowrap"></div></div>
+    <div class="scroll-bounds"><div id="exercise" style="white-space: nowrap"></div></div>
 
-	<div id="answer" style="margin-left: 7em" class="answer" contenteditable="true"><span class="prompt">Type here...</span></div>
+    <div id="answer" style="margin-left: 7em" class="answer" contenteditable="true"><span class="prompt">Type here...</span></div>
 
-	<p id="clock" class="clock"></p>
+    <p id="clock" class="clock"></p>
 
-	<p class="center">[<a id="again">Restart</a>] [<a id="back">Back to Lesson Selection</a>]</p>
+    <p class="center">
+        <a id="back"><button>&larr; Back to Menu</button></a>
+        <a id="again"><button>&#8634; Restart</button></a>
+    </p>
 
-	<p id="error-log"></p>
+    <p id="error-log"></p>
 </div>
 
 <script>
 window.onload = function() {
-	if(document.location.search !== '') {
-		var fields = parseQueryString();
+    if(document.location.search !== '') {
+        var fields = parseQueryString();
 
-		var name = fields.drill, words = TypeJig.WordSets[fields.drill];
-		if(Array.isArray(fields.drill)) {
-			name = ''; words = [];
-			for(var i=0; i<fields.drill.length; ++i) {
-				var w = TypeJig.WordSets[fields.drill[i]];
-				if(!w) continue;
-				if(name.length) name += ', ';
-				if(i === fields.drill.length - 1) name += 'and ';
-				name += fields.drill[i];
-				words = words.concat(w);
-			}
-		}
-		if(fields.type === 'randomly') {
-			var minutes = Math.floor(fields.timeLimit);
-			var seconds = Math.round((fields.timeLimit % 1) * 60);
-			if(seconds < 10) seconds = '0' + seconds;
-			name = minutes + ':' + seconds + ' of Random ' + name;
-		} else if(fields.type === 'shuffled') {
-			name = 'Randomized ' + name;
-		}
+        var name = fields.drill, words = TypeJig.WordSets[fields.drill];
+        if(Array.isArray(fields.drill)) {
+            name = ''; words = [];
+            for(var i=0; i<fields.drill.length; ++i) {
+                var w = TypeJig.WordSets[fields.drill[i]];
+                if(!w) continue;
+                if(name.length) name += ', ';
+                if(i === fields.drill.length - 1) name += 'and ';
+                name += fields.drill[i];
+                words = words.concat(w);
+            }
+        }
+        if(fields.type === 'randomly') {
+            var minutes = Math.floor(fields.timeLimit);
+            var seconds = Math.round((fields.timeLimit % 1) * 60);
+            if(seconds < 10) seconds = '0' + seconds;
+            name = minutes + ':' + seconds + ' of Random ' + name;
+        } else if(fields.type === 'shuffled') {
+            name = 'Randomized ' + name;
+        }
 
-		if(fields.hints) {
-			var translations = TypeJig.shortestTranslations(TypeJig.Translations.Plover);
-			var hints = new StenoDisplay('strokes', translations, true);
-		}
+        if(fields.hints) {
+            var translations = TypeJig.shortestTranslations(TypeJig.Translations.Plover);
+            var hints = new StenoDisplay('strokes', translations, true);
+        }
 
-		var exercise, timeLimit = 60 * fields.timeLimit;
-		if(words) {
-			var first = +fields.first || 0;
-			var count = +fields.count || words.length;
-			if(first !== 0 || count !== words.length) {
-				words = words.slice(first, first+count);
-			}
-			var randomly = false;
-			if(fields.type === 'randomly') {
-				timeLimit = 60 * fields.timeLimit;
-				randomly = true;
-			} else if(fields.type === 'shuffled') shuffleTail(words, words.length);
-			exercise = new TypeJig.Exercise(words, timeLimit, randomly, fields.select);
-		} else if(fields.drill === 'Number Sentences') {
-			exercise = new TypeJig.Exercise([], timeLimit);
-			exercise.nouns = TypeJig.WordSets.Nouns.slice();
-			exercise.actions = [].concat(
-				TypeJig.WordSets.TransitiveVerbs.map(function(v){return [v, 'v'];}),
-				TypeJig.WordSets.Adjectives.map(function(a){return [a, 'a'];})
-			);
-			exercise.sentence = [];
-			randomize(exercise.nouns);
-			randomize(exercise.actions);
-			exercise.nextWord = nextNumberWord;
-			exercise.nextSentence = nextNumberSentence;
-			exercise.nextClause = nextNumberClause;
-		} else return;  // unknown drill
+        var exercise, timeLimit = 60 * fields.timeLimit;
+        if(words) {
+            var first = +fields.first || 0;
+            var count = +fields.count || words.length;
+            if(first !== 0 || count !== words.length) {
+                words = words.slice(first, first+count);
+            }
+            var randomly = false;
+            if(fields.type === 'randomly') {
+                timeLimit = 60 * fields.timeLimit;
+                randomly = true;
+            } else if(fields.type === 'shuffled') shuffleTail(words, words.length);
+            exercise = new TypeJig.Exercise(words, timeLimit, randomly, fields.select);
+        } else if(fields.drill === 'NumberSentences') {
+            exercise = new TypeJig.Exercise([], timeLimit);
+            exercise.nouns = TypeJig.WordSets.Nouns.slice();
+            exercise.actions = [].concat(
+                TypeJig.WordSets.TransitiveVerbs.map(function(v){return [v, 'v'];}),
+                TypeJig.WordSets.Adjectives.map(function(a){return [a, 'a'];})
+            );
+            exercise.sentence = [];
+            randomize(exercise.nouns);
+            randomize(exercise.actions);
+            exercise.nextWord = nextNumberWord;
+            exercise.nextSentence = nextNumberSentence;
+            exercise.nextClause = nextNumberClause;
+        } else return;  // unknown drill
 
-		var h = document.getElementById('lesson-name');
-		h.appendChild(document.createTextNode(name));
-		document.title = name + ' - ' + document.title;
+        var h = document.getElementById('lesson-name');
+        h.appendChild(document.createTextNode(name));
+        document.title = name + ' - ' + document.title;
 
-		var back = document.getElementById('back');
-		back.href = document.location.href.split('?')[0];
-		var again = document.getElementById('again');
-		again.href = document.location.href;
+        var back = document.getElementById('back');
+        back.href = document.location.href.split('?')[0];
+        var again = document.getElementById('again');
+        again.href = document.location.href;
 
-		display_only('lesson');
+        display_only('lesson');
 
-		var jig = new TypeJig(exercise, 'exercise', 'answer', 'clock', hints);
-	}
+        var jig = new TypeJig(exercise, 'exercise', 'answer', 'clock', hints);
+    }
 }
 
 function display_only(show) {
-	var i, tabs
-	tabs = ['form', 'lesson']
-	for (i in tabs) {
-		document.getElementById(tabs[i]).style.display = tabs[i] === show ? 'block' : 'none'
-	}
+    var i, tabs
+    tabs = ['form', 'lesson']
+    for (i in tabs) {
+        document.getElementById(tabs[i]).style.display = tabs[i] === show ? 'block' : 'none'
+    }
 }
 
 function nextNumberWord() {
-	if(this.sentence.length === 0) {
-		this.sentence = this.nextSentence();
-	}
-	return this.sentence.shift();
+    if(this.sentence.length === 0) {
+        this.sentence = this.nextSentence();
+    }
+    return this.sentence.shift();
 }
 
 function nextNumberSentence() {
-	var type = ['.', '!', '?', ','][randomIntLessThan(4)];
-	var num = 2 + randomIntLessThan(98);
-	var noun = pluralize(rotateAndShuffle(this.nouns));
-	var action = rotateAndShuffle(this.actions);
-	var tense;
-	if(type === '?') tense = 0;
-	else tense = randomIntLessThan(2);
-	var s = this.nextClause(num, noun, action, tense);
-	s[s.length-1] += type;
-	if(type === '?') {
-		if(action[1] === 'v') {
-			s.unshift(['Do', 'Did'][randomIntLessThan(2)]);
-		} else if(action[1] === 'a') {
-			var verb = ['Are', 'Were'][randomIntLessThan(2)];
-			s.splice(2, 1);
-			s.unshift(verb);
-		}
-	} else if(type === ',') {
-		var conj = ['but', 'while', 'so', 'and', 'or'];
-		s.push(conj[randomIntLessThan(conj.length)]);
-		var num = 2 + randomIntLessThan(98);
-		var noun = pluralize(rotateAndShuffle(this.nouns));
-		var action = rotateAndShuffle(this.actions);
-		s = s.concat(this.nextClause(num, noun, action, tense));
-		s[s.length-1] += '.';
-	}
-	return s;
+    var type = ['.', '!', '?', ','][randomIntLessThan(4)];
+    var num = 2 + randomIntLessThan(98);
+    var noun = pluralize(rotateAndShuffle(this.nouns));
+    var action = rotateAndShuffle(this.actions);
+    var tense;
+    if(type === '?') tense = 0;
+    else tense = randomIntLessThan(2);
+    var s = this.nextClause(num, noun, action, tense);
+    s[s.length-1] += type;
+    if(type === '?') {
+        if(action[1] === 'v') {
+            s.unshift(['Do', 'Did'][randomIntLessThan(2)]);
+        } else if(action[1] === 'a') {
+            var verb = ['Are', 'Were'][randomIntLessThan(2)];
+            s.splice(2, 1);
+            s.unshift(verb);
+        }
+    } else if(type === ',') {
+        var conj = ['but', 'while', 'so', 'and', 'or'];
+        s.push(conj[randomIntLessThan(conj.length)]);
+        var num = 2 + randomIntLessThan(98);
+        var noun = pluralize(rotateAndShuffle(this.nouns));
+        var action = rotateAndShuffle(this.actions);
+        s = s.concat(this.nextClause(num, noun, action, tense));
+        s[s.length-1] += '.';
+    }
+    return s;
 }
 
 function nextNumberClause(num, noun, action, tense) {
-	if(action[1] === 'v') {
-		var verb = action[0][tense].split(' ');
-		var num2 = 1 + randomIntLessThan(99);
-		var noun2 = rotateAndShuffle(this.nouns);
-		if(num2 > 1) noun2 = pluralize(noun2);
-		return [].concat(num+'', noun, verb, num2+'', noun2);
-	} else {
-		verb = ["are", "were"];
-		var adjective = action[0].split(' ');
-		return [].concat(num+'', noun, verb[tense], adjective);
-	}
+    if(action[1] === 'v') {
+        var verb = action[0][tense].split(' ');
+        var num2 = 1 + randomIntLessThan(99);
+        var noun2 = rotateAndShuffle(this.nouns);
+        if(num2 > 1) noun2 = pluralize(noun2);
+        return [].concat(num+'', noun, verb, num2+'', noun2);
+    } else {
+        verb = ["are", "were"];
+        var adjective = action[0].split(' ');
+        return [].concat(num+'', noun, verb[tense], adjective);
+    }
 }
 
 function parseQueryString() {
-	var vars = {};
-	var query = document.location.search.substring(1);
-	var pairs = query.replace(/\+/g,'%20').split('&');
-	for(var i=0; i<pairs.length; ++i) {
-		var name, value='';
-		var n = pairs[i].indexOf('=');
-		if(n === -1) name = decodeURIComponent(pairs[i]);
-		else {
-			name = decodeURIComponent(pairs[i].substring(0, n));
-			value = decodeURIComponent(pairs[i].substring(n+1));
-		}
-		if(vars.hasOwnProperty(name)) {
-			if(!Array.isArray(vars[name])) vars[name] = [vars[name]];
-			vars[name].push(value);
-		} else vars[name] = value;
-	}
-	return vars;
+    var vars = {};
+    var query = document.location.search.substring(1);
+    var pairs = query.replace(/\+/g,'%20').split('&');
+    for(var i=0; i<pairs.length; ++i) {
+        var name, value='';
+        var n = pairs[i].indexOf('=');
+        if(n === -1) name = decodeURIComponent(pairs[i]);
+        else {
+            name = decodeURIComponent(pairs[i].substring(0, n));
+            value = decodeURIComponent(pairs[i].substring(n+1));
+        }
+        if(vars.hasOwnProperty(name)) {
+            if(!Array.isArray(vars[name])) vars[name] = [vars[name]];
+            vars[name].push(value);
+        } else vars[name] = value;
+    }
+    return vars;
 }
 </script>
 
