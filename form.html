@@ -8,7 +8,7 @@
 	<script src="steno-display.js"></script>
 	<script src="word-sets.js"></script>
 	<script src="plover-translations.js"></script>
-	<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Lato|Open+Sans">
+	<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto+Slab">
 </head>
 <body>
 
@@ -26,11 +26,15 @@
 			<b>minutes.</b>
 			<br>
 
-			<select name="hints">
-				<option value="true">Hints</option>
+			<div name="hints">
+				<!--
+					Need ids so the labels can target the radio buttons.
+					ID of ht1 means "Hints True 1" and hf3 means "Hints False 3" for example
+				 -->
+				<input type="radio" name="hints" value="true" id="ht1"><label for="ht1">Show hints</label>
 				<!-- Needs a null value because "false" triggers them anyway -->
-				<option value="">No hints</option>
-			</select>
+				<input type="radio" name="hints" value="" id="hf1" checked><label for="hf1">Don't show hints</label>
+			</div>
 
 			<button>Start Drill &rarr;</button>
 		</form>
@@ -47,11 +51,10 @@
 			<b>minutes.</b>
 			<br>
 
-			<select name="hints">
-				<option value="true">Hints</option>
-				<!-- Needs a null value because "false" triggers them anyway -->
-				<option value="">No hints</option>
-			</select>
+			<div name="hints">
+				<input type="radio" name="hints" value="true" id="ht2"><label for="ht2">Show hints</label>
+				<input type="radio" name="hints" value="" id="hf2" checked><label for="hf2">Don't show hints</label>
+			</div>
 
 			<button>Start Drill &rarr;</button>
 		</form>
@@ -72,11 +75,10 @@
 			<b>of most used words.</b>
 			<br>
 
-			<select name="hints">
-				<option value="true">Hints</option>
-				<!-- Needs a null value because "false" triggers them anyway -->
-				<option value="">No hints</option>
-			</select>
+			<div name="hints">
+				<input type="radio" name="hints" value="true" id="ht3"><label for="ht3">Show hints</label>
+				<input type="radio" name="hints" value="" id="hf3" checked><label for="hf3">Don't show hints</label>
+			</div>
 
 			<button>Start Drill &rarr;</button>
 		</form>
@@ -103,7 +105,7 @@
 
 	<div class="scroll-bounds"><div id="exercise" style="white-space: nowrap"></div></div>
 
-	<div id="answer" style="margin-left: 7em" class="answer" contenteditable="true"><span class="prompt">Type here...</span></div>
+	<div id="answer" class="answer" contenteditable="true"><span class="prompt">Type here...</span></div>
 
 	<p id="clock" class="clock"></p>
 

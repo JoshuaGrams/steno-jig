@@ -7,18 +7,24 @@ body, html {
 
 /* Main Layout and Visual Styling of Block Elements */
 body {
-	font-family: Open Sans, Arial, sans-serif;
+	font-family: Roboto Slab, serif;
 }
 
 .wrapper {
-	max-width: 35em;
+	max-width: 50em;
 	margin: 0 auto;
 	padding: 1em;
 }
 
+.welcome-text {
+	max-width: 44em;
+	margin: 0 auto; /* Center it on screen */
+	text-align: center;
+}
+
 .form-section {
-	padding: 1em 2em;
-	margin: 1em 0;
+	padding: 0.8em 1em;
+	margin: 0.5em 0;
 	border: 1px solid #333;
 	border-radius: 0.2em;
 	box-shadow: 0.1em 0.2em 0.4em #ECECEC;
@@ -29,19 +35,21 @@ body {
  */
 
 form.drill-options {
-	margin: 1.6em 0 0.1em 0;
+	margin: 0.8em 0 0.1em 0;
 	box-sizing: border-box;
 }
 
 form.drill-options input,
-form.drill-options select,
 form.drill-options button {
 	padding: 0.1em 0.6em;
 	margin: 0.5em 0.2em;
 }
 
-form.drill-options input[type=number] {
-	/*width: 2.5em;*/
+form.drill-options input[type=radio]:first-child + label {
+	margin-right: 1em;
+}
+form.drill-options input[type=radio] + label {
+	cursor: pointer;
 }
 
 a, a:visited {
@@ -49,12 +57,16 @@ a, a:visited {
 }
 
 .scroll-bounds {
+	font-size: 1.6em;
 	margin-top: 1em;
 	margin-bottom: 0.3em;
 	overflow: hidden;
 }
 
 .answer {
+	font-size: 1.6em;
+	/* Needs to be in rem, because font size was scaled up */
+	margin-left: 7rem;
 	background: #ccc; display: block; height: 1.2em;
 	border: 1px solid #C2C2C2;
 	padding: 0.5em;
@@ -74,14 +86,13 @@ a, a:visited {
 .clock { font-size: 300%; text-align: center; }
 
 .center { text-align: center; }
-.title { font-family: Lato, Arial, sans-serif; }
 
 
 /* Configure these to tune the stroke display to your liking. */
 
 /* Setting it to `smaller` usually means about 83% (1 / 1.2),
  * but there's no standard. */
-#strokes { font-size: 50%; opacity: 1; }
+#strokes { font-size: 80%; opacity: 1; }
 
 #strokes td {
 	background: #666;
