@@ -133,8 +133,8 @@
 		"tap", "tar", "tat", "tell", "ter",
 		"toll", "top", "tough", "tour", "tub",
 		"tug", "wab", "wad", "wag", "war",
-		"was", "was", "was", "watt", "web",
-		"wed", "weg", "well", "wet", "wop", "wore"
+		"was", "watt", "web", "wed", "weg",
+		"well", "wet", "wop", "wore"
 	]
 
 	TypeJig.WordSets.multiStrokeCVC = [
