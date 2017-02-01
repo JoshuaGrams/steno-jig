@@ -21,19 +21,13 @@
 			<input type="hidden" name="drill" value="singleStrokeCVC">
 			<input type="hidden" name="type" value="randomly">
 
-			<b>Drill Time</b>
-			<input type="number" name="timeLimit" value="3" min="1" max="60">
+			<b>Drill Time:</b>
+			<input type="number" name="timeLimit" value="3" min="1" max="60" size="3">
 			<b>minutes.</b>
 			<br>
 
 			<div name="hints">
-				<!--
-					Need ids so the labels can target the radio buttons.
-					ID of ht1 means "Hints True 1" and hf3 means "Hints False 3" for example
-				 -->
-				<input type="radio" name="hints" value="true" id="ht1"><label for="ht1">Show hints</label>
-				<!-- Needs a null value because "false" triggers them anyway -->
-				<input type="radio" name="hints" value="" id="hf1" checked><label for="hf1">Don't show hints</label>
+				<input type="checkbox" name="hints" value="true" id="cvcHints" checked><label for="cvcHints">Show hints</label>
 			</div>
 
 			<button>Start Drill &rarr;</button>
@@ -46,14 +40,13 @@
 			<input type="hidden" name="drill" value="NumberSentences">
 			<input type="hidden" name="type" value="randomly">
 
-			<b>Drill Time</b>
+			<b>Drill Time:</b>
 			<input type="number" name="timeLimit" value="3" min="1" max="60">
 			<b>minutes.</b>
 			<br>
 
 			<div name="hints">
-				<input type="radio" name="hints" value="true" id="ht2"><label for="ht2">Show hints</label>
-				<input type="radio" name="hints" value="" id="hf2" checked><label for="hf2">Don't show hints</label>
+				<input type="checkbox" name="hints" value="true" id="numberHints" checked><label for="numberHints">Show hints</label>
 			</div>
 
 			<button>Start Drill &rarr;</button>
@@ -66,18 +59,14 @@
 			<input type="hidden" name="drill" value="NGSL_all_forms">
 			<input type="hidden" name="type" value="shuffled">
 
-			<b>Number of words:</b>
+			<b>Drill</b>
 			<input type="number" name="count" value="100" min="25" max="1000" step="25">
-			<br>
-
-			<b>Starting at rank</b>
+			<b>words starting at rank</b>
 			<input type="number" name="first" value="0" min="0" max="1100" step="100">
-			<b>of most used words.</b>
 			<br>
 
 			<div name="hints">
-				<input type="radio" name="hints" value="true" id="ht3"><label for="ht3">Show hints</label>
-				<input type="radio" name="hints" value="" id="hf3" checked><label for="hf3">Don't show hints</label>
+				<input type="checkbox" name="hints" value="" id="ngslHints" checked><label for="ngslHints">Show hints</label>
 			</div>
 
 			<button>Start Drill &rarr;</button>
@@ -101,11 +90,11 @@
 
 <div id="lesson" style="display: none">
 	<h3 id="lesson-name" class="center"></h3>
-	<div style="margin-left: 7em"><div id="strokes"></div></div>
+	<div class="scroll-margin"><div id="strokes"></div></div>
 
 	<div class="scroll-bounds"><div id="exercise" style="white-space: nowrap"></div></div>
 
-	<div id="answer" class="answer" contenteditable="true"><span class="prompt">Type here...</span></div>
+	<div id="answer" class="answer scroll-margin" contenteditable="true"><span class="prompt">Type here...</span></div>
 
 	<p id="clock" class="clock"></p>
 

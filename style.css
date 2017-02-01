@@ -11,7 +11,7 @@ body {
 }
 
 .wrapper {
-	max-width: 50em;
+	max-width: 44em;
 	margin: 0 auto;
 	padding: 1em;
 }
@@ -33,6 +33,9 @@ body {
 /*
 	Form Controls
  */
+
+input[type="number"] { width: 3.5em; }
+input[type="number"][name="timeLimit"] { width: 2.5em; }
 
 form.drill-options {
 	margin: 0.8em 0 0.1em 0;
@@ -56,17 +59,17 @@ a, a:visited {
 	color: #167EE8;
 }
 
+#lesson { font-size: 1.3em; }
+
 .scroll-bounds {
-	font-size: 1.6em;
 	margin-top: 1em;
 	margin-bottom: 0.3em;
 	overflow: hidden;
 }
 
+.scroll-margin { margin-left: 7em; }
+
 .answer {
-	font-size: 1.6em;
-	/* Needs to be in rem, because font size was scaled up */
-	margin-left: 7rem;
 	background: #ccc; display: block; height: 1.2em;
 	border: 1px solid #C2C2C2;
 	padding: 0.5em;
@@ -92,7 +95,7 @@ a, a:visited {
 
 /* Setting it to `smaller` usually means about 83% (1 / 1.2),
  * but there's no standard. */
-#strokes { font-size: 80%; opacity: 1; }
+#strokes { font-size: 50%; opacity: 1; }
 
 #strokes td {
 	background: #666;
