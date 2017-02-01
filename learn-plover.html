@@ -8,20 +8,23 @@
 	<script src="steno-display.js"></script>
 	<script src="learn-plover.js"></script>
 	<script src="plover-translations.js"></script>
+	<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto+Slab">
 </head>
 <body>
 
-<div id="form">
-	<h1>Learn Plover Exercises</h1>
-	<div class="form-section"><form id="selectDrill">
-		<ul style="list-style-type: none">
-			<li><select name="drill"></select></li>
-			<li><label><input name="hints" type="checkbox" value="yes" checked> Show hints?</label></li>
-			<li><label><input id="randomly" name="type" type="radio" value="randomly"> Randomly</label> for <input name="timeLimit" type="text" size="2", value="10" oninput="selectRandomly()"> minutes.</li>
-			<li><label><input id="ordered" name="type" type="radio" value="once" checked> Once in order.</label></li>
-			<li><label><input id="shuffled" name="type" type="radio" value="shuffled"> Once in random order.</label></li>
-			<li><input type="submit" value="Go"></li>
-		</ul>
+<div class="wrapper">
+	<div id="form">
+		<h1>Learn Plover Exercises</h1>
+		<div class="form-section"><form id="selectDrill">
+			<ul style="list-style-type: none">
+				<li><select name="drill"></select></li>
+				<li><label><input name="hints" type="checkbox" value="yes" checked> Show hints?</label></li>
+				<li><label><input id="randomly" name="type" type="radio" value="randomly"> Randomly</label> for <input name="timeLimit" type="text" size="2", value="10" oninput="selectRandomly()"> minutes.</li>
+				<li><label><input id="ordered" name="type" type="radio" value="once" checked> Once in order.</label></li>
+				<li><label><input id="shuffled" name="type" type="radio" value="shuffled"> Once in random order.</label></li>
+				<li><input type="submit" value="Go"></li>
+			</ul>
+		</div>
 	</div>
 </div>
 
@@ -31,11 +34,14 @@
 
 	<div class="scroll-bounds"><div id="exercise" style="white-space: nowrap"></div></div>
 
-	<div id="answer" style="margin-left: 7em" class="answer" contenteditable="true"><span class="prompt">Type here...</span></div>
+	<div id="answer" class="answer" contenteditable="true"><span class="prompt">Type here...</span></div>
 
 	<p id="clock" class="clock"></p>
 
-	<p class="center">[<a id="again">Restart</a>] [<a id="back">Back to Lesson Selection</a>]</p>
+	<p class="center">
+		<a id="back">&larr; Back to Menu</a>
+		<a id="again">&#8634; Restart</a>
+	</p>
 
 	<p id="error-log"></p>
 </div>

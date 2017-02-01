@@ -8,69 +8,80 @@
 	<script src="steno-display.js"></script>
 	<script src="word-sets.js"></script>
 	<script src="plover-translations.js"></script>
+	<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto+Slab">
 </head>
 <body>
 
-<div id="form">
+<div id="form" class="wrapper">
 	<h1>Choose a drill...</h1>
 	<div class="form-section">
-		<div class="caption">Phonetic words that use exactly one starting consonant key, exactly one vowel key and exactly one ending consonant</div>
-		[<a href="form.html?drill=singleStrokeCVC&type=randomly&timeLimit=3&hints=true">3 minutes (hints)</a>]
-		[<a href="form.html?drill=singleStrokeCVC&type=randomly&timeLimit=3">3 minutes</a>]
-		[<a href="form.html?drill=singleStrokeCVC&type=randomly&timeLimit=5&hints=true">5 minutes (hints)</a>]
-		[<a href="form.html?drill=singleStrokeCVC&type=randomly&timeLimit=5">5 minutes</a>]
-		[<a href="form.html?drill=singleStrokeCVC&type=randomly&timeLimit=10&hints=true">10 minutes (hints)</a>]
-		[<a href="form.html?drill=singleStrokeCVC&type=randomly&timeLimit=10">10 minutes</a>]
-		[<a href="form.html?drill=singleStrokeCVC&type=randomly&timeLimit=15&hints=true">15 minutes (hints)</a>]
-		[<a href="form.html?drill=singleStrokeCVC&type=randomly&timeLimit=15">15 minutes</a>]
-		[<a href="form.html?drill=singleStrokeCVC&type=randomly&timeLimit=20&hints=true">20 minutes (hints)</a>]
-		[<a href="form.html?drill=singleStrokeCVC&type=randomly&timeLimit=20">20 minutes</a>]
+		<div class="caption">Phonetic words that use exactly one starting consonant key, exactly one vowel key and exactly one ending consonant.</div>
+
+		<form class="drill-options" action="form.html">
+			<input type="hidden" name="drill" value="singleStrokeCVC">
+			<input type="hidden" name="type" value="randomly">
+
+			<b>Drill Time</b>
+			<input type="number" name="timeLimit" value="3" min="1" max="60">
+			<b>minutes.</b>
+			<br>
+
+			<div name="hints">
+				<!--
+					Need ids so the labels can target the radio buttons.
+					ID of ht1 means "Hints True 1" and hf3 means "Hints False 3" for example
+				 -->
+				<input type="radio" name="hints" value="true" id="ht1"><label for="ht1">Show hints</label>
+				<!-- Needs a null value because "false" triggers them anyway -->
+				<input type="radio" name="hints" value="" id="hf1" checked><label for="hf1">Don't show hints</label>
+			</div>
+
+			<button>Start Drill &rarr;</button>
+		</form>
 	</div>
 	<div class="form-section">
 		<div class="caption">Numbers 1-99 in simple sentences</div>
-		[<a href="form.html?drill=Number+Sentences&type=randomly&timeLimit=3&hints=true">3 minutes (hints)</a>]
-		[<a href="form.html?drill=Number+Sentences&type=randomly&timeLimit=3">3 minutes</a>]
-		[<a href="form.html?drill=Number+Sentences&type=randomly&timeLimit=5&hints=true">5 minutes (hints)</a>]
-		[<a href="form.html?drill=Number+Sentences&type=randomly&timeLimit=5">5 minutes</a>]
-		[<a href="form.html?drill=Number+Sentences&type=randomly&timeLimit=10&hints=true">10 minutes (hints)</a>]
-		[<a href="form.html?drill=Number+Sentences&type=randomly&timeLimit=10">10 minutes</a>]
-		[<a href="form.html?drill=Number+Sentences&type=randomly&timeLimit=15&hints=true">15 minutes (hints)</a>]
-		[<a href="form.html?drill=Number+Sentences&type=randomly&timeLimit=15">15 minutes</a>]
-		[<a href="form.html?drill=Number+Sentences&type=randomly&timeLimit=20&hints=true">20 minutes (hints)</a>]
-		[<a href="form.html?drill=Number+Sentences&type=randomly&timeLimit=20">20 minutes</a>]
+
+		<form class="drill-options" action="form.html">
+			<input type="hidden" name="drill" value="NumberSentences">
+			<input type="hidden" name="type" value="randomly">
+
+			<b>Drill Time</b>
+			<input type="number" name="timeLimit" value="3" min="1" max="60">
+			<b>minutes.</b>
+			<br>
+
+			<div name="hints">
+				<input type="radio" name="hints" value="true" id="ht2"><label for="ht2">Show hints</label>
+				<input type="radio" name="hints" value="" id="hf2" checked><label for="hf2">Don't show hints</label>
+			</div>
+
+			<button>Start Drill &rarr;</button>
+		</form>
 	</div>
 	<div class="form-section">
 		<div class="caption">Most used words (once, in random order)</div>
-		[<a href="form.html?drill=NGSL_all_forms&type=shuffled&first=0&count=100&hints=true">1st 100 (hints)</a>]
-		[<a href="form.html?drill=NGSL_all_forms&type=shuffled&first=0&count=100">1st 100</a>]
-		[<a href="form.html?drill=NGSL_all_forms&type=shuffled&first=100&count=100&hints=true">2nd 100 (hints)</a>]
-		[<a href="form.html?drill=NGSL_all_forms&type=shuffled&first=100&count=100">2nd 100</a>]
-		[<a href="form.html?drill=NGSL_all_forms&type=shuffled&first=200&count=100&hints=true">3rd 100 (hints)</a>]
-		[<a href="form.html?drill=NGSL_all_forms&type=shuffled&first=200&count=100">3rd 100</a>]
-		[<a href="form.html?drill=NGSL_all_forms&type=shuffled&first=300&count=100&hints=true">4th 100 (hints)</a>]
-		[<a href="form.html?drill=NGSL_all_forms&type=shuffled&first=300&count=100">4th 100</a>]
-		[<a href="form.html?drill=NGSL_all_forms&type=shuffled&first=400&count=100&hints=true">5th 100 (hints)</a>]
-		[<a href="form.html?drill=NGSL_all_forms&type=shuffled&first=400&count=100">5th 100</a>]
-		[<a href="form.html?drill=NGSL_all_forms&type=shuffled&first=500&count=100&hints=true">6th 100 (hints)</a>]
-		[<a href="form.html?drill=NGSL_all_forms&type=shuffled&first=500&count=100">6th 100</a>]
-		[<a href="form.html?drill=NGSL_all_forms&type=shuffled&first=600&count=100&hints=true">7th 100 (hints)</a>]
-		[<a href="form.html?drill=NGSL_all_forms&type=shuffled&first=600&count=100">7th 100</a>]
-		[<a href="form.html?drill=NGSL_all_forms&type=shuffled&first=700&count=100&hints=true">8th 100 (hints)</a>]
-		[<a href="form.html?drill=NGSL_all_forms&type=shuffled&first=700&count=100">8th 100</a>]
-		[<a href="form.html?drill=NGSL_all_forms&type=shuffled&first=800&count=100&hints=true">9th 100 (hints)</a>]
-		[<a href="form.html?drill=NGSL_all_forms&type=shuffled&first=800&count=100">9th 100</a>]
-		[<a href="form.html?drill=NGSL_all_forms&type=shuffled&first=900&count=100&hints=true">10th 100 (hints)</a>]
-		[<a href="form.html?drill=NGSL_all_forms&type=shuffled&first=900&count=100">10th 100</a>]
-		[<a href="form.html?drill=NGSL_all_forms&type=shuffled&first=1000&count=100&hints=true">11th 100 (hints)</a>]
-		[<a href="form.html?drill=NGSL_all_forms&type=shuffled&first=1000&count=100">11th 100</a>]
-		[<a href="form.html?drill=NGSL_all_forms&type=shuffled&first=1100&count=100&hints=true">12th 100 (hints)</a>]
-		[<a href="form.html?drill=NGSL_all_forms&type=shuffled&first=1100&count=100">12th 100</a>]
 
+		<form class="drill-options" action="form.html">
+			<input type="hidden" name="drill" value="NGSL_all_forms">
+			<input type="hidden" name="type" value="shuffled">
 
-		[<a href="form.html?drill=NGSL_all_forms&type=shuffled&first=0&count=300">1st <strong>300</strong></a>]
-		[<a href="form.html?drill=NGSL_all_forms&type=shuffled&first=300&count=300">2nd <strong>300</strong></a>]
-		[<a href="form.html?drill=NGSL_all_forms&type=shuffled&first=600&count=300">3rd <strong>300</strong></a>]
-		[<a href="form.html?drill=NGSL_all_forms&type=shuffled&first=900&count=300">4th <strong>300</strong></a>]
+			<b>Number of words:</b>
+			<input type="number" name="count" value="100" min="25" max="1000" step="25">
+			<br>
+
+			<b>Starting at rank</b>
+			<input type="number" name="first" value="0" min="0" max="1100" step="100">
+			<b>of most used words.</b>
+			<br>
+
+			<div name="hints">
+				<input type="radio" name="hints" value="true" id="ht3"><label for="ht3">Show hints</label>
+				<input type="radio" name="hints" value="" id="hf3" checked><label for="hf3">Don't show hints</label>
+			</div>
+
+			<button>Start Drill &rarr;</button>
+		</form>
 	</div>
 
 	<div class="form-section">
@@ -94,11 +105,14 @@
 
 	<div class="scroll-bounds"><div id="exercise" style="white-space: nowrap"></div></div>
 
-	<div id="answer" style="margin-left: 7em" class="answer" contenteditable="true"><span class="prompt">Type here...</span></div>
+	<div id="answer" class="answer" contenteditable="true"><span class="prompt">Type here...</span></div>
 
 	<p id="clock" class="clock"></p>
 
-	<p class="center">[<a id="again">Restart</a>] [<a id="back">Back to Lesson Selection</a>]</p>
+	<p class="center">
+		<a id="back">&larr; Back to Menu</a>
+		<a id="again">&#8634; Restart</a>
+	</p>
 
 	<p id="error-log"></p>
 </div>
@@ -147,7 +161,7 @@ window.onload = function() {
 				randomly = true;
 			} else if(fields.type === 'shuffled') shuffleTail(words, words.length);
 			exercise = new TypeJig.Exercise(words, timeLimit, randomly, fields.select);
-		} else if(fields.drill === 'Number Sentences') {
+		} else if(fields.drill === 'NumberSentences') {
 			exercise = new TypeJig.Exercise([], timeLimit);
 			exercise.nouns = TypeJig.WordSets.Nouns.slice();
 			exercise.actions = [].concat(
