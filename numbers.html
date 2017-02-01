@@ -12,12 +12,14 @@
 </head>
 <body>
 
-<div style="margin-left: 7em"><div id="strokes"></div></div>
+<div id="lesson">
+<div class="scroll-margin"><div id="strokes"></div></div>
 
 <div class="scroll-bounds"><div id="exercise" style="white-space: nowrap"></div></div>
-<div id="answer" class="answer" contenteditable="true"><span class="prompt">Type here...</span></div>
+<div id="answer" class="answer scroll-margin" contenteditable="true"><span class="prompt">Type here...</span></div>
 
 <p id="clock" class="clock"></p>
+</div>
 
 <script>
 var exercise = new TypeJig.Exercise([], 15*60);

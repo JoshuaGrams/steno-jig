@@ -12,6 +12,7 @@
 </head>
 <body>
 
+<div id="lesson">
 	<h3 class="center">(Mostly) Two-Key Sentences</h3>
 
 	<p class="wrapper">To capitalize the first word, hit <code>KPA</code> or <code>KPA*</code>,
@@ -20,15 +21,16 @@
 	<code>TP-PL</code> for period), you can hold one key and press the others
 	in succesion.</p>
 
-	<div style="margin-left: 7em"><div id="strokes"></div></div>
+	<div class="scroll-margin"><div id="strokes"></div></div>
 
 	<div class="scroll-bounds"><div id="exercise" style="white-space: nowrap"></div></div>
 
-	<div id="answer" class="answer" contenteditable="true"><span class="prompt">Type here...</span></div>
+	<div id="answer" class="answer scroll-margin" contenteditable="true"><span class="prompt">Type here...</span></div>
 
 	<p id="clock" class="clock"></p>
 
 	<p id="error-log"></p>
+</div>
 
 	<script>
 		var words = TypeJig.WordSets.twoKeySentences;
