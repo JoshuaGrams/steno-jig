@@ -4164,7 +4164,7 @@ TypeJig.Translations.Plover = {
 	"demean": "DMEEN",
 	"demeanor": "DMEEN/O*R",
 	"dementia": "DMEN/SHA",
-	"demo": "DOIM",
+	"demo": "DEM/JO",
 	"demographic": "DEM/GRAFK",
 	"demographics": "DEM/GRAFKS",
 	"demon": "DEEM/O*N",
