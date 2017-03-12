@@ -7,7 +7,7 @@ body, html {
 
 /* Main Layout and Visual Styling of Block Elements */
 body {
-	font-family: Roboto Slab, serif;
+	font: 15px Roboto, sans-serif;
 }
 
 .wrapper {
@@ -74,6 +74,9 @@ a, a:visited {
 	border: 1px solid #C2C2C2;
 	padding: 0.5em;
 }
+#answer:not(.answer) {
+	text-align: center;
+}
 
 .answer:focus {
 	outline: none;
@@ -95,13 +98,17 @@ a, a:visited {
 
 /* Setting it to `smaller` usually means about 83% (1 / 1.2),
  * but there's no standard. */
-#strokes { font-size: 50%; opacity: 1; }
+#strokes {
+	font-size: 14px;
+	font-weight: bold;
+	opacity: 1;
+}
 
 #strokes td {
 	background: #666;
 	border: thin solid black;
 	border-radius: 0.5ex;
-	padding: 0.25ex;
+	padding: 0.25ex 0.33ex;
 	text-align: center;
 }
 
