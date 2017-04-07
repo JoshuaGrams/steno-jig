@@ -63,6 +63,8 @@ window.onload = function() {
 		top_n = 8000
 	}
 
+	var word_count = fields.word_count == null ? 100 : parseInt(fields.word_count)
+
 	var name = "Sentences from Project Gutenberg that contain only the top " + top_n + " words.";
 	var hints = null;
 
@@ -72,7 +74,7 @@ window.onload = function() {
 	}
 
 	let words = [], sentence, i
-	let chars_left = 500
+	let chars_left = word_count * 5
 	let top_n_bucket = window.sentences_by_top_100[top_n / 100 - 1]
 	while (chars_left > 0) {
 		sentence = top_n_bucket[Math.floor(Math.random() * top_n_bucket.length)]
