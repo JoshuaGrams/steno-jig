@@ -469,7 +469,7 @@ TypeJig.Timer.prototype.start = function(alarm) {
 }
 
 TypeJig.Timer.prototype.stop = function() {
-	var elapsed = this.end ? this.setting - this.seconds : this.seconds;
+	var elapsed = (new Date().getTime() - this.beginning) / 1000;
 	if(this.finished) this.finished(elapsed);
 	delete this.beginning;
 	delete this.end;
