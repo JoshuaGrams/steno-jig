@@ -190,7 +190,6 @@ TypeJig.prototype.addError = function(word, error) {
 TypeJig.prototype.endExercise = function(seconds) {
 	if(this.running) this.running = false;
 	else return;
-	this.ans.firstChild.nodeValue = '';
 	if(document.activeElement != document.body) document.activeElement.blur();
 	this.ans.setAttribute('contenteditable', false);
 	this.ans.className = '';
