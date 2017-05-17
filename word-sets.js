@@ -152,7 +152,7 @@
 		"hubcap", "palatal", "pappas", "parcel", "parol",
 		"parrot", "pastel", "pastor", "pastoral", "pedicel",
 		"pepper", "percuss", "perpetual", "pester", "petal",
-		"petrol", "petros", "porpoise", "porpoise", "portal",
+		"petrol", "petros", "porpoise", "portal",
 		"porter", "possess", "possessor", "postal", "pulcher",
 		"puppet", "purpose", "purser", "radical", "rafter",
 		"rapport", "rascal", "redhead", "roster", "rupture",
