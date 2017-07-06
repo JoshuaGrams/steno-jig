@@ -24,34 +24,63 @@
 
 	<p class="center">
 		<a id="back">&larr; Back to Menu</a>
-		<a id="again">&#8634; Restart</a>
+		&nbsp;
+		<a id="again">&#8634; Repeat Drill</a>
+		&nbsp;
+		<a id="new">&rarr; New Drill</a>
 	</p>
 
 	<p id="error-log"></p>
 </div>
 
 <script>
+function new_rng(seed_txt) {
+	var s, i, j, tmp
+	s = new Array(256);
+	for (i = 0; i < 256; ++i) {
+		s[i] = i;
+	}
+	if (seed_txt == null) {
+		seed_txt = Math.random().toString()
+	}
+	for (i = j = 0; i < 256; ++i) {
+		j += s[i] + seed_txt.charCodeAt(i % seed_txt.length);
+		j %= 256;
+		tmp = s[i]; s[i] = s[j]; s[j] = tmp;
+	}
+	return function() {
+		var p, ret = 0
+		for (p = 0; p < 7; ++p) {
+			ret *= 256
+			i = (i + 1) % 256;
+			j = (j + s[i]) % 256;
+			tmp = s[i]; s[i] = s[j]; s[j] = tmp;
+			ret += s[(s[i] + s[j]) % 256];
+		}
+		return ret / 72057594037927935.0
+	}
+}
 function parseQueryString() {
 	var vars = {};
 	var query = document.location.search.substring(1);
 	var pairs = query.replace(/\+/g,'%20').split('&');
-	for(var i=0; i<pairs.length; ++i) {
+	for (var i = 0; i < pairs.length; ++i) {
 		var name, value='';
 		var n = pairs[i].indexOf('=');
-		if(n === -1) name = decodeURIComponent(pairs[i]);
-		else {
+		if (n === -1) {
+			name = decodeURIComponent(pairs[i]);
+		} else {
 			name = decodeURIComponent(pairs[i].substring(0, n));
 			value = decodeURIComponent(pairs[i].substring(n+1));
 		}
-		if(vars.hasOwnProperty(name)) {
-			if(!Array.isArray(vars[name])) vars[name] = [vars[name]];
-			vars[name].push(value);
-		} else vars[name] = value;
+		vars[name] = value;
 	}
 	return vars;
 }
 window.onload = function() {
-	var fields = parseQueryString();
+	var fields = parseQueryString()
+
+	var rng = new_rng(fields.seed)
 
 	var top_n = fields.top == null ? 100 : parseInt(fields.top)
 	// round up
@@ -77,7 +106,7 @@ window.onload = function() {
 	let chars_left = word_count * 5
 	let top_n_bucket = window.sentences_by_top_100[top_n / 100 - 1]
 	while (chars_left > 0) {
-		sentence = top_n_bucket[Math.floor(Math.random() * top_n_bucket.length)]
+		sentence = top_n_bucket[Math.floor(rng() * top_n_bucket.length)]
 		chars_left -= sentence.length
 		words.splice(0, 0, ...sentence.split(' '))
 	}
@@ -92,6 +121,8 @@ window.onload = function() {
 	back.href = './form.html';
 	var again = document.getElementById('again');
 	again.href = document.location.href;
+	var new_drill = document.getElementById('new');
+	new_drill.href = document.location.href.toString().replace(/seed=([^&#]*)/, 'seed=' + Math.random().toString());
 
 	var jig = new TypeJig(exercise, 'exercise', 'answer', 'clock', hints);
 }
