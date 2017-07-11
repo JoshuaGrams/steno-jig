@@ -235,10 +235,7 @@ function ScrollBox(contentElt, alignToElt) {
 	} else this.offset = 0;
 	this.margin = this.offset;
 	this.content.style.marginLeft = this.offset + 'px';
-	this.pxPerSec = -1;
-	var secondsTo90Percent = 2;
-	this.lagSeconds = 1.5;
-	this.k = Math.pow(0.1, this.lagSeconds / secondsTo90Percent);
+	this.transition = null
 	this.removeCount = 0;
 	this.removeWidth = 0;
 
@@ -250,6 +247,7 @@ function ScrollBox(contentElt, alignToElt) {
 }
 
 ScrollBox.prototype.endTransition = function() {
+	this.transition = null
 	this.content.style.transition = '';
 	if(this.removeCount > 0) {
 		do {
@@ -276,22 +274,119 @@ ScrollBox.prototype.scrollTo = function(elt, instantly) {
 			this.margin -= elt.offsetWidth;
 		}
 	}
-
-	// Compute the desired transition rate and smooth it with an
-	// IIR low-pass filter.
-	var px = this.margin - oldMargin;
-	var pxPerSec = Math.min(px / this.lagSeconds, 0);
-	this.pxPerSec = this.k*this.pxPerSec + (1-this.k)*pxPerSec;
-
-	// Start the transition.
-	if(Math.abs(px) > 0.1 && (instantly || Math.abs(this.pxPerSec) > 0.1)) {
-		var style = this.content.style;
-		if(instantly) style.transition = '';
-		else {
-			var transitionSec = Math.abs(px / this.pxPerSec);
-			style.transition = 'margin-left ' + transitionSec + 's ease-out';
+	var bezierStep = function (points, time) {
+		var ret = [], i
+		for (i = 0; i < points.length - 1; ++i) {
+			ret.push([
+				// a + (b - a) * time
+				points[i][0] + time * (points[i + 1][0] - points[i][0]),
+				points[i][1] + time * (points[i + 1][1] - points[i][1]),
+			])
 		}
-		style.marginLeft = this.margin + 'px';
+		if (ret.length === 1) {
+			return ret[0]
+		}
+		return bezierStep(ret, time)
+	}
+	var bezier = function (args, time) {
+		return bezierStep([
+			[0, 0],
+			[args[0], args[1]],
+			[args[2], args[3]],
+			[1, 1],
+		], time)
+	}
+	var bezierSpeed = function (transition, position) {
+		var px = Math.abs(transition.end - transition.start)
+		var i
+		var less = 0
+		var more = 1
+		var cur = 0.5
+		var lessPos = 0
+		var morePos = 1
+		var curPos
+
+		if (position == transition.start) {
+			cur = 0
+		} else if (position == transition.end) {
+			cur = 1
+		} else {
+			// translate into 0-1 range
+			position = (position - transition.start) / (transition.end - transition.start) 
+			// find two points very near position on either side
+			for (let i = 0; i < 6; ++i) {
+				if ((curPos = bezier(transition.bezier, cur)[1]) < position) {
+					less = cur
+					lessPos = curPos
+					cur += (more - cur) / 2
+				} else {
+					more = cur
+					morePos = curPos
+					cur -= (cur - less) / 2
+				}
+			}
+			// linear interpolate between those points
+			cur = less + (more - less) * (position - lessPos) / (morePos - lessPos)
+		}
+		// choose points very (and equally) near but not past the ends
+		if (cur < 0.0005001) {
+			less = 0
+			more = 0.0005001
+		} else if (cur > 0.9994999) {
+			less = 0.9994999
+			more = 1
+		} else {
+			less = cur - 0.0005
+			more = cur + 0.0005
+		}
+		var lessXY = bezier(transition.bezier, less)
+		var moreXY = bezier(transition.bezier, more)
+		return px * (moreXY[1] - lessXY[1]) / (moreXY[0] - lessXY[0])
+	}
+
+	var px = this.margin - oldMargin
+
+	var style = this.content.style
+	if(instantly) {
+		this.transition = null;
+		style.transition = ''
+		style.marginLeft = this.margin + 'px'
+	} else {
+		// transition timing constants
+		var duration = 4
+		var startR = 0.3
+		// Start the transition.
+		if(Math.abs(px) > 0.1) {
+			var currentSpeed, startTheta;
+			if (this.transition != null) {
+				currentSpeed = bezierSpeed(this.transition, oldMargin)
+				// currentSpeed units: pixels per duration
+				startTheta = Math.atan(currentSpeed / Math.abs(px))
+				// advance one frame
+				style.transition = ''
+				style.marginLeft = oldMargin + (currentSpeed / duration / 60) + 'px'
+			} else {
+				currentSpeed = 0
+				startTheta = 0
+			}
+			this.transition = {
+				duration: duration,
+				start: oldMargin,
+				end: this.margin,
+				distance: Math.abs(this.margin - oldMargin),
+				bezier: [
+					Math.cos(startTheta) * startR,
+					Math.sin(startTheta) * startR,
+					1 - startR,
+					1,
+				],
+			}
+			style.transition = trns = 'margin-left ' + duration + 's cubic-bezier(' +
+				this.transition.bezier.join(', ') + ')'
+			style.marginLeft = this.margin + 'px'
+		} else {
+			this.transition = null
+		}
 	}
 }
 
