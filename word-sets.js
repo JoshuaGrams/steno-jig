@@ -1,6 +1,27 @@
 // Wrap everything in a function to avoid polluting the global namespace.
 (function() {
 
+	TypeJig.WordSets.nch = [
+		"century", "accentuate", "adventure", "denture", "eventually",
+		"gargantuan", "indenture", "jointure", "venture", "lynch",
+		"avalanche", "bench", "drench", "blanch", "blench",
+		"branch", "brunch", "cinch", "clench", "clinch",
+		"entrench", "finch", "flinch", "grinch", "haunch",
+		"henchmen", "hunch", "linchpin", "munch", "paunch",
+		"pinch", "punch", "quench", "ranch", "raunchy",
+		"scrunch", "squinch", "stanch", "staunch", "tench",
+		"trench", "truncheon", "wench", "winch", "wrench"
+	];
+
+	TypeJig.WordSets['ite/ight'] = [
+		"bite", "bight", "blight", "fight", "flight",
+		"fright", "height", "hight", "knight", "lite",
+		"light", "mite", "might", "night", "plight",
+		"rite", "right", "site", "cite", "sight",
+		"slight", "tight", "wite", "wight", "write",
+		"wright"
+	];
+
 	TypeJig.WordSets.twoKeySentences = [
 		"It", "would", "be", "perfect", "if", "we", "could", "have", "it", "at", "about", "100.",
 		"Could", "you", "add", "about", "100", "to", "every", "account", "as", "interest?",
