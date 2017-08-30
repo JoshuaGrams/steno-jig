@@ -5,6 +5,9 @@
 	<title>Steno Jig</title>
 	<link href="style.css" rel="stylesheet" type="text/css">
 	<script src="type-jig.js"></script>
+	<script src="util.js"></script>
+	<script src="word-drill.js"></script>
+	<script src="number-sentences.js"></script>
 	<script src="steno-display.js"></script>
 	<script src="word-sets.js"></script>
 	<script src="plover-translations.js"></script>
@@ -136,74 +139,18 @@
 <script>
 window.onload = function() {
 	if(document.location.search !== '') {
-		var fields = parseQueryString();
-
-		var name = fields.drill, words = TypeJig.WordSets[fields.drill];
-		if(Array.isArray(fields.drill)) {
-			name = ''; words = [];
-			for(var i=0; i<fields.drill.length; ++i) {
-				var w = TypeJig.WordSets[fields.drill[i]];
-				if(!w) continue;
-				if(name.length) name += ', ';
-				if(i === fields.drill.length - 1) name += 'and ';
-				name += fields.drill[i];
-				words = words.concat(w);
+		var fields = parseQueryString(document.location.search);
+		if(fields.drill === 'NumberSentences') exercise = numberSentences(fields);
+		else exercise = wordDrill(fields);
+		if(exercise) {
+			if(fields.hints) {
+				var translations = TypeJig.shortestTranslations(TypeJig.Translations.Plover);
+				var hints = new StenoDisplay('strokes', translations, true);
 			}
+
+			display_only('lesson');
+			var jig = setExercise(exercise.name, exercise, hints);
 		}
-		if(fields.type === 'randomly') {
-			var minutes = Math.floor(fields.timeLimit);
-			var seconds = Math.round((fields.timeLimit % 1) * 60);
-			if(seconds < 10) seconds = '0' + seconds;
-			name = minutes + ':' + seconds + ' of Random ' + name;
-		} else if(fields.type === 'shuffled') {
-			name = 'Randomized ' + name;
-		}
-
-		if(fields.hints) {
-			var translations = TypeJig.shortestTranslations(TypeJig.Translations.Plover);
-			var hints = new StenoDisplay('strokes', translations, true);
-		}
-
-		var exercise, timeLimit = 60 * fields.timeLimit;
-		if(words) {
-			var first = +fields.first || 0;
-			var count = +fields.count || words.length;
-			if(first !== 0 || count !== words.length) {
-				words = words.slice(first, first+count);
-			}
-			var randomly = false;
-			if(fields.type === 'randomly') {
-				timeLimit = 60 * fields.timeLimit;
-				randomly = true;
-			} else if(fields.type === 'shuffled') shuffleTail(words, words.length);
-			exercise = new TypeJig.Exercise(words, timeLimit, randomly, fields.select);
-		} else if(fields.drill === 'NumberSentences') {
-			exercise = new TypeJig.Exercise([], timeLimit);
-			exercise.nouns = TypeJig.WordSets.Nouns.slice();
-			exercise.actions = [].concat(
-				TypeJig.WordSets.TransitiveVerbs.map(function(v){return [v, 'v'];}),
-				TypeJig.WordSets.Adjectives.map(function(a){return [a, 'a'];})
-			);
-			exercise.sentence = [];
-			randomize(exercise.nouns);
-			randomize(exercise.actions);
-			exercise.nextWord = nextNumberWord;
-			exercise.nextSentence = nextNumberSentence;
-			exercise.nextClause = nextNumberClause;
-		} else return;  // unknown drill
-
-		var h = document.getElementById('lesson-name');
-		h.appendChild(document.createTextNode(name));
-		document.title = name + ' - ' + document.title;
-
-		var back = document.getElementById('back');
-		back.href = document.location.href.split('?')[0];
-		var again = document.getElementById('again');
-		again.href = document.location.href;
-
-		display_only('lesson');
-
-		var jig = new TypeJig(exercise, 'exercise', 'answer', 'clock', hints);
 	}
 }
 
@@ -213,77 +160,6 @@ function display_only(show) {
 	for (i in tabs) {
 		document.getElementById(tabs[i]).style.display = tabs[i] === show ? 'block' : 'none'
 	}
-}
-
-function nextNumberWord() {
-	if(this.sentence.length === 0) {
-		this.sentence = this.nextSentence();
-	}
-	return this.sentence.shift();
-}
-
-function nextNumberSentence() {
-	var type = ['.', '!', '?', ','][randomIntLessThan(4)];
-	var num = 2 + randomIntLessThan(98);
-	var noun = pluralize(rotateAndShuffle(this.nouns));
-	var action = rotateAndShuffle(this.actions);
-	var tense;
-	if(type === '?') tense = 0;
-	else tense = randomIntLessThan(2);
-	var s = this.nextClause(num, noun, action, tense);
-	s[s.length-1] += type;
-	if(type === '?') {
-		if(action[1] === 'v') {
-			s.unshift(['Do', 'Did'][randomIntLessThan(2)]);
-		} else if(action[1] === 'a') {
-			var verb = ['Are', 'Were'][randomIntLessThan(2)];
-			s.splice(2, 1);
-			s.unshift(verb);
-		}
-	} else if(type === ',') {
-		var conj = ['but', 'while', 'so', 'and', 'or'];
-		s.push(conj[randomIntLessThan(conj.length)]);
-		var num = 2 + randomIntLessThan(98);
-		var noun = pluralize(rotateAndShuffle(this.nouns));
-		var action = rotateAndShuffle(this.actions);
-		s = s.concat(this.nextClause(num, noun, action, tense));
-		s[s.length-1] += '.';
-	}
-	return s;
-}
-
-function nextNumberClause(num, noun, action, tense) {
-	if(action[1] === 'v') {
-		var verb = action[0][tense].split(' ');
-		var num2 = 1 + randomIntLessThan(99);
-		var noun2 = rotateAndShuffle(this.nouns);
-		if(num2 > 1) noun2 = pluralize(noun2);
-		return [].concat(num+'', noun, verb, num2+'', noun2);
-	} else {
-		verb = ["are", "were"];
-		var adjective = action[0].split(' ');
-		return [].concat(num+'', noun, verb[tense], adjective);
-	}
-}
-
-function parseQueryString() {
-	var vars = {};
-	var query = document.location.search.substring(1);
-	var pairs = query.replace(/\+/g,'%20').split('&');
-	for(var i=0; i<pairs.length; ++i) {
-		var name, value='';
-		var n = pairs[i].indexOf('=');
-		if(n === -1) name = decodeURIComponent(pairs[i]);
-		else {
-			name = decodeURIComponent(pairs[i].substring(0, n));
-			value = decodeURIComponent(pairs[i].substring(n+1));
-		}
-		if(vars.hasOwnProperty(name)) {
-			if(!Array.isArray(vars[name])) vars[name] = [vars[name]];
-			vars[name].push(value);
-		} else vars[name] = value;
-	}
-	return vars;
 }
 </script>
 

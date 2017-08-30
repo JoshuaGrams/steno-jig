@@ -5,6 +5,7 @@
 	<title>Steno Jig</title>
 	<link href="style.css" rel="stylesheet" type="text/css">
 	<script src="type-jig.js"></script>
+	<script src="util.js"></script>
 	<script src="steno-display.js"></script>
 	<script src="plover-translations.js"></script>
 	<script src="gutenberg.js"></script>
@@ -60,25 +61,8 @@ function new_rng(seed_txt) {
 		return ret / 72057594037927935.0
 	}
 }
-function parseQueryString() {
-	var vars = {};
-	var query = document.location.search.substring(1);
-	var pairs = query.replace(/\+/g,'%20').split('&');
-	for (var i = 0; i < pairs.length; ++i) {
-		var name, value='';
-		var n = pairs[i].indexOf('=');
-		if (n === -1) {
-			name = decodeURIComponent(pairs[i]);
-		} else {
-			name = decodeURIComponent(pairs[i].substring(0, n));
-			value = decodeURIComponent(pairs[i].substring(n+1));
-		}
-		vars[name] = value;
-	}
-	return vars;
-}
 window.onload = function() {
-	var fields = parseQueryString()
+	var fields = parseQueryString(document.location.search)
 
 	var rng = new_rng(fields.seed)
 
@@ -113,18 +97,10 @@ window.onload = function() {
 
 	var exercise = new TypeJig.Exercise(words, 0, false, 'ordered');
 
-	var h = document.getElementById('lesson-name');
-	h.appendChild(document.createTextNode(name));
-	document.title = name + ' - ' + document.title;
-
-	var back = document.getElementById('back');
-	back.href = './form.html';
-	var again = document.getElementById('again');
-	again.href = document.location.href;
 	var new_drill = document.getElementById('new');
 	new_drill.href = document.location.href.toString().replace(/seed=([^&#]*)/, 'seed=' + Math.random().toString());
 
-	var jig = new TypeJig(exercise, 'exercise', 'answer', 'clock', hints);
+	setExercise(name, exercise, hints);
 }
 </script>
 
