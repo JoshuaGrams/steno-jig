@@ -1,6 +1,17 @@
 // Wrap everything in a function to avoid polluting the global namespace.
 (function() {
 
+	TypeJig.WordSets['d-/b-'] = [
+		["dig", "dog", "doff", "due", "dual",
+		"deal", "day", "dad", "date", "dot",
+		"did", "do", "doe", "dove", "down",
+		"death"],
+		["back", "bad", "base", "bass", "boo",
+		"book", "be", "by", "bite", "bog",
+		"bought", "big", "been", "bit", "both",
+		"but"]
+	];
+
 	TypeJig.WordSets.nch = [
 		"century", "accentuate", "adventure", "denture", "eventually",
 		"gargantuan", "indenture", "jointure", "venture", "lynch",
@@ -20,6 +31,81 @@
 		"rite", "right", "site", "cite", "sight",
 		"slight", "tight", "wite", "wight", "write",
 		"wright"
+	];
+
+	TypeJig.WordSets['Da Dreaded Dueling Digit Duo Drills 1'] = [
+		"EFB", "URP", "EFB", "URP", "EFB", "URP", "EFB", "URP", "EFB", "URP",
+		"EFB", "URP", "EFB", "URP", "EFB", "URP", "EFB", "URP", "EFB", "URP", "EFB",
+
+		"-R", "-R", "-R", "-R",
+
+		"EPG", "UBL", "EPG", "UBL", "EPG", "UBL", "EPG", "UBL", "EPG", "UBL",
+		"EPG", "UBL", "EPG", "UBL", "EPG", "UBL", "EPG", "UBL", "EPG", "UBL", "EPG",
+
+		"-R", "-R", "-R", "-R",
+
+		"UPG", "EBL", "UPG", "EBL", "UPG", "EBL", "UPG", "EBL", "UPG", "EBL",
+		"UPG", "EBL", "UPG", "EBL", "UPG", "EBL", "UPG", "EBL", "UPG", "EBL", "UPG",
+
+		"-R", "-R", "-R", "-R",
+
+		"UPG", "EBLS", "UPG", "EBLS", "UPG", "EBLS", "UPG", "EBLS", "UPG", "EBLS",
+		"UPG", "EBLS", "UPG", "EBLS", "UPG", "EBLS", "UPG", "EBLS", "UPG", "EBLS", "UPG",
+
+		"-R", "-R", "-R", "-R",
+
+		"UBLS", "EPG", "UBLS", "EPG", "UBLS", "EPG", "UBLS", "EPG", "UBLS", "EPG",
+		"UBLS", "EPG", "UBLS", "EPG", "UBLS", "EPG", "UBLS", "EPG", "UBLS", "EPG", "UBLS",
+
+		"-R", "-R", "-R", "-R",
+
+		"EBL", "UGT", "EBL", "UGT", "EBL", "UGT", "EBL", "UGT", "EBL", "UGT",
+		"EBL", "UGT", "EBL", "UGT", "EBL", "UGT", "EBL", "UGT", "EBL", "UGT", "EBL",
+
+		"-R", "-R", "-R", "-R",
+
+		"UBL", "-BGT", "UBL", "-BGT", "UBL", "-BGT", "UBL", "-BGT", "UBL", "-BGT",
+		"UBL", "-BGT", "UBL", "-BGT", "UBL", "-BGT", "UBL", "-BGT", "UBL", "-BGT", "UBL"
+	];
+
+	TypeJig.WordSets['Da Dreaded Dueling Digit Duo Drills 2'] = [
+		"PRO", "WHA", "PRO", "WHA", "PRO", "WHA", "PRO", "WHA", "PRO", "WHA",
+		"PRO", "WHA", "PRO", "WHA", "PRO", "WHA", "PRO", "WHA", "PRO", "WHA", "PRO",
+
+		"S", "S", "S", "S",
+
+		"PRA", "WHO", "PRA", "WHO", "PRA", "WHO", "PRA", "WHO", "PRA", "WHO",
+		"PRA", "WHO", "PRA", "WHO", "PRA", "WHO", "PRA", "WHO", "PRA", "WHO", "PRA",
+
+		"S", "S", "S", "S",
+
+		"TWO", "KPO", "TWO", "KPO", "TWO", "KPO", "TWO", "KPO", "TWO", "KPO",
+		"TWO", "KPO", "TWO", "KPO", "TWO", "KPO", "TWO", "KPO", "TWO", "KPO", "TWO",
+
+		"S", "S", "S", "S",
+
+		"TWA", "KPA", "TWA", "KPA", "TWA", "KPA", "TWA", "KPA", "TWA", "KPA",
+		"TWA", "KPA", "TWA", "KPA", "TWA", "KPA", "TWA", "KPA", "TWA", "KPA", "TWA",
+
+		"S", "S", "S", "S",
+
+		"TWO", "KPA", "TWO", "KPA", "TWO", "KPA", "TWO", "KPA", "TWO", "KPA",
+		"TWO", "KPA", "TWO", "KPA", "TWO", "KPA", "TWO", "KPA", "TWO", "KPA", "TWO",
+
+		"S", "S", "S", "S",
+
+		"TWA", "KPO", "TWA", "KPO", "TWA", "KPO", "TWA", "KPO", "TWA", "KPO",
+		"TWA", "KPO", "TWA", "KPO", "TWA", "KPO", "TWA", "KPO", "TWA", "KPO", "TWA",
+
+		"S", "S", "S", "S",
+
+		"PRO", "WHO", "PRO", "WHO", "PRO", "WHO", "PRO", "WHO", "PRO", "WHO",
+		"PRO", "WHO", "PRO", "WHO", "PRO", "WHO", "PRO", "WHO", "PRO", "WHO", "PRO",
+
+		"S", "S", "S", "S",
+
+		"PRA", "WHA", "PRA", "WHA", "PRA", "WHA", "PRA", "WHA", "PRA", "WHA",
+		"PRA", "WHA", "PRA", "WHA", "PRA", "WHA", "PRA", "WHA", "PRA", "WHA", "PRA"
 	];
 
 	TypeJig.WordSets.twoKeySentences = [
