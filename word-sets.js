@@ -12,6 +12,17 @@
 		"but"]
 	];
 
+	TypeJig.WordSets['-ld/-lt'] = [
+		"adult", "asphalt", "assault", "bald", "basalt",
+		"beheld", "behold", "belt", "bold", "bolt",
+		"build", "built", "catapult", "child", "cobalt",
+		"cold", "colt", "consult", "cult", "dealt",
+		"default", "difficult", "dolt", "dwelt", "emerald",
+		"exalt", "exult", "fault", "felt", "field",
+		"fold"
+	];
+
+
 	TypeJig.WordSets.nch = [
 		"century", "accentuate", "adventure", "denture", "eventually",
 		"gargantuan", "indenture", "jointure", "venture", "lynch",
@@ -22,6 +33,16 @@
 		"pinch", "punch", "quench", "ranch", "raunchy",
 		"scrunch", "squinch", "stanch", "staunch", "tench",
 		"trench", "truncheon", "wench", "winch", "wrench"
+	];
+
+	TypeJig.WordSets['-nj'] = [
+		"arrange", "avenge", "binge", "challenge", "change",
+		"cringe", "derange", "exchange", "expunge", "flange",
+		"fringe", "grange", "grunge", "hinge", "impinge",
+		"lounge", "lozenge", "lunge", "mange", "melange",
+		"muskellunge", "orange", "plunge", "range", "revenge",
+		"scavenge", "scrounge", "singe", "sponge", "strange",
+		"syringe", "tinge", "twinge",
 	];
 
 	TypeJig.WordSets['ite/ight'] = [
