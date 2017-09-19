@@ -2,6 +2,7 @@
 body, html {
 	margin: 0;
 	padding: 0;
+	scroll-behavior: smooth;
 }
 
 
@@ -20,6 +21,12 @@ body {
 	max-width: 44em;
 	margin: 0 auto; /* Center it on screen */
 	text-align: center;
+}
+
+#nav {
+	position: fixed;
+	top: 3em; right: 0;
+	width: 15em;
 }
 
 .form-section {
@@ -61,37 +68,32 @@ a, a:visited {
 
 #lesson { font-size: 1.3em; }
 
-.scroll-bounds {
-	margin-top: 1em;
-	margin-bottom: 0.3em;
-	overflow: hidden;
+#input {
+	position: fixed;
+	left: -10000px;
 }
 
-.scroll-margin { margin-left: 7em; }
+#exercise, #answer {
+	position: absolute;
+	width: 64ex;
+	max-width: 60%;
+	line-height: 2.5;
+	margin-top: -0.8em;
+}
+#exercise { white-space: pre-wrap; }
+#answer {
+	padding-top: 1.1em;
+	padding-bottom: 1.4em;
+	color: #888;
+	white-space: pre;
+}
+#exercise p:not(:last-child)::after {
+	content: "¶";
+	font-weight: bold;
+}
 
-.answer {
-	background: #ccc; display: block; height: 1.2em;
-	border: 1px solid #C2C2C2;
-	padding: 0.5em;
-}
-#answer:not(.answer) {
-	text-align: center;
-}
-
-.answer:focus {
-	outline: none;
-	border: 1px solid #A0A0A0;
-}
-
-.prompt { color: #666; }
-
-.correct {
-	background: #cfc;
-}
-.incorrect {
-	background: #fcc;
-	text-decoration: line-through;
-}
+.correct { background: #cfc; }
+.incorrect { background: #fcc; text-decoration: line-through; }
 
 
 .clock { font-size: 300%; text-align: center; }
