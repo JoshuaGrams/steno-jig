@@ -1,29 +1,27 @@
 /* -----------------------------------------------------------------------
  * TypeJig - run a typing lesson.
  *
- * `output`, `input`, and `clock` are elements (or element ID strings),
- * `exercise` is a TypeJig.Exercise object.
+ * `exercise` is a TypeJig.Exercise object, while `display`, `input`,
+ * `output`, and `clock` are elements (or element ID strings).
  */
 
-function TypeJig(exercise, output, input, clock, hint) {
-	if(typeof output === 'string') output = document.getElementById(output);
-	if(typeof input === 'string') input = document.getElementById(input);
-	if(typeof clock === 'string') clock = document.getElementById(clock);
+function TypeJig(exercise, display, input, output, clock, hint) {
 	this.running = false;
-	this.haveFinalWord = false;
-	this.ex = exercise;
-	this.out = new ScrollBox(output, input);
-	this.ans = input;
-	this.clock = new TypeJig.Timer(clock, this.ex.seconds);
+	this.exercise = exercise;
+	this.display = documentElement(display);
+	this.input = documentElement(input);
+	this.output = documentElement(output);
+	this.clock = new TypeJig.Timer(documentElement(clock), exercise.seconds);
 	this.hint = hint;
-	this.lookahead = [];
-	this.errors = {};  this.errorCount = 0;
-	this.getWords();
-	if(this.hint && this.hint.update) this.hint.update(this.lookahead[0] || '');
-	this.scrollTo = this.out.firstChild;
-	bindEvent(input, 'input', this.answerChanged.bind(this));
-	input.focus();
-	window.scroll(0, scrollOffset(output));
+	this.errorCount = 0;
+	this.lookahead = 50;
+	this.getWords(0);
+	if(this.hint && this.hint.update) this.hint.update(this.words[0]);
+	this.changeHandler = this.answerChanged.bind(this);
+	bindEvent(this.input, 'input', this.changeHandler);
+	this.input.value = '';
+	this.input.focus();
+	window.scroll(0, scrollOffset(this.output));
 }
 
 // Can contain a text-to-pseudosteno dictionary for each steno theory.
@@ -60,335 +58,128 @@ TypeJig.flattenWordSet = function(a) {
     return out;
 }
 
+TypeJig.prototype.start = function() {
+	this.clock.start(this.endExercise.bind(this));
+	this.startTime = Date.now();
+	this.running = true;
+}
+
+function nextItem(words, range) {
+	var word = words.shift() || '';
+	range.collapse();
+	range.setEnd(range.endContainer, range.endOffset + word.length);
+	return word;
+}
+
+function nextWord(words, range) {
+	var word = nextItem(words, range);
+	if(/^\s+$/.test(word)) word = nextItem(words, range);
+	return word;
+}
+
 TypeJig.prototype.answerChanged = function() {
-	if(!this.start) {
-		this.clock.start(this.endExercise.bind(this));
-		this.start = Date.now();
-		this.droppedChars = 0;
-		this.nextWordIndex = 0;
-		this.running = true;
-	}
+	if(!this.running) this.start();
 
-	// Get the string and split it into words.
-	var answerString = this.ans.textContent;
-	var answer = answerString.split(/\s+/);
-	if(answer[0] === '') answer.shift();
+	// Get the exercise and the user's answer as arrays of
+	// words interspersed with whitespace.
+	var answer = this.input.value.split(/\b/);
+	var exercise = this.getWords(Math.ceil(answer.length/2));
 
-	// Match up answer words against exercise words, and set the class
-	// of the output span.
-	this.getWords(answer.length);  // Try to get enough words to match.
-	var out = this.scrollTo;
-	var n = this.lookahead.length;
-	for(var i=0; i<n; ++i) {
-		var ex = String(this.lookahead[i]);
+	// Get the first word of the exercise, and create a range
+	// which we can use to measure where it is.
+	var range = document.createRange();
+	range.setStart(this.display.firstChild, 0);
+	range.setEnd(this.display.firstChild, 0);
+	var ex, y, match;
+
+	// Display the user's answer, marking it for correctness.
+	this.output.textContent = '';
+	this.errorCount = 0;
+	for(let i=0; i<answer.length; ++i) {
 		var ans = answer[i];
-		var validPrefix = false;
-		if(i === answer.length-1 && ans.length < ex.length) {
-			validPrefix = (ans === ex.slice(0, ans.length));
+		if(/^\s+$/.test(ans)) {  // whitespace
+			this.output.appendChild(document.createTextNode(ans));
+			continue;
 		}
 
-		if(i >= answer.length || validPrefix) {
-			// un-mark unanswered or incompletely-answered words
-			if(hasClass(out, 'incorrect')) this.removeError(ex);
-			out.className = '';
-		} else if(ans === ex) {
-			// mark correct words
-			if(hasClass(out, 'incorrect')) this.removeError(ex);
-			out.className = 'correct';
+		ex = nextWord(exercise, range);
+		var y2 = range.getBoundingClientRect().top;
+		if(y2 > y) this.output.appendChild(document.createTextNode('\n'));
+		y = y2;
+
+		var endOfAnswer = (i === answer.length-1);
+		var partial = endOfAnswer && ans.length < ex.length && ans === ex.slice(0, ans.length);
+		match = (ans == ex);
+		if(partial) {
+			// Don't yet know whether it matched, so add it as raw text.
+			this.output.appendChild(document.createTextNode(ans));
 		} else {
-			// otherwise it must be incorrect
-			if(!hasClass(out, 'incorrect')) {
-				this.addError(ex, ans);
-				out.className = 'incorrect';
-			}
+			this.errorCount += !match;
+			// Add it as a span marked as correct or incorrect.
+			var span = document.createElement('span');
+			span.appendChild(document.createTextNode(ans));
+			span.className = match ? 'correct' : 'incorrect';
+			this.output.appendChild(span);
 		}
-		if(out) out = out.nextSibling;
+
+		// End the exercise if the last word was answered correctly.
+		var last = (exercise.length === 0 && !this.exercise);
+		if(last && match) this.clock.stop();
 	}
 
-	// Are we finished with the exercise (is the final word correct)?
-	var m = answer.length - 1;
-	var lastAnsweredCorrect = (answer[m] === String(this.lookahead[m]));
-	var allAnswered = (answer.length >= this.lookahead.length);
-	if(this.haveFinalWord && lastAnsweredCorrect && allAnswered) {
-		this.clock.stop();
-		return;
-	}
-	
-	// Now that we know words are appropriately marked, shift some off
-	// the beginning if our input is getting too long.
-	var limit = this.ex.inputLength;
-	if(limit === undefined) limit = 30;
-	if(answerString.length > limit) {
-		// Save the old length (so we can tell how much we dropped) and
-		// the selection.
-		var oldLen = answerString.length;
-		var sel = saveSelection(this.ans);
-		// Drop words until we're under the limit.
-		while(answerString.length > limit) {
-			var newAnswer = answerString.replace(/^\s*[\S]+(\s|$)+/, '');
-			answerString = newAnswer;
-			this.scrollTo = this.scrollTo.nextSibling;
-			answer.shift();
-			this.lookahead.shift();
-		}
-		// Set the new text and restore the (adjusted) selection.
-		this.ans.firstChild.nodeValue = answerString;
-		var dropped = oldLen - answerString.length;
-		this.droppedChars += dropped;
-		sel.start -= dropped;
-		sel.end -= dropped;
-		restoreSelection(this.ans, sel);
-		// Update the output scrolling.
-		this.out.scrollTo(this.scrollTo);
-	}
+	if(match) ex = nextWord(exercise, range);
+	var r = range.getBoundingClientRect();
 
-	this.nextWordIndex = Math.max(0, answer.length - (lastAnsweredCorrect ? 0 : 1));
+	var limit = 0.66 * window.innerHeight;
+	if(r.bottom > limit) window.scrollBy(0, r.bottom - limit);
+
 	if(this.hint && this.hint.update) {
-		this.hint.update(this.lookahead[this.nextWordIndex]);
+		this.hint.update(ex, r.left, r.top);
 	}
 }
 
-// Ensure that `words` (and `out`) contain at least `n` words (unless
-// we're at the end of the exercise).
 TypeJig.prototype.getWords = function(n) {
-	if(n === undefined) n = 1; else n = Math.max(n, 1);
-	n -= this.lookahead.length;
+	// Split the exercise text into words (keeping the whitespace).
+	var exercise = this.display.textContent.split(/\b/);
 
-	// count chars already in lookahead
-	var charCount = 0;
-	for(var i=0; i<this.lookahead.length; ++i) {
-		charCount += this.lookahead[i].length + (charCount ? 1 : 0);
+	// Add more text until we have enough (or there is no more).
+	if(this.exercise && typeof n === 'number') {
+		n = 2*(n + this.lookahead) + 1;
 	}
-
-	while(n-- > 0 || charCount < this.ex.lookahead) {
-		var word = this.ex.nextWord();
-		if(word === false) { this.haveFinalWord = true;  break; }
-		charCount += word.length + (charCount ? 1 : 0);
-		this.lookahead.push(word);
-		var text = document.createTextNode(' ' + word);
-		var span = document.createElement('span');
-		span.appendChild(text);
-		this.out.content.appendChild(span);
+	while(this.exercise && (!n || exercise.length < n)) {
+		var text = this.exercise.getText();
+		if(text) {
+			this.display.textContent += text;
+			exercise.push.apply(exercise, text.split(/\b/));
+		} else delete(this.exercise);
 	}
-	if(!this.scrollTo) this.scrollTo = this.out.content.firstChild;
-}
-
-// This is only called if the word is marked as an error, so it doesn't
-// need to check whether the error is present.
-TypeJig.prototype.removeError = function(word, error) {
-	this.errorCount--;
-}
-
-TypeJig.prototype.addError = function(word, error) {
-	this.errorCount++;
-	if(this.errors.hasOwnProperty(word)) {
-		var e = this.errors[word];
-		if(e.indexOf(error) !== -1) e.push(error);
-	} else this.errors[word] = [error];
-}
+	return exercise;
+};
 
 TypeJig.prototype.endExercise = function(seconds) {
-	if(this.running) this.running = false;
-	else return;
+	if(this.running) this.running = false; else return;
+
 	if(document.activeElement != document.body) document.activeElement.blur();
-	this.ans.setAttribute('contenteditable', false);
-	this.ans.className = '';
+	unbindEvent(this.input, this.changeHandler)
 
 	var minutes = seconds / 60;  // KEEP fractional part for WPM calculation!
 	seconds = Math.floor(seconds % 60);
 	if(seconds < 10) seconds = '0' + seconds;
 	var time = Math.floor(minutes) + ':' + seconds;
 
-	var charsTyped = this.droppedChars + this.ans.textContent.length;
-	var standardWords = charsTyped / 5;
+	var actualWords = this.input.value.split(/\s+/).length;
+	var standardWords = this.input.value.length / 5;
 	var standardWPM = Math.floor(standardWords / minutes);
 	var plural = this.errorCount===1 ? '' : 's';
-	var accuracy = Math.floor(100 * (1 - this.errorCount / standardWords));
+	var accuracy = Math.floor(100 * (1 - this.errorCount / actualWords));
 	var correctedWPM = Math.round(standardWPM - (this.errorCount / minutes));
 	var results = 'Time: ' + time + ' -  ' + standardWPM + ' WPM (CPM/5)';
 	if(this.errorCount === 0) results += ' with no uncorrected errors!';
 	else results += ', adjusting for ' + this.errorCount + ' incorrect word' + plural
 		+ ' (' + accuracy + '%) gives ' + correctedWPM + ' WPM.'
-	this.ans.firstChild.nodeValue = results;
+	this.display.textContent += '\n\n' + results;
 }
 
-
-/* -----------------------------------------------------------------------
- * ScrollBox - scroll a single line of words to the left.
- *
- * Create a `div` with `overflow: hidden` and put the exercise content
- * in another block-level element inside that.  Below (or above) that,
- * create an input element and give it a large left margin so some of
- * the already-typed exercise text has room to the left.
- *
- * Break your exercise content into spans (with no whitespace in
- * between).  Then call the `scrollTo(element, instantly)` method to
- * scroll the given element so that it lines up with the beginning of
- * the input field.
- */
-
-function ScrollBox(contentElt, alignToElt) {
-	this.content = contentElt;
-	if(alignToElt) {
-		var style = window.getComputedStyle(alignToElt, null);
-		this.offset = parseFloat(style.getPropertyValue('margin-left'));
-	} else this.offset = 0;
-	this.margin = this.offset;
-	this.content.style.marginLeft = this.offset + 'px';
-	this.transition = null
-	this.removeCount = 0;
-	this.removeWidth = 0;
-
-	bindEvent(this.content, 'transitionend', this.endTransition.bind(this));
-	bindEvent(alignToElt, 'focus', function(evt) {
-		var prompts = this.querySelectorAll('.prompt');
-		for(var i=0; i<prompts.length; ++i) this.removeChild(prompts[i]);
-	});
-}
-
-ScrollBox.prototype.endTransition = function() {
-	this.transition = null
-	this.content.style.transition = '';
-	if(this.removeCount > 0) {
-		do {
-			this.content.removeChild(this.content.firstChild);
-		} while(--this.removeCount > 0);
-		this.margin += this.removeWidth;
-		this.removeWidth = 0;
-		this.content.style.marginLeft = this.margin + 'px';
-	}
-}
-
-ScrollBox.prototype.scrollTo = function(elt, instantly) {
-	var curStyle = window.getComputedStyle(this.content);
-	var oldMargin = parseFloat(curStyle.getPropertyValue('margin-left'));
-	this.removeCount = 0;
-	this.removeWidth = 0;
-	this.margin = this.offset;
-	if(elt) {
-		while((elt = elt.previousSibling)) {
-			if(this.margin < 0) {
-				this.removeCount++;
-				this.removeWidth += elt.offsetWidth;
-			}
-			this.margin -= elt.offsetWidth;
-		}
-	}
-	var bezierStep = function (points, time) {
-		var ret = [], i
-		for (i = 0; i < points.length - 1; ++i) {
-			ret.push([
-				// a + (b - a) * time
-				points[i][0] + time * (points[i + 1][0] - points[i][0]),
-				points[i][1] + time * (points[i + 1][1] - points[i][1]),
-			])
-		}
-		if (ret.length === 1) {
-			return ret[0]
-		}
-		return bezierStep(ret, time)
-	}
-	var bezier = function (args, time) {
-		return bezierStep([
-			[0, 0],
-			[args[0], args[1]],
-			[args[2], args[3]],
-			[1, 1],
-		], time)
-	}
-	var bezierSpeed = function (transition, position) {
-		var px = Math.abs(transition.end - transition.start)
-		var i
-		var less = 0
-		var more = 1
-		var cur = 0.5
-		var lessPos = 0
-		var morePos = 1
-		var curPos
-
-		if (position == transition.start) {
-			cur = 0
-		} else if (position == transition.end) {
-			cur = 1
-		} else {
-			// translate into 0-1 range
-			position = (position - transition.start) / (transition.end - transition.start) 
-			// find two points very near position on either side
-			for (let i = 0; i < 6; ++i) {
-				if ((curPos = bezier(transition.bezier, cur)[1]) < position) {
-					less = cur
-					lessPos = curPos
-					cur += (more - cur) / 2
-				} else {
-					more = cur
-					morePos = curPos
-					cur -= (cur - less) / 2
-				}
-			}
-			// linear interpolate between those points
-			cur = less + (more - less) * (position - lessPos) / (morePos - lessPos)
-		}
-		// choose points very (and equally) near but not past the ends
-		if (cur < 0.0005001) {
-			less = 0
-			more = 0.0005001
-		} else if (cur > 0.9994999) {
-			less = 0.9994999
-			more = 1
-		} else {
-			less = cur - 0.0005
-			more = cur + 0.0005
-		}
-		var lessXY = bezier(transition.bezier, less)
-		var moreXY = bezier(transition.bezier, more)
-		return px * (moreXY[1] - lessXY[1]) / (moreXY[0] - lessXY[0])
-	}
-
-	var px = this.margin - oldMargin
-
-	var style = this.content.style
-	if(instantly) {
-		this.transition = null;
-		style.transition = ''
-		style.marginLeft = this.margin + 'px'
-	} else {
-		// transition timing constants
-		var duration = 4
-		var startR = 0.3
-		// Start the transition.
-		if(Math.abs(px) > 0.1) {
-			var currentSpeed, startTheta;
-			if (this.transition != null) {
-				currentSpeed = bezierSpeed(this.transition, oldMargin)
-				// currentSpeed units: pixels per duration
-				startTheta = Math.atan(currentSpeed / Math.abs(px))
-				// advance one frame
-				style.transition = ''
-				style.marginLeft = oldMargin + (currentSpeed / duration / 60) + 'px'
-			} else {
-				currentSpeed = 0
-				startTheta = 0
-			}
-			this.transition = {
-				duration: duration,
-				start: oldMargin,
-				end: this.margin,
-				distance: Math.abs(this.margin - oldMargin),
-				bezier: [
-					Math.cos(startTheta) * startR,
-					Math.sin(startTheta) * startR,
-					1 - startR,
-					1,
-				],
-			}
-			style.transition = trns = 'margin-left ' + duration + 's cubic-bezier(' +
-				this.transition.bezier.join(', ') + ')'
-			style.marginLeft = this.margin + 'px'
-		} else {
-			this.transition = null
-		}
-	}
-}
 
 
 // -----------------------------------------------------------------------
@@ -408,6 +199,16 @@ function pluralize(word) {
 function bindEvent(elt, evt, fn) {
 	if(elt.addEventListener) elt.addEventListener(evt, fn, false);
 	else if(elt.attachEvent) elt.attachEvent('on'+evt, fn);
+}
+
+function unbindEvent(elt, evt, fn) {
+	if(elt.removeEventListener) elt.removeEventListener(evt, fn, false);
+	else if(elt.detachEvent) elt.detachEvent('on'+evt, fn);
+}
+
+function documentElement(elt) {
+	if(typeof elt === 'string') elt = document.getElementById(elt);
+	return elt;
 }
 
 function scrollOffset(elt) {
@@ -476,76 +277,9 @@ function rotateAndShuffle(a) {
 	return a[0];
 }
 
-// http://stackoverflow.com/a/13950376/2426692
-var saveSelection, restoreSelection;
 
-if (window.getSelection && document.createRange) {
-    saveSelection = function(containerEl) {
-        var range = window.getSelection().getRangeAt(0);
-        var preSelectionRange = range.cloneRange();
-        preSelectionRange.selectNodeContents(containerEl);
-        preSelectionRange.setEnd(range.startContainer, range.startOffset);
-        var start = preSelectionRange.toString().length;
 
-        return {
-            start: start,
-            end: start + range.toString().length
-        };
-    };
-
-    restoreSelection = function(containerEl, savedSel) {
-        var charIndex = 0, range = document.createRange();
-        range.setStart(containerEl, 0);
-        range.collapse(true);
-        var nodeStack = [containerEl], node, foundStart = false, stop = false;
-
-        while (!stop && (node = nodeStack.pop())) {
-            if (node.nodeType == 3) {
-                var nextCharIndex = charIndex + node.length;
-                if (!foundStart && savedSel.start >= charIndex && savedSel.start <= nextCharIndex) {
-                    range.setStart(node, savedSel.start - charIndex);
-                    foundStart = true;
-                }
-                if (foundStart && savedSel.end >= charIndex && savedSel.end <= nextCharIndex) {
-                    range.setEnd(node, savedSel.end - charIndex);
-                    stop = true;
-                }
-                charIndex = nextCharIndex;
-            } else {
-                var i = node.childNodes.length;
-                while (i--) {
-                    nodeStack.push(node.childNodes[i]);
-                }
-            }
-        }
-
-        var sel = window.getSelection();
-        sel.removeAllRanges();
-        sel.addRange(range);
-    }
-} else if (document.selection) {
-    saveSelection = function(containerEl) {
-        var selectedTextRange = document.selection.createRange();
-        var preSelectionTextRange = document.body.createTextRange();
-        preSelectionTextRange.moveToElementText(containerEl);
-        preSelectionTextRange.setEndPoint("EndToStart", selectedTextRange);
-        var start = preSelectionTextRange.text.length;
-
-        return {
-            start: start,
-            end: start + selectedTextRange.text.length
-        }
-    };
-
-    restoreSelection = function(containerEl, savedSel) {
-        var textRange = document.body.createTextRange();
-        textRange.moveToElementText(containerEl);
-        textRange.collapse(true);
-        textRange.moveEnd("character", savedSel.end);
-        textRange.moveStart("character", savedSel.start);
-        textRange.select();
-    };
-}
+// -----------------------------------------------------------------------
 
 TypeJig.Timer = function(elt, seconds) {
 	this.elt = elt;
@@ -597,8 +331,11 @@ TypeJig.Timer.prototype.showTime = function() {
 }
 
 
+// -----------------------------------------------------------------------
+
 
 TypeJig.Exercise = function(words, seconds, shuffle, select) {
+	this.started = false;
 	this.words = words;
 	this.seconds = seconds;
 	this.shuffle = shuffle;
@@ -606,11 +343,6 @@ TypeJig.Exercise = function(words, seconds, shuffle, select) {
 		|| TypeJig.Exercise.select.random;
 
 	if(shuffle) randomize(this.words);
-
-	// Characters of the exercise to load ahead.
-	this.lookahead = 150;
-	// Characters of input to accumulate before shifting.
-	this.inputLength = 20;
 }
 
 function indexInto(a) {
@@ -630,8 +362,10 @@ TypeJig.Exercise.select = {
 	}
 };
 
-TypeJig.Exercise.prototype.nextWord = function() {
+TypeJig.Exercise.prototype.getText = function() {
 	var word = rotateAndShuffle(this.words);
-	if(word instanceof Array) return this.select(word);
-	else return word;
+	if(word instanceof Array) word = this.select(word);
+	var separator = this.started ? ' ' : '';
+	this.started = true;
+	return word ? separator + word : word;
 }

@@ -29,6 +29,6 @@ function setExercise(name, exercise, hints) {
 	var again = document.getElementById('again');
 	again.href = document.location.href;
 
-	return jig = new TypeJig(exercise, 'exercise', 'answer', 'clock', hints);
+	return jig = new TypeJig(exercise, 'exercise', 'input', 'answer', 'clock', hints);
 }
 
