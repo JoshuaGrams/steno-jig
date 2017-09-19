@@ -10,21 +10,20 @@ function numberSentences(params) {
 		TypeJig.WordSets.TransitiveVerbs.map(function(v){return [v, 'v'];}),
 		TypeJig.WordSets.Adjectives.map(function(a){return [a, 'a'];})
 	);
-	exercise.sentence = [];
 	randomize(exercise.nouns);
 	randomize(exercise.actions);
-	exercise.nextWord = nextNumberWord;
+	exercise.getText = getNumberText;
 	exercise.nextSentence = nextNumberSentence;
 	exercise.nextClause = nextNumberClause;
 	exercise.name = 'Number Sentences';
+	exercise.started = false;
 	return exercise;
 }
 
-function nextNumberWord() {
-	if(this.sentence.length === 0) {
-		this.sentence = this.nextSentence();
-	}
-	return this.sentence.shift();
+function getNumberText() {
+	var sentence = (this.started ? ' ' : '') + this.nextSentence().join(' ');
+	this.started = true;
+	return sentence;
 }
 
 function nextNumberSentence() {
