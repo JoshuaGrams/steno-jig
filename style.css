@@ -77,13 +77,13 @@ a, a:visited {
 	position: absolute;
 	width: 64ex;
 	max-width: 60%;
-	line-height: 2.5;
+	line-height: 3;
 	margin-top: -0.8em;
 }
 #exercise { white-space: pre-wrap; }
 #answer {
-	padding-top: 1.1em;
-	padding-bottom: 1.4em;
+	padding-top: 1.2em;
+	padding-bottom: 1.8em;
 	color: #888;
 	white-space: pre;
 }
