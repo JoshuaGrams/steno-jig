@@ -5,7 +5,7 @@
  * `output`, and `clock` are elements (or element ID strings).
  */
 
-function TypeJig(exercise, display, input, output, clock, hint) {
+function TypeJig(exercise, display, input, clock, hint) {
 	this.running = false;
 	this.exercise = exercise;
 	this.display = documentElement(display);
@@ -18,6 +18,13 @@ function TypeJig(exercise, display, input, output, clock, hint) {
 	if(this.hint && this.hint.update) this.hint.update(this.words[0]);
 	this.changeHandler = this.answerChanged.bind(this);
 	bindEvent(this.input, 'input', this.changeHandler);
+	var output = this.display;
+	do output = output.nextSibling; while(output.nodeName !== 'DIV');
+	var focusInput = function(evt) {
+		this.input.focus(); evt.preventDefault();
+	};
+	bindEvent(output, 'click', focusInput.bind(this));
+	bindEvent(this.display, 'click', focusInput.bind(this));
 	this.input.value = '';
 	this.input.focus();
 	window.scroll(0, scrollOffset(this.display));
@@ -92,8 +99,10 @@ TypeJig.prototype.answerChanged = function() {
 	var ex, y, match;
 
 	// Display the user's answer, marking it for correctness.
+	var oldOutput = this.display;
+	do oldOutput = oldOutput.nextSibling; while(oldOutput.nodeName !== 'DIV');
 	var output = document.createElement('div');
-	output.id = 'answer';
+	output.id = oldOutput.id;
 	this.errorCount = 0;
 	for(let i=0; i<answer.length; ++i) {
 		var ans = answer[i];
@@ -137,7 +146,7 @@ TypeJig.prototype.answerChanged = function() {
 		this.hint.update(ex, r.left, r.top);
 	}
 
-	this.display.parentNode.replaceChild(output, this.display.nextSibling);
+	this.display.parentNode.replaceChild(output, oldOutput);
 }
 
 TypeJig.prototype.getWords = function(n) {
