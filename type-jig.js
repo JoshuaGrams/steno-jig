@@ -30,6 +30,10 @@ function TypeJig(exercise, display, input, clock, hint) {
 	window.scroll(0, scrollOffset(this.display));
 }
 
+TypeJig.wordsAndSpaces = function(string) {
+	return string.match(/\S+|\s+/g) || [];
+}
+
 // Can contain a text-to-pseudosteno dictionary for each steno theory.
 // Pseudosteno can be a single string or an array of strings, with
 // longest entries first and shortest briefs last.
@@ -88,7 +92,7 @@ TypeJig.prototype.answerChanged = function() {
 
 	// Get the exercise and the user's answer as arrays of
 	// words interspersed with whitespace.
-	var answer = this.input.value.split(/\b/);
+	var answer = TypeJig.wordsAndSpaces(this.input.value);
 	var exercise = this.getWords(Math.ceil(answer.length/2));
 
 	// Get the first word of the exercise, and create a range
@@ -151,7 +155,7 @@ TypeJig.prototype.answerChanged = function() {
 
 TypeJig.prototype.getWords = function(n) {
 	// Split the exercise text into words (keeping the whitespace).
-	var exercise = this.display.textContent.split(/\b/);
+	var exercise = TypeJig.wordsAndSpaces(this.display.textContent);
 
 	// Add more text until we have enough (or there is no more).
 	if(this.exercise && typeof n === 'number') {
@@ -161,7 +165,7 @@ TypeJig.prototype.getWords = function(n) {
 		var text = this.exercise.getText();
 		if(text) {
 			this.display.textContent += text;
-			exercise.push.apply(exercise, text.split(/\b/));
+			exercise.push.apply(exercise, TypeJig.wordsAndSpaces(text));
 		} else delete(this.exercise);
 	}
 	return exercise;
