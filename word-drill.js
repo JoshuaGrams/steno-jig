@@ -18,7 +18,7 @@ function wordDrill(params) {
 	if(!words.length) return;
 	var name = words.name;
 
-	var timeLimit = Math.round(60 * params.timeLimit);
+	var timeLimit = 0;
 
 	var first = +params.first || 0;
 	var count = +params.count || words.length;
@@ -29,6 +29,7 @@ function wordDrill(params) {
 	var randomly = (params.type === 'randomly');
 
 	if(params.type === 'randomly') {
+		timeLimit = Math.round(60 * params.timeLimit);
 		name = timeString(params.timeLimit) + ' of Random ' + name;
 	} else if(params.type === 'shuffled') {
 		name = 'Randomized ' + name;
