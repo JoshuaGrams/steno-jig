@@ -10,7 +10,6 @@ function TypeJig(exercise, display, input, output, clock, hint) {
 	this.exercise = exercise;
 	this.display = documentElement(display);
 	this.input = documentElement(input);
-	this.output = documentElement(output);
 	this.clock = new TypeJig.Timer(documentElement(clock), exercise.seconds);
 	this.hint = hint;
 	this.errorCount = 0;
@@ -22,7 +21,7 @@ function TypeJig(exercise, display, input, output, clock, hint) {
 	bindEvent(document.body, 'keydown', this.keyDown.bind(this));
 	this.input.value = '';
 	this.input.focus();
-	window.scroll(0, scrollOffset(this.output));
+	window.scroll(0, scrollOffset(this.display));
 }
 
 // Can contain a text-to-pseudosteno dictionary for each steno theory.
@@ -94,18 +93,19 @@ TypeJig.prototype.answerChanged = function() {
 	var ex, y, match;
 
 	// Display the user's answer, marking it for correctness.
-	this.output.textContent = '';
+	var output = document.createElement('div');
+	output.id = 'answer';
 	this.errorCount = 0;
 	for(let i=0; i<answer.length; ++i) {
 		var ans = answer[i];
 		if(/^\s+$/.test(ans)) {  // whitespace
-			this.output.appendChild(document.createTextNode(ans));
+			output.appendChild(document.createTextNode(ans));
 			continue;
 		}
 
 		ex = nextWord(exercise, range);
 		var y2 = range.getBoundingClientRect().top;
-		if(y2 > y) this.output.appendChild(document.createTextNode('\n'));
+		if(y2 > y) output.appendChild(document.createTextNode('\n'));
 		y = y2;
 
 		var endOfAnswer = (i === answer.length-1);
@@ -113,14 +113,14 @@ TypeJig.prototype.answerChanged = function() {
 		match = (ans == ex);
 		if(partial) {
 			// Don't yet know whether it matched, so add it as raw text.
-			this.output.appendChild(document.createTextNode(ans));
+			output.appendChild(document.createTextNode(ans));
 		} else {
 			this.errorCount += !match;
 			// Add it as a span marked as correct or incorrect.
 			var span = document.createElement('span');
 			span.appendChild(document.createTextNode(ans));
 			span.className = match ? 'correct' : 'incorrect';
-			this.output.appendChild(span);
+			output.appendChild(span);
 		}
 
 		// End the exercise if the last word was answered correctly.
@@ -137,6 +137,8 @@ TypeJig.prototype.answerChanged = function() {
 	if(this.hint && this.hint.update) {
 		this.hint.update(ex, r.left, r.top);
 	}
+
+	this.display.parentNode.replaceChild(output, this.display.nextSibling);
 }
 
 TypeJig.prototype.keyDown = function (e) {
