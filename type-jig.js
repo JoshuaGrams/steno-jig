@@ -6,6 +6,8 @@
  */
 
 function TypeJig(exercise, display, input, clock, hint) {
+	var self = this;
+
 	this.running = false;
 	this.exercise = exercise;
 	this.display = documentElement(display);
@@ -16,20 +18,28 @@ function TypeJig(exercise, display, input, clock, hint) {
 	this.lookahead = 50;
 	this.getWords(0);
 	if(this.hint && this.hint.update) this.hint.update(this.words[0]);
+
 	this.changeHandler = this.answerChanged.bind(this);
-	bindEvent(this.input, 'input', this.changeHandler);
 	bindEvent(document.body, 'keydown', this.keyDown.bind(this));
-	var focusInput = function(evt) {
-		this.input.focus(); evt.preventDefault();
-	};
+	bindEvent(this.input, 'input', function() {
+		if(!self.pendingChange) {
+			self.pendingChange = setTimeout(self.changeHandler, 5);
+		}
+	});
+
 	var output = nextDiv(this.display);
 	var cursor = document.createElement('span');
 	cursor.className = 'cursor';
 	output.appendChild(cursor);
-	bindEvent(output, 'click', focusInput.bind(this));
-	bindEvent(this.display, 'click', focusInput.bind(this));
+
+	var focusInput = function(evt) {
+		self.input.focus(); evt.preventDefault();
+	};
+	bindEvent(output, 'click', focusInput);
+	bindEvent(this.display, 'click', focusInput);
 	this.input.value = '';
 	this.input.focus();
+
 	window.scroll(0, scrollOffset(this.display));
 }
 
@@ -91,6 +101,7 @@ function nextWord(words, range) {
 }
 
 TypeJig.prototype.answerChanged = function() {
+	delete this.pendingChange;
 	if(!this.running) this.start();
 
 	// Get the exercise and the user's answer as arrays of
