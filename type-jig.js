@@ -123,6 +123,7 @@ TypeJig.prototype.answerChanged = function() {
 	output.id = oldOutput.id;
 	this.errorCount = 0;
 	for(let i=0; i<answer.length; ++i) {
+		var endOfAnswer = (i === answer.length-1);
 		var ans = answer[i];
 		if(/^\s+$/.test(ans)) {  // whitespace
 			output.appendChild(document.createTextNode(ans));
@@ -130,13 +131,15 @@ TypeJig.prototype.answerChanged = function() {
 		}
 
 		ex = nextWord(exercise, range);
+		match = (ans == ex);
+
 		var y2 = range.getBoundingClientRect().top;
-		if(y2 > y) output.appendChild(document.createTextNode('\n'));
+		if(y2 > y && !match && endOfAnswer) {
+			output.appendChild(document.createTextNode('\n'));
+		}
 		y = y2;
 
-		var endOfAnswer = (i === answer.length-1);
 		var partial = endOfAnswer && ans.length < ex.length && ans === ex.slice(0, ans.length);
-		match = (ans == ex);
 		if(partial) {
 			// Don't yet know whether it matched, so add it as raw text.
 			output.appendChild(document.createTextNode(ans));

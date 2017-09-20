@@ -74,19 +74,25 @@ a, a:visited {
 	left: -10000px;
 }
 
-#exercise, #answer {
-	position: relative;
+#drill-content {
 	width: 64ex;
-	max-width: 60%;
-	line-height: 3;
-	margin-top: -0.8em;
+	max-width: 80%;
+	margin: 0 auto;
+	position: relative;
 }
-#exercise { white-space: pre-wrap; }
+#exercise, #answer {
+	width: 100%;
+	margin-top: -0.8em;
+	line-height: 3;
+	white-space: pre-wrap;
+}
+#exercise {
+	position: relative;
+}
 #answer {
 	position: absolute;
 	padding-top: 2em;
 	color: #888;
-	white-space: pre;
 	user-select: none;
 	-moz-user-select: none;
 	-webkit-user-select: none;
