@@ -13,9 +13,14 @@ function TypeJig(exercise, display, input, clock, hint) {
 	this.clock = new TypeJig.Timer(documentElement(clock), exercise.seconds);
 	this.hint = hint;
 	this.errorCount = 0;
+
 	this.lookahead = 50;
 	this.getWords(0);
-	if(this.hint && this.hint.update) this.hint.update(this.words[0]);
+	if(this.hint && this.hint.update) {
+		var word = (this.display.textContent.match(/^\S+/) || [''])[0];
+		var rect = this.display.getBoundingClientRect();
+		this.hint.update(word, rect.left, rect.top);
+	}
 
 	var self = this;  // close over `this` for event handlers.
 
