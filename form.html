@@ -134,13 +134,13 @@
 	</div>
 
 	<div id="nav">
+		<p id="strokes"></p>
 		<p id="clock" class="clock"></p>
 
 		<p class="center"><a id="back" title="LeftArrow">&larr; Back to Menu <span class="shortcutkey">(LeftArrow)</span></a></p>
 		<p class="center"><a id="again" title="Enter">&#8634; Restart <span class="shortcutkey">(Enter)</span></a></p>
 	</div>
 
-	<p id="error-log"></p>
 	<textarea id="input"></textarea>
 </div>
 
@@ -152,8 +152,12 @@ window.onload = function() {
 		else exercise = wordDrill(fields);
 		if(exercise) {
 			if(fields.hints) {
+				var strokes = document.getElementById('strokes');
+				if(fields.floating_hints) {
+					strokes.style.position = 'fixed';
+				}
 				var translations = TypeJig.shortestTranslations(TypeJig.Translations.Plover);
-				var hints = new StenoDisplay('strokes', translations, true);
+				var hints = new StenoDisplay(strokes, translations, true);
 			}
 
 			display_only('lesson');
