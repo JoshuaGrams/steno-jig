@@ -6,8 +6,6 @@
  */
 
 function TypeJig(exercise, display, input, clock, hint) {
-	var self = this;
-
 	this.running = false;
 	this.exercise = exercise;
 	this.display = documentElement(display);
@@ -19,6 +17,8 @@ function TypeJig(exercise, display, input, clock, hint) {
 	this.getWords(0);
 	if(this.hint && this.hint.update) this.hint.update(this.words[0]);
 
+	var self = this;  // close over `this` for event handlers.
+
 	this.changeHandler = this.answerChanged.bind(this);
 	bindEvent(this.input, 'input', function() {
 		if(!self.pendingChange) {
@@ -26,15 +26,12 @@ function TypeJig(exercise, display, input, clock, hint) {
 		}
 	});
 
-	var output = nextDiv(this.display);
-	var cursor = document.createElement('span');
-	cursor.className = 'cursor';
-	output.appendChild(cursor);
-
-	var focusInput = function(evt) {
+	var focusHandler = this.updateCursor.bind(this);
+	bindEvent(this.input, 'focus', focusHandler);
+	bindEvent(this.input, 'blur', focusHandler);
+	function focusInput(evt) {
 		self.input.focus(); evt.preventDefault();
 	};
-	bindEvent(output, 'click', focusInput);
 	bindEvent(this.display, 'click', focusInput);
 	this.input.value = '';
 	this.input.focus();
@@ -116,7 +113,7 @@ TypeJig.prototype.answerChanged = function() {
 	var ex, y, match;
 
 	// Display the user's answer, marking it for correctness.
-	var oldOutput = nextDiv(this.display);
+	var oldOutput = this.display.previousElementSibling;
 	var output = document.createElement('div');
 	output.id = oldOutput.id;
 	this.errorCount = 0;
@@ -147,16 +144,11 @@ TypeJig.prototype.answerChanged = function() {
 			output.appendChild(span);
 		}
 
-		if(endOfAnswer) {
-			var span = document.createElement('span');
-			span.className = 'cursor';
-			output.appendChild(span);
-		}
-
 		// End the exercise if the last word was answered correctly.
 		var last = (exercise.length === 0 && !this.exercise);
 		if(last && match) window.setTimeout(this.clock.stop.bind(this.clock));
 	}
+	this.updateCursor(output);
 
 	if(match) ex = nextWord(exercise, range);
 	var r = range.getBoundingClientRect();
@@ -195,9 +187,6 @@ TypeJig.prototype.endExercise = function(seconds) {
 	if(document.activeElement != document.body) document.activeElement.blur();
 	unbindEvent(this.input, this.changeHandler)
 
-	var cursors = nextDiv(this.display).getElementsByClassName('cursor');
-	for(let i=cursors.length-1; i>=0; --i) cursors[i].className = '';
-
 	var minutes = seconds / 60;  // KEEP fractional part for WPM calculation!
 	seconds = Math.floor(seconds % 60);
 	if(seconds < 10) seconds = '0' + seconds;
@@ -214,6 +203,39 @@ TypeJig.prototype.endExercise = function(seconds) {
 	else results += ', adjusting for ' + this.errorCount + ' incorrect word' + plural
 		+ ' (' + accuracy + '%) gives ' + correctedWPM + ' WPM.'
 	this.display.textContent += '\n\n' + results;
+}
+
+TypeJig.prototype.addCursor = function(output) {
+	if(!output) output = this.display.previousElementSibling;
+	var cursor = document.createElement('span');
+	cursor.className = 'cursor';
+	output.appendChild(cursor);
+}
+
+TypeJig.prototype.removeCursor = function(output) {
+	if(!output) output = this.display.previousElementSibling;
+	var cursors = output.getElementsByClassName('cursor');
+	// Note that we go backwards since it is a live collection.  Elements
+	// are removed immediately so we need to not screw up indices that we
+	// still need.
+	for(let i=cursors.length-1; i>=0; --i) {
+		var c = cursors[i];
+		c.parentNode.removeChild(c);
+	}
+}
+
+// Gets called on focus and blur events, and also gets called with a
+// div when we're building the new output.
+TypeJig.prototype.updateCursor = function(evt) {
+	var hasFocus, output;
+	if(evt.type === 'focus') hasFocus = true;
+	else if(evt.type === 'blur') hasFocus = false;
+	else {
+		output = evt;
+		hasFocus = document.activeElement === this.input;
+	}
+	if(hasFocus) this.addCursor(output);
+	else this.removeCursor(output);
 }
 
 
@@ -244,11 +266,6 @@ function unbindEvent(elt, evt, fn) {
 
 function documentElement(elt) {
 	if(typeof elt === 'string') elt = document.getElementById(elt);
-	return elt;
-}
-
-function nextDiv(elt) {
-	do elt = elt.nextSibling; while(elt.nodeName !== 'DIV');
 	return elt;
 }
 
