@@ -217,6 +217,7 @@ TypeJig.prototype.addCursor = function(output) {
 	if(!output) output = this.display.previousElementSibling;
 	var cursor = document.createElement('span');
 	cursor.className = 'cursor';
+	output.appendChild(document.createTextNode('\u200b'));
 	output.appendChild(cursor);
 }
 
@@ -228,6 +229,7 @@ TypeJig.prototype.removeCursor = function(output) {
 	// still need.
 	for(let i=cursors.length-1; i>=0; --i) {
 		var c = cursors[i];
+		c.parentNode.removeChild(c.previousSibling);
 		c.parentNode.removeChild(c);
 	}
 }
