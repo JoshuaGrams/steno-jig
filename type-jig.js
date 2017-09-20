@@ -104,6 +104,7 @@ TypeJig.prototype.answerChanged = function() {
 	var ex, y, match;
 
 	// Display the user's answer, marking it for correctness.
+	var allDone;
 	var oldOutput = this.display;
 	do oldOutput = oldOutput.nextSibling; while(oldOutput.nodeName !== 'DIV');
 	var output = document.createElement('div');
@@ -136,9 +137,15 @@ TypeJig.prototype.answerChanged = function() {
 			output.appendChild(span);
 		}
 
+		if(endOfAnswer) {
+			var span = document.createElement('span');
+			span.className = 'cursor';
+			output.appendChild(span);
+		}
+
 		// End the exercise if the last word was answered correctly.
 		var last = (exercise.length === 0 && !this.exercise);
-		if(last && match) this.clock.stop();
+		allDone = last && match;
 	}
 
 	if(match) ex = nextWord(exercise, range);
@@ -152,6 +159,7 @@ TypeJig.prototype.answerChanged = function() {
 	}
 
 	this.display.parentNode.replaceChild(output, oldOutput);
+	if(allDone) this.clock.stop();
 }
 
 TypeJig.prototype.keyDown = function (e) {
@@ -198,6 +206,11 @@ TypeJig.prototype.endExercise = function(seconds) {
 
 	if(document.activeElement != document.body) document.activeElement.blur();
 	unbindEvent(this.input, this.changeHandler)
+
+	var output = this.display;
+	do output = output.nextSibling; while(output.nodeName !== 'DIV');
+	var cursors = output.getElementsByClassName('cursor');
+	for(let i=cursors.length-1; i>=0; --i) cursors[i].className = '';
 
 	var minutes = seconds / 60;  // KEEP fractional part for WPM calculation!
 	seconds = Math.floor(seconds % 60);

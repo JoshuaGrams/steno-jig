@@ -1,6 +1,6 @@
 // Display keys for arbitrary steno stroke sequences.
 
-// To use, simply create a new StenoDisply for your container
+// To use, simply create a new StenoDisplay for your container
 // element (can pass element id name or the element itself) and
 // then call the set method with the steno or pseudo-steno string
 // (strokes separated by slashes).
