@@ -19,16 +19,26 @@ function StenoDisplay(container, translations, showEmpty) {
 	this.lastText = false;
 	this.showEmpty = showEmpty;
 	this.errorLog = document.getElementById('error-log');
+
+	var styles = window.getComputedStyle(container);
+	var position = styles.getPropertyValue('position');
+	this.placeNearText = (position === 'fixed');
 }
 
-StenoDisplay.prototype.update = function(text, showEmpty) {
+StenoDisplay.prototype.update = function(text, x, y) {
+	text = text || '';
 	if(text !== this.lastText) {
 		this.lastText = text;
-		if(typeof showEmpty === 'undefined') showEmpty = this.showEmpty;
 		var strokes = this.lookup(text);
-		this.set(strokes, showEmpty);
+		this.set(strokes, this.showEmpty);
 		if(this.errorLog && !strokes) {
 			this.errorLog.innerHTML += 'No strokes for: ' + text + '<br>';
+		}
+		if(this.placeNearText) {
+			x = Math.round(x + 36);
+			y = Math.round(y - 110);
+			this.container.style.left = x + 'px';
+			this.container.style.top = y + 'px';
 		}
 	}
 }
