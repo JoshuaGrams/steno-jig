@@ -75,7 +75,7 @@ a, a:visited {
 }
 
 #exercise, #answer {
-	position: absolute;
+	position: relative;
 	width: 64ex;
 	max-width: 60%;
 	line-height: 3;
@@ -83,10 +83,13 @@ a, a:visited {
 }
 #exercise { white-space: pre-wrap; }
 #answer {
-	padding-top: 1.2em;
-	padding-bottom: 1.8em;
+	position: absolute;
+	padding-top: 2em;
 	color: #888;
 	white-space: pre;
+	user-select: none;
+	-moz-user-select: none;
+	-webkit-user-select: none;
 }
 #exercise p:not(:last-child)::after {
 	content: "¶";
