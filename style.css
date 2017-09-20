@@ -94,6 +94,7 @@ a, a:visited {
 
 .correct { background: #cfc; }
 .incorrect { background: #fcc; }
+.cursor { border-right: 2px solid black; }
 
 
 .clock { font-size: 300%; text-align: center; }
