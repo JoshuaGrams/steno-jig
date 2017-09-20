@@ -21,13 +21,13 @@
 	</div>
 
 	<div id="nav">
+		<p id="strokes"></p>
 		<p id="clock" class="clock"></p>
 		<p class="center"><a id="back">&larr; Back to Menu</a></p>
 		<p class="center"><a id="again">&#8634; Repeat Drill</a></p>
 		<p class="center"><a id="new">&rarr; New Drill</a></p>
 	</div>
 
-	<p id="error-log"></p>
 	<textarea id="input"></textarea>
 </div>
 
@@ -79,8 +79,12 @@ window.onload = function() {
 	var hints = null;
 
 	if(fields.hints) {
+		var strokes = document.getElementById('strokes');
+		if(fields.floating_hints) {
+			strokes.style.position = 'fixed';
+		}
 		var translations = TypeJig.shortestTranslations(TypeJig.Translations.Plover);
-		hints = new StenoDisplay('strokes', translations, true);
+		hints = new StenoDisplay(strokes, translations, true);
 	}
 
 	let words = [], sentence, i
@@ -98,6 +102,7 @@ window.onload = function() {
 	new_drill.href = document.location.href.toString().replace(/seed=([^&#]*)/, 'seed=' + Math.random().toString());
 
 	setExercise(name, exercise, hints);
+	back.href = back.href.replace('gutenberg', 'form');
 }
 </script>
 

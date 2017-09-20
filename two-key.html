@@ -23,6 +23,7 @@
 	in succesion.</p>
 
 	<div>
+		<p id="strokes"></p>
 		<div id="answer"></div>
 		<div id="exercise"></div>
 	</div>
@@ -34,7 +35,6 @@
 		<p class="center"><a id="again">&#8634; Restart</a></p>
 	</div>
 
-	<p id="error-log"></p>
 	<textarea id="input"></textarea>
 </div>
 
@@ -48,7 +48,11 @@
 			"who": "HO", "kilograms": "K-G/-S"
 		};
 		for(key in extra) translations[key] = extra[key];
-		// var hints = new StenoDisplay('strokes', translations, true);
+		var strokes = document.getElementById('strokes');
+		if(fields.floating_hints) {
+			strokes.style.position = 'fixed';
+		}
+		var hints = new StenoDisplay(strokes, translations, true);
 		var exercise = new TypeJig.Exercise(words);
 		var jig = new TypeJig(exercise, 'exercise', 'input', 'clock'); // , hints);
 	</script>
