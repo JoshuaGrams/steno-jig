@@ -232,7 +232,17 @@ TypeJig.prototype.endExercise = function(seconds) {
 	if(this.errorCount === 0) results += ' with no uncorrected errors!';
 	else results += ', adjusting for ' + this.errorCount + ' incorrect word' + plural
 		+ ' (' + accuracy + '%) gives ' + correctedWPM + ' WPM.'
-	this.display.textContent += '\n\n' + results;
+	results = '\n\n' + results;
+	var start = this.display.textContent.length;
+	var end = start + results.length;
+	this.display.textContent += results;
+
+	var range = document.createRange();
+	range.setStart(this.display.firstChild, start);
+	range.setEnd(this.display.firstChild, end);
+	var rect = range.getBoundingClientRect();
+	var scroll = rect.bottom - window.innerHeight;
+	if(scroll > 0) setTimeout(function(){window.scrollBy(0, scroll)}, 2);
 }
 
 TypeJig.prototype.addCursor = function(output) {
