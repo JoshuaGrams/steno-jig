@@ -18,11 +18,13 @@ function TypeJig(exercise, display, input, clock, hint) {
 	if(this.hint && this.hint.update) this.hint.update(this.words[0]);
 	this.changeHandler = this.answerChanged.bind(this);
 	bindEvent(this.input, 'input', this.changeHandler);
-	var output = this.display;
-	do output = output.nextSibling; while(output.nodeName !== 'DIV');
 	var focusInput = function(evt) {
 		this.input.focus(); evt.preventDefault();
 	};
+	var output = nextDiv(this.display);
+	var cursor = document.createElement('span');
+	cursor.className = 'cursor';
+	output.appendChild(cursor);
 	bindEvent(output, 'click', focusInput.bind(this));
 	bindEvent(this.display, 'click', focusInput.bind(this));
 	this.input.value = '';
@@ -103,9 +105,7 @@ TypeJig.prototype.answerChanged = function() {
 	var ex, y, match;
 
 	// Display the user's answer, marking it for correctness.
-	var allDone;
-	var oldOutput = this.display;
-	do oldOutput = oldOutput.nextSibling; while(oldOutput.nodeName !== 'DIV');
+	var oldOutput = nextDiv(this.display);
 	var output = document.createElement('div');
 	output.id = oldOutput.id;
 	this.errorCount = 0;
@@ -144,7 +144,7 @@ TypeJig.prototype.answerChanged = function() {
 
 		// End the exercise if the last word was answered correctly.
 		var last = (exercise.length === 0 && !this.exercise);
-		allDone = last && match;
+		if(last && match) window.setTimeout(this.clock.stop.bind(this.clock));
 	}
 
 	if(match) ex = nextWord(exercise, range);
@@ -158,7 +158,6 @@ TypeJig.prototype.answerChanged = function() {
 	}
 
 	this.display.parentNode.replaceChild(output, oldOutput);
-	if(allDone) this.clock.stop();
 }
 
 TypeJig.prototype.getWords = function(n) {
@@ -185,9 +184,7 @@ TypeJig.prototype.endExercise = function(seconds) {
 	if(document.activeElement != document.body) document.activeElement.blur();
 	unbindEvent(this.input, this.changeHandler)
 
-	var output = this.display;
-	do output = output.nextSibling; while(output.nodeName !== 'DIV');
-	var cursors = output.getElementsByClassName('cursor');
+	var cursors = nextDiv(this.display).getElementsByClassName('cursor');
 	for(let i=cursors.length-1; i>=0; --i) cursors[i].className = '';
 
 	var minutes = seconds / 60;  // KEEP fractional part for WPM calculation!
@@ -236,6 +233,11 @@ function unbindEvent(elt, evt, fn) {
 
 function documentElement(elt) {
 	if(typeof elt === 'string') elt = document.getElementById(elt);
+	return elt;
+}
+
+function nextDiv(elt) {
+	do elt = elt.nextSibling; while(elt.nodeName !== 'DIV');
 	return elt;
 }
 
