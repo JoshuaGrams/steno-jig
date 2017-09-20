@@ -133,11 +133,15 @@ TypeJig.prototype.answerChanged = function() {
 		ex = nextWord(exercise, range);
 		match = (ans == ex);
 
-		var y2 = range.getBoundingClientRect().top;
-		if(y2 > y && !match && endOfAnswer) {
-			output.appendChild(document.createTextNode('\n'));
+		var r = range.getBoundingClientRect();
+		if(r.top > y && endOfAnswer) {
+			if(!match) output.appendChild(document.createTextNode('\n'));
+			var limit = 0.66 * window.innerHeight;
+			var end = this.display.getBoundingClientRect().bottom;
+			var r = range.getBoundingClientRect();
+			if(end > window.innerHeight && r.bottom > limit) window.scrollBy(0, r.bottom - limit);
 		}
-		y = y2;
+		y = r.top;
 
 		var partial = endOfAnswer && ans.length < ex.length && ans === ex.slice(0, ans.length);
 		if(partial) {
@@ -160,9 +164,6 @@ TypeJig.prototype.answerChanged = function() {
 
 	if(match) ex = nextWord(exercise, range);
 	var r = range.getBoundingClientRect();
-
-	var limit = 0.66 * window.innerHeight;
-	if(r.bottom > limit) window.scrollBy(0, r.bottom - limit);
 
 	if(this.hint && this.hint.update) {
 		this.hint.update(ex, r.left, r.top);
