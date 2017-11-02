@@ -89,6 +89,7 @@ a, a:visited {
 }
 #exercise {
 	position: relative;
+	white-space: pre-wrap;
 }
 #answer {
 	position: absolute;
