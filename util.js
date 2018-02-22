@@ -25,7 +25,7 @@ function setExercise(name, exercise, hints) {
 	document.title = name + ' - ' + document.title;
 
 	var back = document.getElementById('back');
-	back.href = document.location.href.split('?')[0];
+	back.href = 'form.html';
 	var again = document.getElementById('again');
 	again.href = document.location.href;
 
