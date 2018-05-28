@@ -11,7 +11,7 @@
 		"Inversion",
 		"The Fifth Vowel Key",
 		"Long Vowel Chords",
-		"Dipthong Chords",
+		"Diphthong Chords",
 		"Vowel Disambiguator Chords",
 		"The Missing Keys",
 		"The Remaining Missing Letters",
@@ -99,7 +99,7 @@
 		'cruise', 'truce', 'truth', 'spew', 'skew',
 	];
 
-	Plover["Dipthong Chords"] = [
+	Plover["Diphthong Chords"] = [
 		'all', 'awful', 'raw', 'call', 'caught', 'crawl',
 		'sprawl', 'scald', 'straw', 'halt', 'hall', 'wall',
 		'out', 'how', 'howl', 'house', 'pout', 'power',
