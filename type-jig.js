@@ -22,6 +22,7 @@ function TypeJig(exercise, output, input, clock, hint) {
 	if(this.hint && this.hint.update) this.hint.update(this.lookahead[0] || '');
 	this.scrollTo = this.out.firstChild;
 	bindEvent(input, 'input', this.answerChanged.bind(this));
+	bindEvent(input, 'keydown', this.keyDown.bind(this));
 	input.focus();
 	window.scroll(0, scrollOffset(output));
 }
@@ -147,6 +148,27 @@ TypeJig.prototype.answerChanged = function() {
 		this.hint.update(this.lookahead[this.nextWordIndex]);
 	}
 }
+
+TypeJig.prototype.keyDown = function (e) {
+    var id;
+    switch (e.key) {
+        case "Enter":
+            id = "again";
+            break;
+        case "ArrowLeft":
+            id = "back";
+            break;
+        case "ArrowRight":
+            id = "new";
+            break;
+    }
+    if (id) {
+        var link = document.getElementById(id);
+        if (link) {
+            link.click();
+        }
+    }
+};
 
 // Ensure that `words` (and `out`) contain at least `n` words (unless
 // we're at the end of the exercise).
