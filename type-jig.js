@@ -22,7 +22,7 @@ function TypeJig(exercise, output, input, clock, hint) {
 	if(this.hint && this.hint.update) this.hint.update(this.lookahead[0] || '');
 	this.scrollTo = this.out.firstChild;
 	bindEvent(input, 'input', this.answerChanged.bind(this));
-	bindEvent(input, 'keydown', this.keyDown.bind(this));
+	bindEvent(document.body, 'keydown', this.keyDown.bind(this));
 	input.focus();
 	window.scroll(0, scrollOffset(output));
 }
