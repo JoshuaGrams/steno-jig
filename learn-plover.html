@@ -61,6 +61,11 @@ window.onload = function() {
 			drill.appendChild(option);
 		}
 		drill.focus();
+
+		loadFormState(form);
+		form.addEventListener("submit", function(){
+		    saveFormState(form);
+		});
 	} else {
 		displayOnly('lesson');
 		var fields = parseQueryString();
@@ -131,6 +136,46 @@ function parseQueryString() {
 		else vars[name] = value;
 	}
 	return vars;
+}
+
+function saveFormState(form) {
+    save({
+        drill: form.drill.value,
+        hints: form.hints.checked,
+        type: form.type.value,
+        timeLimit: form.timeLimit.value,
+    });
+}
+
+function loadFormState(form) {
+    var loaded = load();
+    if (loaded.drill) {
+        form.drill.value = loaded.drill;
+    }
+    form.hints.checked = loaded.hints;
+    form.type.value = loaded.type;
+    if (loaded.timeLimit) {
+        form.timeLimit.value = loaded.timeLimit;
+    }
+}
+
+var LOCAL_STORAGE_KEY = "learn-plover-form";
+
+function save(obj) {
+    try {
+        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(obj));
+    } catch (e) {
+        console.error(e);
+    }
+}
+
+function load() {
+    try {
+        return JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY)) || {};
+    } catch (e) {
+        console.error(e);
+        return {};
+    }
 }
 </script>
 </body>
