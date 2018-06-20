@@ -93,6 +93,17 @@ a, a:visited {
 
 .center { text-align: center; }
 
+/* Navigation */
+.navigation a {
+    text-decoration: none;
+}
+.navigation a:not(:last-child) {
+    margin-right: 30px;
+}
+.shortcutkey {
+    font-size: small;
+    vertical-align: middle;
+}
 
 /* Configure these to tune the stroke display to your liking. */
 
