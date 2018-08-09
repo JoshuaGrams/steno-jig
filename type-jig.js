@@ -621,6 +621,7 @@ TypeJig.Timer.prototype.showTime = function() {
 
 
 TypeJig.Exercise = function(words, seconds, shuffle, select) {
+	this.currentUnit = [];
 	this.words = words;
 	this.seconds = seconds;
 	this.shuffle = shuffle;
@@ -653,7 +654,11 @@ TypeJig.Exercise.select = {
 };
 
 TypeJig.Exercise.prototype.nextWord = function() {
-	var word = rotateAndShuffle(this.words);
-	if(word instanceof Array) return this.select(word);
-	else return word;
+	if(this.currentUnit.length === 0) {
+		var word = rotateAndShuffle(this.words);
+		if(word instanceof Array) word = this.select(word);
+		if(typeof word !== 'string') this.currentUnit = [];
+		else this.currentUnit = word.split(/\s+/)
+	}
+	return this.currentUnit.shift();
 }
