@@ -660,5 +660,5 @@ TypeJig.Exercise.prototype.nextWord = function() {
 		if(typeof word !== 'string') this.currentUnit = [];
 		else this.currentUnit = word.split(/\s+/)
 	}
-	return this.currentUnit.shift();
+	return this.currentUnit.shift() || false;
 }
