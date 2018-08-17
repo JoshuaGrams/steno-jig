@@ -87,7 +87,6 @@ a, a:visited {
 
 .correct {
 	background: #cfc;
-	text-decoration: underline;
 }
 .incorrect {
 	background: #fcc;
