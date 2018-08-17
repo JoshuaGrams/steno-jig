@@ -85,8 +85,13 @@ a, a:visited {
 
 .prompt { color: #666; }
 
-.correct { background: #cfc; }
-.incorrect { background: #fcc; }
+.correct {
+	background: #cfc;
+}
+.incorrect {
+	background: #fcc;
+	text-decoration: line-through;
+}
 
 
 .clock { font-size: 300%; text-align: center; }
@@ -129,13 +134,13 @@ a, a:visited {
 #strokes .rightVowel { transform: translate(-0.8em, 10%); }
 
 #strokes table tr td.pressed {
-	color: #400;
-	background: #dd4;
+	color: #000;
+	background: #fe7;
 }
 
 #strokes td.alt {
-	color: #444;
-	background: #999;
+	color: #555;
+	background: #888;
 }
 
 #strokes > * { vertical-align: top; }
