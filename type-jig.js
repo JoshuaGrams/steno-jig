@@ -14,7 +14,7 @@ function TypeJig(exercise, display, input, clock, hint) {
 	this.hint = hint;
 	this.errorCount = 0;
 
-	this.lookahead = 50;
+	this.lookahead = 1000;
 	this.getWords(0);
 	if(this.hint && this.hint.update) {
 		var word = (this.display.textContent.match(/^\S+/) || [''])[0];
