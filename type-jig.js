@@ -46,7 +46,9 @@ function TypeJig(exercise, display, input, clock, hint) {
 }
 
 TypeJig.wordsAndSpaces = function(string) {
-	return string.match(/\S+|\s+/g) || [];
+	let out = string.match(/\S+|\s+/g) || [];
+	if(out.length > 0 && /^\s*$/.test(out[0])) out.shift();
+	return out;
 }
 
 // Can contain a text-to-pseudosteno dictionary for each steno theory.
