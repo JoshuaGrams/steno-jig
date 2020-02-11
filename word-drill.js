@@ -14,7 +14,7 @@
 //   - `shuffled`: drill words once in a random order.
 
 function wordDrill(params) {
-	var words = getDrillWords(params.drill);
+	var words = getDrillWords(params.drill, +params.count || 0);
 	if(!words.length) return;
 	var name = words.name;
 
@@ -41,11 +41,17 @@ function wordDrill(params) {
 	return exercise;
 }
 
-function getDrillWords(drills) {
+function getDrillWords(drills, count) {
+	if(!count) count = 1000;
 	if(!Array.isArray(drills)) drills = [drills];
 	var name = ''; words = [];
 	for(let i=0; i<drills.length; ++i) {
 		var w = TypeJig.WordSets[drills[i]]
+		if(typeof w === 'function') {
+			const generateWord = w;
+			const n = Math.floor(count*(i+1)/drills.length) - Math.floor(count*i/drills.length);
+			w = [];  for(let j=0; j<n; ++j) w.push(generateWord());
+		}
 		if(w) {
 			var last = (i === drills.length-1);
 			name = nameAnd(name, last, drills[i]);
