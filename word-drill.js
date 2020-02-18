@@ -26,12 +26,13 @@ function wordDrill(params) {
 		words = words.slice(first, first+count);
 		name += ' ' + first + ' to ' + (first+count);
 	}
-	var randomly = (params.type === 'randomly');
-
-	if(params.type === 'randomly') {
+	if(params.timeLimit) {
 		timeLimit = Math.round(60 * params.timeLimit);
 		name = timeString(params.timeLimit) + ' of Random ' + name;
-	} else if(params.type === 'shuffled') {
+	}
+	var randomly = (params.type === 'randomly');
+
+	if(params.type === 'shuffled') {
 		name = 'Randomized ' + name;
 		shuffleTail(words, words.length);
 	}
