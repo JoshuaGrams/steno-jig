@@ -54,6 +54,15 @@
 		"wright"
 	];
 
+	TypeJig.WordSets['AI/OE/EE'] = TypeJig.wordCombos([
+		['he', 'hoe', 'hay'], ['lee', 'low', 'lay'],
+		['see', 'so', 'say'], ['we', 'woe', 'way'],
+		['seal', 'sole', 'sail'], ['teal', 'toll', 'tail'],
+		['keep', 'cope', 'cape'], ['peer', 'pore', 'pair'],
+		['weed', 'woad', 'wade'], ['heel', 'hole', 'hail'],
+		['real', 'role', 'rail'], ['rear', 'roar', 'rare']
+	]);
+
 	TypeJig.WordSets['Da Dreaded Dueling Digit Duo Drills 1'] = [
 		"EFB", "URP", "EFB", "URP", "EFB", "URP", "EFB", "URP", "EFB", "URP",
 		"EFB", "URP", "EFB", "URP", "EFB", "URP", "EFB", "URP", "EFB", "URP", "EFB",

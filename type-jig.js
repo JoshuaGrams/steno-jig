@@ -381,6 +381,28 @@ function rotateAndShuffle(a) {
 	return a[0];
 }
 
+TypeJig.wordCombos = function(combos) {
+	let index0, index1
+
+	function nextWord() {
+		if(index0 == null) {
+			shuffle(combos)
+			for(let i=0; i<combos.length; ++i) shuffle(combos[i])
+			index0 = 0, index1 = 0
+		}
+		if(index1 >= combos[index0].length) {
+			index0++; index1 = 0
+		}
+		if(index0 < combos.length) return combos[index0][index1++]
+		else {
+			index0 = null
+			return nextWord()
+		}
+	}
+
+	return nextWord
+}
+
 
 
 // -----------------------------------------------------------------------
