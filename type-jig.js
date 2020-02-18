@@ -177,6 +177,7 @@ TypeJig.prototype.answerChanged = function() {
 
 TypeJig.prototype.keyDown = function (e) {
     var id;
+	if(e.metaKey || e.ctrlKey || e.altKey || e.shiftKey) return;
     switch (e.key) {
         case "Enter":
             id = "again";
