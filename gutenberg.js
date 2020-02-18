@@ -10435,7 +10435,7 @@ window.sentences_by_top_100 = [[
 "What was going to happen and what was about to become of us all?",
 "We followed him.",
 "They went back and brought him away.",
-"We are the same nation, the some country, the same men.",
+"We are the same nation, the same country, the same men.",
 "They spent the night there with him.",
 "New men, that is what they term them.",
 "Let us review the situation.",
