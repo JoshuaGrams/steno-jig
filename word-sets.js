@@ -54,6 +54,7 @@
 		"wright"
 	];
 
+	// Phoenix-specific: Plover does a bunch of these differently.
 	TypeJig.WordSets['AI/OE/EE'] = TypeJig.wordCombos([
 		['he', 'hoe', 'hay'], ['lee', 'low', 'lay'],
 		['see', 'so', 'say'], ['we', 'woe', 'way'],
