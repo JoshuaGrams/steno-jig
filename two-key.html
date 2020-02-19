@@ -5,6 +5,7 @@
 	<title>Steno Jig</title>
 	<link href="style.css" rel="stylesheet" type="text/css">
 	<script src="type-jig.js"></script>
+	<script src="util.js"></script>
 	<script src="steno-display.js"></script>
 	<script src="word-sets.js"></script>
 	<script src="plover-translations.js"></script>
@@ -49,12 +50,9 @@
 		};
 		for(key in extra) translations[key] = extra[key];
 		var strokes = document.getElementById('strokes');
-		if(fields.floating_hints) {
-			strokes.style.position = 'fixed';
-		}
 		var hints = new StenoDisplay(strokes, translations, true);
 		var exercise = new TypeJig.Exercise(words);
-		var jig = new TypeJig(exercise, 'exercise', 'input', 'clock'); // , hints);
+		var jig = new TypeJig(exercise, 'exercise', 'input', 'clock', hints);
 	</script>
 
 </body>
