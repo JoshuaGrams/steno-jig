@@ -5,6 +5,7 @@
 	<title>Steno Jig</title>
 	<link href="style.css" rel="stylesheet" type="text/css">
 	<link rel="stylesheet" type="text/css" href="font-roboto.css">
+	<script src="util.js"></script>
 </head>
 <body>
 
@@ -17,6 +18,34 @@
 	href="https://github.com/JoshuaGrams/steno-jig">GitHub repo</a>
 	and customize it to make your own.</p>
 </div>
+
+<script>
+	setTheme()
+	if(storageAvailable('localStorage')) {
+		let wrapper = document.querySelector('.wrapper')
+		let isDark = localStorage.theme === 'dark'
+		let checkbox = document.createElement('input')
+		checkbox.setAttribute('id', 'night-mode')
+		checkbox.setAttribute('type', 'checkbox')
+		checkbox.checked = isDark
+		checkbox.addEventListener('input', function(e) {
+			if(e.target.checked) {
+				localStorage.theme = 'dark'
+				document.body.setAttribute('data-theme', localStorage.theme)
+			} else {
+				delete localStorage.theme
+				document.body.removeAttribute('data-theme')
+			}
+		})
+		wrapper.appendChild(checkbox)
+		let label = document.createElement('label')
+		label.setAttribute('for', 'night-mode')
+		label.appendChild(document.createTextNode(' Night Mode'))
+		wrapper.appendChild(label)
+	} else {
+		document.body.appendChild(document.createTextNode('localStorage not available.'))
+	}
+</script>
 
 </body>
 </html>

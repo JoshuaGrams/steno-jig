@@ -7,10 +7,32 @@ html, body {
 	width: 100vw;
 }
 
+:root {
+	--main-bg: #fff;
+	--main-fg: #000;
+	--form-border: #333;
+	--form-shadow: #eee;
+	--answer-text: #888;
+	--correct-text-bg: #cfc;
+	--incorrect-text-bg: #fcc;
+}
+
+[data-theme="dark"] {
+	--main-bg: #111;
+	--main-fg: #ddb;
+	--form-border: #888;
+	--form-shadow: #332;
+	--answer-text: #aaa;
+	--correct-text-bg: #030;
+	--incorrect-text-bg: #300;
+}
+
 
 /* Main Layout and Visual Styling of Block Elements */
 body {
 	font: 15px Roboto, sans-serif;
+	background: var(--main-bg);
+	color: var(--main-fg);
 }
 
 .wrapper {
@@ -34,9 +56,9 @@ body {
 .form-section {
 	padding: 0.8em 1em;
 	margin: 0.5em 0;
-	border: 1px solid #333;
+	border: 1px solid var(--form-border);
 	border-radius: 0.2em;
-	box-shadow: 0.1em 0.2em 0.4em #ECECEC;
+	box-shadow: 0.1em 0.2em 0.4em var(--form-shadow);
 }
 
 /*
@@ -94,7 +116,7 @@ a, a:visited {
 #answer {
 	position: absolute;
 	padding-top: 2em;
-	color: #888;
+	color: var(--answer-text);
 	user-select: none;
 	-moz-user-select: none;
 	-webkit-user-select: none;
@@ -104,8 +126,8 @@ a, a:visited {
 	font-weight: bold;
 }
 
-.correct { background: #cfc; }
-.incorrect { background: #fcc; text-decoration: line-through; }
+.correct { background: var(--correct-text-bg); }
+.incorrect { background: var(--incorrect-text-bg); text-decoration: line-through; }
 .cursor { border-right: 2px solid black; }
 
 
@@ -138,6 +160,7 @@ a, a:visited {
 
 #strokes td {
 	background: #666;
+	color: #000;
 	border: thin solid black;
 	border-radius: 0.5ex;
 	padding: 0.25ex 0.33ex;
