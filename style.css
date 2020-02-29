@@ -10,6 +10,7 @@ html, body {
 :root {
 	--main-bg: #fff;
 	--main-fg: #000;
+	--link-text: #167EE8;
 	--form-border: #333;
 	--form-shadow: #eee;
 	--answer-text: #888;
@@ -20,6 +21,7 @@ html, body {
 [data-theme="dark"] {
 	--main-bg: #111;
 	--main-fg: #ddb;
+	--link-text: #ea3;
 	--form-border: #888;
 	--form-shadow: #332;
 	--answer-text: #aaa;
@@ -87,7 +89,7 @@ form.drill-options input[type=radio] + label {
 }
 
 a, a:visited {
-	color: #167EE8;
+	color: var(--link-text);
 }
 
 #lesson { font-size: 1.3em; }
@@ -128,7 +130,7 @@ a, a:visited {
 
 .correct { background: var(--correct-text-bg); }
 .incorrect { background: var(--incorrect-text-bg); text-decoration: line-through; }
-.cursor { border-right: 2px solid black; }
+.cursor { border-right: 2px solid var(--main-fg); }
 
 
 .clock { font-size: 300%; text-align: center; }
