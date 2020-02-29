@@ -12228,7 +12228,6 @@ window.sentences_by_top_100 = [[
 "Nor was it lost.",
 "The case of a girl I met in a country town was common.",
 "If so, what date?",
-"It so, what date?",
 "He moved toward the door.",
 "I will pick it up and return it to him.",
 "I knew him by his walk, and by the look of him.",
