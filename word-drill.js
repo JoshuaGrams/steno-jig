@@ -26,7 +26,7 @@ function wordDrill(params) {
 		words = words.slice(first, first+count);
 		name += ' ' + first + ' to ' + (first+count);
 	}
-	if(params.timeLimit) {
+	if(params.type === 'randomly') {
 		timeLimit = Math.round(60 * params.timeLimit);
 		name = timeString(params.timeLimit) + ' of Random ' + name;
 	}
