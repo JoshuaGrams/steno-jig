@@ -54,6 +54,11 @@
 		var exercise = new TypeJig.Exercise(words);
 		var jig = new TypeJig(exercise, 'exercise', 'input', 'clock', hints);
 
+		var back = document.getElementById('back');
+		back.href = 'form.html';
+		var again = document.getElementById('again');
+		again.href = document.location.href;
+
 		setTheme()
 	</script>
 
