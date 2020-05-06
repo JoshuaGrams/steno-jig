@@ -6084,6 +6084,7 @@ TypeJig.Translations.Plover = {
 	"gel": "JEL",
 	"gem": "JEM",
 	"gender": "JEND/E*R",
+	"genders": "SKWRERPBDZ",
 	"gene": "JEEN",
 	"general": ["JEN/RAL","JENL"],
 	"generalize": "JENL/IEZ",
