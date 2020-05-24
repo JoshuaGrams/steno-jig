@@ -102,8 +102,6 @@ window.onload = function() {
 		evt.preventDefault();
 		let seed = Math.random().toString()
 		let rng = new_rng(seed)
-		let url = document.location.href.toString()
-		document.location = url.replace(/seed=([^&#]*)/,'seed='+seed)
 		let exercise = generateMarkovExercise(ngrams, word_count, rng)
 		jig.exercise = exercise;
 		jig.reset();
