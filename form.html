@@ -64,6 +64,25 @@
 	</div>
 
 	<div class="form-section">
+		<div class="caption">Randomly generated <strong>sentences</strong> using words from a <a href="https://en.wiktionary.org/wiki/Wiktionary:Frequency_lists/Contemporary_fiction">Wiktionary top 2000 list</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA 3.0</a>) and sentence data from <a href="https://tatoeba.org">Tatoeba</a> (<a href="https://creativecommons.org/licenses/by/2.0/fr/">CC-BY 2.0 fr</a>)</div>
+
+		<form class="drill-options" action="markov.html">
+			Drill Length:
+			<input type="number" name="word_count" value="100" min="50" max="1000" step="50">
+			words <small>(plus the rest of the last sentence.)</small>
+			<br>
+
+			<div name="hints">
+				<label><input type="checkbox" name="hints" value="1" id="ngslHints" checked>Show hints</label>
+			</div>
+
+			<script>document.write('<input type="hidden" name="seed" value="' + Math.random().toString() + '">')</script>
+
+			<button>Start Drill &rarr;</button>
+		</form>
+	</div>
+
+	<div class="form-section">
 		<div class="caption">Phonetic <strong>words</strong> that use exactly one starting <strong>consonant</strong> key, exactly one <strong>vowel</strong> key and exactly one ending <strong>consonant</strong>.</div>
 
 		<form class="drill-options" action="form.html">
