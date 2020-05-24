@@ -54,6 +54,17 @@ function generate_sentence(ngrams, rnd) {
 	return sentence
 }
 
+function generateMarkovExercise(ngrams, word_count, rnd) {
+	let words = []
+	let chars_left = word_count * 5
+	while (chars_left > 0) {
+		const sentence = generate_sentence(ngrams, rnd)
+		chars_left -= sentence.join(' ').length
+		words.splice(0, 0, ...sentence)
+	}
+	return new TypeJig.Exercise(words, 0, false, 'ordered');
+}
+
 window.onload = function() {
 	var fields = parseQueryString(document.location.search)
 
@@ -73,22 +84,30 @@ window.onload = function() {
 		hints = new StenoDisplay(strokes, translations, true);
 	}
 
-	const ngrams = compute_ngrams(top_2k_sentences, 3)
-	let words = [], sentence, i
-	let chars_left = word_count * 5
-	while (chars_left > 0) {
-		sentence = generate_sentence(ngrams, rng)
-		chars_left -= sentence.join(' ').length
-		words.splice(0, 0, ...sentence)
-	}
+	const ngrams = compute_ngrams(top_2k_sentences, 3);
+	var exercise = generateMarkovExercise(ngrams, word_count, rng);
 
-	var exercise = new TypeJig.Exercise(words, 0, false, 'ordered');
+	var jig = setExercise(name, exercise, hints);
 
-	var new_drill = document.getElementById('new');
-	new_drill.href = document.location.href.toString().replace(/seed=([^&#]*)/, 'seed=' + Math.random().toString());
-
-	setExercise(name, exercise, hints);
-	back.href = back.href.replace('gutenberg', 'form');
+	var back = document.getElementById('back');
+	var again = document.getElementById('again');
+	var another = document.getElementById('new');
+	another.href = document.location.href.toString().replace(/seed=([^&#]*)/, 'seed=' + Math.random().toString());
+	back.href = back.href.replace('markov', 'form');
+	again.addEventListener('click', function(evt) {
+		evt.preventDefault();
+		jig.reset();
+	})
+	another.addEventListener('click', function(evt) {
+		evt.preventDefault();
+		let seed = Math.random().toString()
+		let rng = new_rng(seed)
+		let url = document.location.href.toString()
+		document.location = url.replace(/seed=([^&#]*)/,'seed='+seed)
+		let exercise = generateMarkovExercise(ngrams, word_count, rng)
+		jig.exercise = exercise;
+		jig.reset();
+	})
 }
 
 setTheme()

@@ -6,7 +6,6 @@
  */
 
 function TypeJig(exercise, display, input, clock, hint) {
-	this.running = false;
 	this.exercise = exercise;
 	this.display = documentElement(display);
 	this.input = documentElement(input);
@@ -15,12 +14,6 @@ function TypeJig(exercise, display, input, clock, hint) {
 	this.errorCount = 0;
 
 	this.lookahead = 1000;
-	this.getWords(0);
-	if(this.hint && this.hint.update) {
-		var word = (this.display.textContent.match(/^\S+/) || [''])[0];
-		var rect = this.display.getBoundingClientRect();
-		this.hint.update(word, rect.left, rect.top);
-	}
 
 	var self = this;  // close over `this` for event handlers.
 
@@ -39,8 +32,32 @@ function TypeJig(exercise, display, input, clock, hint) {
 		self.input.focus(); evt.preventDefault();
 	};
 	bindEvent(this.display, 'click', focusInput);
+
+	this.reset();
+}
+
+TypeJig.prototype.reset = function() {
+	if(this.exercise && !this.exercise.started) {
+		this.display.textContent = '';
+		this.getWords(0);
+	}
+
+	if(this.hint && this.hint.update) {
+		var word = (this.display.textContent.match(/^\S+/) || [''])[0];
+		var rect = this.display.getBoundingClientRect();
+		this.hint.update(word, rect.left, rect.top);
+	}
+
+	this.display.previousElementSibling.textContent = '';
+
+	this.pendingChange = true;
 	this.input.value = '';
+	this.input.blur();
 	this.input.focus();
+	delete this.pendingChange;
+
+	this.running = false;
+	this.clock.reset();
 
 	window.scroll(0, scrollOffset(this.display));
 }
@@ -251,6 +268,8 @@ TypeJig.prototype.endExercise = function(seconds) {
 
 TypeJig.prototype.addCursor = function(output) {
 	if(!output) output = this.display.previousElementSibling;
+	var cursor = output.querySelector('.cursor');
+	if(cursor) return;
 	var cursor = document.createElement('span');
 	cursor.className = 'cursor';
 	output.appendChild(document.createTextNode('\u200b'));
@@ -409,9 +428,17 @@ TypeJig.wordCombos = function(combos) {
 
 TypeJig.Timer = function(elt, seconds) {
 	this.elt = elt;
+	elt.innerHTML = '';
 	this.setting = seconds || 0;
 	this.seconds = this.setting;
 	this.fn = this.update.bind(this);
+	this.showTime();
+}
+
+TypeJig.Timer.prototype.reset = function() {
+	delete this.beginning;
+	delete this.end;
+	this.seconds = this.setting;
 	this.showTime();
 }
 
