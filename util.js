@@ -29,7 +29,7 @@ function setExercise(name, exercise, hints) {
 	var again = document.getElementById('again');
 	again.href = document.location.href;
 
-	return jig = new TypeJig(exercise, 'exercise', 'input', 'clock', hints);
+	return jig = new TypeJig(exercise, 'exercise', 'results', 'input', 'clock', hints);
 }
 
 function storageAvailable(type) {

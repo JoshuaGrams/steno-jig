@@ -26,6 +26,7 @@
 	<div id="drill-content">
 		<div id="answer"></div>
 		<div id="exercise"></div>
+		<div id="results"></div>
 	</div>
 
 	<div id="nav">
@@ -52,7 +53,7 @@
 		var strokes = document.getElementById('strokes');
 		var hints = new StenoDisplay(strokes, translations, true);
 		var exercise = new TypeJig.Exercise(words);
-		var jig = new TypeJig(exercise, 'exercise', 'input', 'clock', hints);
+		var jig = new TypeJig(exercise, 'exercise', 'results', 'input', 'clock', hints);
 
 		var back = document.getElementById('back');
 		back.href = 'form.html';

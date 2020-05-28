@@ -106,11 +106,14 @@ a, a:visited {
 	margin: 0 auto;
 	position: relative;
 }
-#exercise, #answer {
+#exercise, #answer, #results {
 	width: 100%;
 	margin-top: -0.8em;
 	line-height: 3;
 	white-space: pre-wrap;
+}
+#results {
+	line-height: 1;
 }
 #exercise {
 	position: relative;
