@@ -5,10 +5,11 @@
  * `output`, and `clock` are elements (or element ID strings).
  */
 
-function TypeJig(exercise, display, input, clock, hint) {
+function TypeJig(exercise, display, results, input, clock, hint) {
 	this.exercise = exercise;
 	this.display = documentElement(display);
 	this.input = documentElement(input);
+	this.resultsDisplay = documentElement(results);
 	this.clock = new TypeJig.Timer(documentElement(clock), exercise.seconds);
 	this.hint = hint;
 	this.errorCount = 0;
@@ -37,6 +38,7 @@ function TypeJig(exercise, display, input, clock, hint) {
 }
 
 TypeJig.prototype.reset = function() {
+	this.resultsDisplay.textContent = '';
 	if(this.exercise && !this.exercise.started) {
 		this.display.textContent = '';
 		this.getWords(0);
@@ -123,7 +125,9 @@ function nextWord(words, range) {
 
 TypeJig.prototype.answerChanged = function() {
 	delete this.pendingChange;
-	if(!this.running) this.start();
+	if(!this.running && !!this.input.value.trim()) {
+		this.start();
+	}
 
 	// Get the exercise and the user's answer as arrays of
 	// words interspersed with whitespace.
@@ -254,13 +258,13 @@ TypeJig.prototype.endExercise = function(seconds) {
 	else results += ', adjusting for ' + this.errorCount + ' incorrect word' + plural
 		+ ' (' + accuracy + '%) gives ' + correctedWPM + ' WPM.'
 	results = '\n\n' + results;
-	var start = this.display.textContent.length;
+	var start = this.resultsDisplay.textContent.length;
 	var end = start + results.length;
-	this.display.textContent += results;
+	this.resultsDisplay.textContent += results;
 
 	var range = document.createRange();
-	range.setStart(this.display.firstChild, start);
-	range.setEnd(this.display.firstChild, end);
+	range.setStart(this.resultsDisplay.firstChild, start);
+	range.setEnd(this.resultsDisplay.firstChild, end);
 	var rect = range.getBoundingClientRect();
 	var scroll = rect.bottom - window.innerHeight;
 	if(scroll > 0) setTimeout(function(){window.scrollBy(0, scroll)}, 2);

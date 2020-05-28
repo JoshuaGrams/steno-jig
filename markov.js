@@ -100,9 +100,10 @@ window.onload = function() {
 	})
 	another.addEventListener('click', function(evt) {
 		evt.preventDefault();
-		let seed = Math.random().toString()
-		let rng = new_rng(seed)
-		let exercise = generateMarkovExercise(ngrams, word_count, rng)
+		let seed = Math.random().toString();
+		window.history.replaceState('', '', updateURLParameter(window.location.href, 'seed', seed));
+		let rng = new_rng(seed);
+		let exercise = generateMarkovExercise(ngrams, word_count, rng);
 		jig.exercise = exercise;
 		jig.reset();
 	})
