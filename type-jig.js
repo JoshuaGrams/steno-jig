@@ -125,7 +125,9 @@ function nextWord(words, range) {
 
 TypeJig.prototype.answerChanged = function() {
 	delete this.pendingChange;
-	if(!this.running) this.start();
+	if(!this.running && !!this.input.value.trim()) {
+		this.start();
+	}
 
 	// Get the exercise and the user's answer as arrays of
 	// words interspersed with whitespace.
