@@ -56,7 +56,7 @@ window.onload = function() {
 	var back = document.getElementById('back');
 	var again = document.getElementById('again');
 	var another = document.getElementById('new');
-	another.href = document.location.href.toString().replace(/seed=([^&#]*)/, 'seed=' + Math.random().toString());
+	var nextSeed = this.prepareNextSeed(another);
 	back.href = back.href.replace('markov', 'form');
 	again.addEventListener('click', function(evt) {
 		evt.preventDefault();
@@ -64,12 +64,12 @@ window.onload = function() {
 	})
 	another.addEventListener('click', function(evt) {
 		evt.preventDefault();
-		let seed = Math.random().toString();
-		window.history.replaceState('', '', updateURLParameter(window.location.href, 'seed', seed));
-		let rng = new_rng(seed);
+		window.history.replaceState('', '', updateURLParameter(window.location.href, 'seed', nextSeed));
+		let rng = new_rng(nextSeed);
 		let exercise = generateMarkovExercise(ngrams, word_count, rng);
 		jig.exercise = exercise;
 		jig.reset();
+		nextSeed = prepareNextSeed(another);
 	})
 }
 
