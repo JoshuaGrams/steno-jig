@@ -18,6 +18,43 @@ function parseQueryString(query) {
 	return vars;
 }
 
+function new_rng(seed_txt) {
+    var s, i, j, tmp
+    s = new Array(256);
+    for (i = 0; i < 256; ++i) {
+        s[i] = i;
+    }
+    if (seed_txt == null) {
+        seed_txt = Math.random().toString()
+    }
+    for (i = j = 0; i < 256; ++i) {
+        j += s[i] + seed_txt.charCodeAt(i % seed_txt.length);
+        j %= 256;
+        tmp = s[i]; s[i] = s[j]; s[j] = tmp;
+    }
+    return function () {
+        var p, ret = 0
+        for (p = 0; p < 7; ++p) {
+            ret *= 256
+            i = (i + 1) % 256;
+            j = (j + s[i]) % 256;
+            tmp = s[i]; s[i] = s[j]; s[j] = tmp;
+            ret += s[(s[i] + s[j]) % 256];
+        }
+        return ret / 72057594037927935.0
+    }
+}
+
+function initializeHints(hints, floating_hints) {
+    if (!hints) return null;
+
+    var strokes = document.getElementById('strokes');
+    if (floating_hints) {
+        strokes.style.position = 'fixed';
+    }
+    var translations = TypeJig.shortestTranslations(TypeJig.Translations.Plover);
+    return new StenoDisplay(strokes, translations, true);
+}
 
 function setExercise(name, exercise, hints) {
 	var h = document.getElementById('lesson-name');

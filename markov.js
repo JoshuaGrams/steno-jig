@@ -1,30 +1,3 @@
-function new_rng(seed_txt) {
-	var s, i, j, tmp
-	s = new Array(256);
-	for (i = 0; i < 256; ++i) {
-		s[i] = i;
-	}
-	if (seed_txt == null) {
-		seed_txt = Math.random().toString()
-	}
-	for (i = j = 0; i < 256; ++i) {
-		j += s[i] + seed_txt.charCodeAt(i % seed_txt.length);
-		j %= 256;
-		tmp = s[i]; s[i] = s[j]; s[j] = tmp;
-	}
-	return function() {
-		var p, ret = 0
-		for (p = 0; p < 7; ++p) {
-			ret *= 256
-			i = (i + 1) % 256;
-			j = (j + s[i]) % 256;
-			tmp = s[i]; s[i] = s[j]; s[j] = tmp;
-			ret += s[(s[i] + s[j]) % 256];
-		}
-		return ret / 72057594037927935.0
-	}
-}
-
 function compute_ngrams(sentences, order) {
 	const ngrams = {"": []}
 	for(let i=0; i<sentences.length; ++i) {
@@ -73,16 +46,7 @@ window.onload = function() {
 	var word_count = fields.word_count == null ? 100 : parseInt(fields.word_count)
 
 	var name = "Markov-chain generated sentences";
-	var hints = null;
-
-	if(fields.hints) {
-		var strokes = document.getElementById('strokes');
-		if(fields.floating_hints) {
-			strokes.style.position = 'fixed';
-		}
-		var translations = TypeJig.shortestTranslations(TypeJig.Translations.Plover);
-		hints = new StenoDisplay(strokes, translations, true);
-	}
+	var hints = initializeHints(fields.hints, fields.floating_hints);
 
 	const ngrams = compute_ngrams(top_2k_sentences, 3);
 	var exercise = generateMarkovExercise(ngrams, word_count, rng);
