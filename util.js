@@ -69,6 +69,12 @@ function setExercise(name, exercise, hints) {
 	return jig = new TypeJig(exercise, 'exercise', 'results', 'input', 'clock', hints);
 }
 
+function prepareNextSeed(another) {
+    let anotherSeed = Math.random().toString();
+    another.href = document.location.href.toString().replace(/seed=([^&#]*)/, 'seed=' + anotherSeed);
+    return anotherSeed;
+}
+
 function storageAvailable(type) {
     var storage;
     try {

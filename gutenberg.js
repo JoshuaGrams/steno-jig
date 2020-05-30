@@ -39,12 +39,26 @@ window.onload = function () {
     var hints = initializeHints(fields.hints, fields.floating_hints);
     var exercise = generateExercise(word_count, top_n, rng);
 
-    var new_drill = document.getElementById('new');
-    new_drill.href = document.location.href.toString().replace(/seed=([^&#]*)/, 'seed=' + Math.random().toString());
+    var jig = setExercise(name, exercise, hints);
 
-    setExercise(name, exercise, hints);
-
+    var back = document.getElementById('back');
+    var again = document.getElementById('again');
+    var another = document.getElementById('new');
+    var nextSeed = prepareNextSeed(another);
     back.href = back.href.replace('gutenberg', 'form');
+    again.addEventListener('click', function (evt) {
+        evt.preventDefault();
+        jig.reset();
+    })
+    another.addEventListener('click', function (evt) {
+        evt.preventDefault();
+        window.history.replaceState('', '', updateURLParameter(window.location.href, 'seed', nextSeed));
+        let rng = new_rng(nextSeed);
+        let exercise = generateExercise(word_count, top_n, rng);
+        jig.exercise = exercise;
+        jig.reset();
+        nextSeed = prepareNextSeed(another);
+    })
 }
 
 setTheme()
