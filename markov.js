@@ -29,11 +29,11 @@ function generate_sentence(ngrams, rnd) {
 
 function generateMarkovExercise(ngrams, word_count, rnd) {
 	let words = []
-	let chars_left = word_count * 5
+	let chars_left = word_count * 5 + 1
 	while (chars_left > 0) {
 		const sentence = generate_sentence(ngrams, rnd)
-		chars_left -= sentence.join(' ').length
-		words.splice(0, 0, ...sentence)
+		chars_left -= 1 + sentence.join(' ').length
+		words.splice(words.length, 0, ...sentence)
 	}
 	return new TypeJig.Exercise(words, 0, false, 'ordered');
 }
