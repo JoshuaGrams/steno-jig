@@ -265,7 +265,7 @@
 		"rod", "roll", "rot", "rough", "rub",
 		"rudd", "rug", "rut", "sad", "sag",
 		"sap", "sass", "sat", "says", "seb",
-		"sed", "sell", "set", "sob", "sod",
+		"said", "sell", "set", "sob", "sod",
 		"sog", "sol", "sop", "sore", "sub",
 		"sup", "suss", "tab", "tad", "tag",
 		"tap", "tar", "tat", "tell", "ter",
