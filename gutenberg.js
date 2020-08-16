@@ -21,12 +21,12 @@ function clamp_top_n(top_n) {
 function generateExercise(word_count, top_n, rng) {
     top_n = clamp_top_n(top_n)
     let words = [], sentence
-    let chars_left = word_count * 5
+    let chars_left = word_count * 5 + 1
     let top_n_bucket = window.sentences_by_top_100[top_n / 100 - 1]
     while (chars_left > 0) {
         sentence = top_n_bucket[Math.floor(rng() * top_n_bucket.length)]
-        chars_left -= sentence.length
-        words.splice(0, 0, ...sentence.split(' '))
+        chars_left -= 1 + sentence.length
+        words.splice(words.length, 0, ...sentence.split(' '))
     }
 
     return new TypeJig.Exercise(words, 0, false, 'ordered');
