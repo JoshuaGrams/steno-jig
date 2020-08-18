@@ -48,6 +48,22 @@
 		</form>
 	</div>
 
+	<div class="form-section">
+		<div class="caption">Custom <strong>Finger Drills</strong></div>
+
+		<form class="drill-options" action="finger-drills.html">
+			<input type="hidden" name="wpm" value="">
+			<input type="hidden" name="cpm" value="">
+			<input type="hidden" name="hints" value="">
+
+			Alternate between <input type="text" name="a" size="6">
+			and <input type="text" name="b" size="6">
+			<input type="number" name="iterations" value="20" step="5"> times.<br>
+
+			<button>Start Drill &rarr;</button>
+		</form>
+	</div>
+
 
 	<div class="form-section">
 		<div class="caption">Most used <strong>words</strong> (once, in random order)</div>
@@ -151,6 +167,22 @@
 	</div>
 
 	<div class="form-section">
+		<div class="caption">Da Dreaded Dueling Digit Duo <strong>Finger Drills</strong></div>
+
+		<form class="drill-options" action="finger-drills.html">
+			<input type="hidden" name="wpm" value="">
+			<input type="hidden" name="cpm" value="">
+			<input type="hidden" name="hints" value="">
+
+			Section <input type="number" name="section" value="1" min="1" max="27"><br>
+
+			Alternate <input type="number" name="iterations" value="20" step="5"> times.<br>
+
+			<button>Start Drill &rarr;</button>
+		</form>
+	</div>
+
+	<div class="form-section">
 		<div class="caption">Other drills.</div>
 		<ul>
 			<li><a href="two-key.html">Sentences which (mostly) only use two keys at once</a></li>
@@ -165,11 +197,7 @@
 			<li><a href="form.html?drill=-ld/-lt&drill=-nj&type=randomly&timeLimit=5">"-nj" words mixed with "-ld/"/"-lt" ones.</a></li>
 		</ul>
 
-		<p>Finger Drills.  Delete (plover v3) or disable (plover v4) all dictionaries but <code>user.json</code> and <code>commands.json</code> (in plover v3, delete all dictionaries and save to get the default config back).</p>
-		<ul>
-			<li><a href="form.html?drill=Da%20Dreaded%20Dueling%20Digit%20Duo%20Drills%201">Da Dreaded Dueling Digit Duo Drills Section 1</a></li>
-			<li><a href="form.html?drill=Da%20Dreaded%20Dueling%20Digit%20Duo%20Drills%202">Da Dreaded Dueling Digit Duo Drills Section 2</a></li>
-		</ul>
+		<p><strong>Note</strong> on Finger Drills.  Delete (plover v3) or disable (plover v4) all dictionaries but <code>commands.json</code> (in plover v3, delete all dictionaries and save to get the default config back). In plover v4, check out the plover-dict-control plugin which allows you to define strokes to switch dictionaries.</p>
 	</div>
 </div>
 

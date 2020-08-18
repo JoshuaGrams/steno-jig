@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Finger Drills</title>
+	<link href="style.css" rel="stylesheet" type="text/css">
+	<script src="type-jig.js"></script>
+	<script src="util.js"></script>
+	<script src="steno-display.js"></script>
+	<script src="plover-translations.js"></script>
+	<script src="finger-drill-data.js"></script>
+	<link rel="stylesheet" type="text/css" href="font-roboto.css">
+</head>
+<body>
+
+<div id="lesson" class="wrapper">
+	<h3 id="lesson-name" class="center"></h3>
+	<div id="drill-content">
+		<div id="answer"></div>
+		<div id="exercise"></div>
+		<div id="results"></div>
+	</div>
+
+	<div id="nav">
+		<p id="strokes"></p>
+		<p id="clock" class="clock"></p>
+		<p class="center"><a id="back" title="LeftArrow">&larr; Back to Menu <span class="shortcutkey">(LeftArrow)</span></a></p>
+		<p class="center"><a id="again" title="Enter">&#8634; Repeat Drill <span class="shortcutkey">(Enter)</span></a></p>
+		<p class="center"><a id="new" title="RightArrow">&rarr; Next Drill <span class="shortcutkey">(RightArrow)</span></a></p>
+	</div>
+
+	<textarea id="input"></textarea>
+</div>
+
+<script src="finger-drills.js"></script>
+
+</body>
+</html>
