@@ -18,6 +18,16 @@ function parseQueryString(query) {
 	return vars;
 }
 
+function getFormFields(form) {
+	var fields = {};
+	for(var i=0; i<form.elements.length; ++i) {
+		var input = form.elements[i];
+		if(input.type === 'checkbox' && !input.checked) continue;
+		fields[input.name] = input.value
+	}
+	return fields;
+}
+
 function new_rng(seed_txt) {
     var s, i, j, tmp
     s = new Array(256);

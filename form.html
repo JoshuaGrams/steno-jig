@@ -31,6 +31,24 @@
 		</div>
 	</div>
 
+
+	<div class="form-section">
+		<div class="caption">Custom <strong>text</strong></div>
+
+		<form class="drill-options" id="custom" action="form.html">
+			<input type="hidden" name="wpm" value="">
+			<input type="hidden" name="cpm" value="">
+			<input type="hidden" name="hints" value="">
+
+			<textarea name="drill"></textarea>
+
+			<br>
+
+			<button>Start Drill &rarr;</button>
+		</form>
+	</div>
+
+
 	<div class="form-section">
 		<div class="caption">Most used <strong>words</strong> (once, in random order)</div>
 
@@ -175,36 +193,59 @@
 </div>
 
 <script>
+function runExercise(fields) {
+	if(fields.drill === 'NumberSentences') exercise = numberSentences(fields);
+	else {
+		if(Array.isArray(fields.drill)) {
+			TypeJig.WordSets.custom = fields.drill;
+			fields.drill = 'custom';
+		}
+		exercise = wordDrill(fields);
+	}
+	if(exercise) {
+		if(fields.hints) {
+			var strokes = document.getElementById('strokes');
+			if(fields.floating_hints) {
+				strokes.style.position = 'fixed';
+			}
+			var translations = TypeJig.shortestTranslations(TypeJig.Translations.Plover);
+			var hints = new StenoDisplay(strokes, translations, true);
+		}
+		var speed = {wpm: fields.wpm, cpm: fields.cpm};
+
+		display_only('lesson');
+		var jig = setExercise(exercise.name, exercise, hints, speed);
+	}
+}
+
+function getSettings() {
+	var wpm = document.getElementById('wpm');
+	var cpm = document.getElementById('cpm');
+	var hints = document.getElementById('hints');
+	if(cpm.checked) this.elements.cpm.value = 5 * wpm.value;
+	else this.elements.wpm.value = wpm.value;
+	this.elements.hints.value = hints.checked ? hints.value : '';
+}
+
 window.onload = function() {
 	if(document.location.search !== '') {
-		var fields = parseQueryString(document.location.search);
-		if(fields.drill === 'NumberSentences') exercise = numberSentences(fields);
-		else exercise = wordDrill(fields);
-		if(exercise) {
-			if(fields.hints) {
-				var strokes = document.getElementById('strokes');
-				if(fields.floating_hints) {
-					strokes.style.position = 'fixed';
-				}
-				var translations = TypeJig.shortestTranslations(TypeJig.Translations.Plover);
-				var hints = new StenoDisplay(strokes, translations, true);
-			}
-			var speed = {wpm: fields.wpm, cpm: fields.cpm};
-
-			display_only('lesson');
-			var jig = setExercise(exercise.name, exercise, hints, speed);
-		}
+		runExercise(parseQueryString(document.location.search));
 	} else {
-		var wpm = document.getElementById('wpm')
-		var cpm = document.getElementById('cpm')
-		var hints = document.getElementById('hints')
-		var forms = document.querySelectorAll('form')
+		// Add event listeners to get settings before submitting.
+		var forms = document.querySelectorAll('form');
 		for(var i=0; i<forms.length; ++i) {
-			forms[i].addEventListener('submit', function() {
-				if(cpm) this.elements.cpm.value = 5 * wpm.value
-				else this.elements.wpm.value = wpm.value
-				this.elements.hints.value = hints.checked? hints.value: ''
-			})
+			var form = forms[i]
+			if(form.id === 'custom') {
+				form.addEventListener('submit', function(evt) {
+					evt.preventDefault();
+					getSettings.call(this);
+					var fields = getFormFields(this);
+					fields.drill = fields.drill.split(/\s+/m);
+					runExercise(fields);
+				})
+			} else {
+				form.addEventListener('submit', getSettings);
+			}
 		}
 	}
 }
