@@ -5,7 +5,7 @@
  * `output`, and `clock` are elements (or element ID strings).
  */
 
-function TypeJig(exercise, display, results, input, clock, hint) {
+function TypeJig(exercise, display, results, input, clock, hint, speed) {
 	this.exercise = exercise;
 	this.display = documentElement(display);
 	this.input = documentElement(input);
@@ -15,6 +15,14 @@ function TypeJig(exercise, display, results, input, clock, hint) {
 	this.errorCount = 0;
 
 	this.lookahead = 1000;
+
+	if(speed) {
+		if(speed.wpm !== '' && Math.floor(+speed.wpm) == speed.wpm) {
+			this.speed = {type: 'wpm', value: speed.wpm}
+		} else if(speed.cpm !== '' && Math.floor(+speed.cpm) == speed.cpm) {
+			this.speed = {type: 'cpm', value: speed.cpm}
+		}
+	}
 
 	var self = this;  // close over `this` for event handlers.
 
@@ -42,6 +50,10 @@ TypeJig.prototype.reset = function() {
 	if(this.exercise && !this.exercise.started) {
 		this.display.textContent = '';
 		this.getWords(0);
+	}
+	spans = this.display.querySelectorAll('span');
+	if(this.speed) for(let i=0; i<spans.length; ++i) {
+		spans[i].className = 'notYet';
 	}
 
 	if(this.hint && this.hint.update) {
@@ -108,18 +120,36 @@ TypeJig.prototype.start = function() {
 	this.clock.start(this.endExercise.bind(this));
 	this.startTime = Date.now();
 	this.running = true;
+	if(this.speed) {
+		this.speed.current = this.display.firstElementChild;
+		this.tick();
+
+	}
 }
 
-function nextItem(words, range) {
-	var word = words.shift() || '';
+TypeJig.prototype.tick = function() {
+	var s = this.speed;
+	if(!(this.running && s && s.current)) return;
+	var fn = this.tick.bind(this);
+	var ms = 1000 * 60 / s.value;
+	if(s.type === 'cpm') ms *= s.current.textContent.length;
+	s.current.className = '';
+	s.current = s.current.nextElementSibling;
+	if(s.current) setTimeout(fn, ms);
+}
+
+function nextItem(range) {
 	range.collapse();
-	range.setEnd(range.endContainer, range.endOffset + word.length);
-	return word;
+	var next = range.endContainer.nextElementSibling
+	if(next != null) {
+		range.setStart(next, 0);
+		range.setEnd(next, 1);
+	}
 }
 
-function nextWord(words, range) {
-	var word = nextItem(words, range);
-	if(/^\s+$/.test(word)) word = nextItem(words, range);
+function nextWord(words) {
+	var word = words.shift() || '';
+	if(/^\s+$/.test(word)) word = words.shift() || '';
 	return word;
 }
 
@@ -137,9 +167,10 @@ TypeJig.prototype.answerChanged = function() {
 	// Get the first word of the exercise, and create a range
 	// which we can use to measure where it is.
 	var range = document.createRange();
-	range.setStart(this.display.firstChild, 0);
-	range.setEnd(this.display.firstChild, 0);
+	range.setStart(this.display.firstElementChild, 0);
+	range.setEnd(this.display.firstElementChild, 1);
 	var ex, y, match;
+	y = range.getBoundingClientRect().bottom;
 
 	// Display the user's answer, marking it for correctness.
 	var oldOutput = this.display.previousElementSibling;
@@ -154,18 +185,22 @@ TypeJig.prototype.answerChanged = function() {
 			continue;
 		}
 
-		ex = nextWord(exercise, range);
+		ex = nextWord(exercise);
 		match = (ans == ex);
 
 		var r = range.getBoundingClientRect();
-		if(r.top > y && endOfAnswer) {
-			if(!match) output.appendChild(document.createTextNode('\n'));
+		if(r.bottom > y + 0.001 && endOfAnswer) {
+			if(!match) {
+				output.appendChild(document.createTextNode('\n'));
+			}
 			var limit = 0.66 * window.innerHeight;
 			var end = this.display.getBoundingClientRect().bottom;
 			var r = range.getBoundingClientRect();
 			if(end > window.innerHeight && r.bottom > limit) window.scrollBy(0, r.bottom - limit);
 		}
-		y = r.top;
+		y = r.bottom;
+
+		nextItem(range)
 
 		var partial = endOfAnswer && ans.length < ex.length && ans === ex.slice(0, ans.length);
 		if(partial) {
@@ -229,7 +264,10 @@ TypeJig.prototype.getWords = function(n) {
 	while(this.exercise && (!n || exercise.length < n)) {
 		var text = this.exercise.getText();
 		if(text) {
-			this.display.textContent += text;
+			var span = document.createElement('span');
+			span.appendChild(document.createTextNode(text));
+			if(this.speed) span.className = 'notYet';
+			this.display.appendChild(span);
 			exercise.push.apply(exercise, TypeJig.wordsAndSpaces(text));
 		} else delete(this.exercise);
 	}
@@ -491,7 +529,7 @@ TypeJig.Timer.prototype.showTime = function() {
 // -----------------------------------------------------------------------
 
 
-TypeJig.Exercise = function(words, seconds, shuffle, select) {
+TypeJig.Exercise = function(words, seconds, shuffle, select, speed) {
 	this.started = false;
 	this.words = words;
 	this.seconds = seconds;

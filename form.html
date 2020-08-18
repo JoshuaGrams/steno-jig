@@ -19,21 +19,33 @@
 	<h1>Choose a drill...</h1>
 
 	<div class="form-section">
+		<div class="caption"><strong>Settings</strong> that apply to all drills</div><br>
+
+		<div name="hints">
+			<label><input id="hints" type="checkbox" name="hints" value="1" checked>Show hints</label>
+		</div><br>
+
+		<div name="speed">
+			<label><input id="wpm" type="number" name="wpm" value="" step="5"> Speed (words per minute)
+				(or <input type="checkbox" id="cpm" value="1"> 5x chars per minute) </label>
+		</div>
+	</div>
+
+	<div class="form-section">
 		<div class="caption">Most used <strong>words</strong> (once, in random order)</div>
 
 		<form class="drill-options" action="form.html">
 			<input type="hidden" name="drill" value="NGSL_all_forms">
 			<input type="hidden" name="type" value="shuffled">
+			<input type="hidden" name="wpm" value="">
+			<input type="hidden" name="cpm" value="">
+			<input type="hidden" name="hints" value="">
 
 			Drill
 			<input type="number" name="count" value="100" min="25" max="1000" step="25">
 			words starting at rank
 			<input type="number" name="first" value="0" min="0" max="1100" step="25">
 			<br>
-
-			<div name="hints">
-				<label><input type="checkbox" name="hints" value="1" checked>Show hints</label>
-			</div>
 
 			<button>Start Drill &rarr;</button>
 		</form>
@@ -43,6 +55,10 @@
 		<div class="caption"><strong>Sentences</strong> extracted from <a href="https://www.gutenberg.org/">Project Gutenberg</a></div>
 
 		<form class="drill-options" action="gutenberg.html">
+			<input type="hidden" name="wpm" value="">
+			<input type="hidden" name="cpm" value="">
+			<input type="hidden" name="hints" value="">
+
 			Drill sentences containing only the top
 			<input type="number" name="top" value="100" min="100" max="8000" step="100">
 			most used words
@@ -52,10 +68,6 @@
 			<input type="number" name="word_count" value="100" min="50" max="1000" step="50">
 			words <small>(plus the rest of the last sentence.)</small>
 			<br>
-
-			<div name="hints">
-				<label><input type="checkbox" name="hints" value="1" id="ngslHints" checked>Show hints</label>
-			</div>
 
 			<script>document.write('<input type="hidden" name="seed" value="' + Math.random().toString() + '">')</script>
 
@@ -67,14 +79,14 @@
 		<div class="caption">Randomly generated <strong>sentences</strong> using words from a <a href="https://en.wiktionary.org/wiki/Wiktionary:Frequency_lists/Contemporary_fiction">Wiktionary top 2000 list</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA 3.0</a>) and sentence data from <a href="https://tatoeba.org">Tatoeba</a> (<a href="https://creativecommons.org/licenses/by/2.0/fr/">CC-BY 2.0 fr</a>)</div>
 
 		<form class="drill-options" action="markov.html">
+			<input type="hidden" name="wpm" value="">
+			<input type="hidden" name="cpm" value="">
+			<input type="hidden" name="hints" value="">
+
 			Drill Length:
 			<input type="number" name="word_count" value="100" min="50" max="1000" step="50">
 			words <small>(plus the rest of the last sentence.)</small>
 			<br>
-
-			<div name="hints">
-				<label><input type="checkbox" name="hints" value="1" id="ngslHints" checked>Show hints</label>
-			</div>
 
 			<script>document.write('<input type="hidden" name="seed" value="' + Math.random().toString() + '">')</script>
 
@@ -88,15 +100,14 @@
 		<form class="drill-options" action="form.html">
 			<input type="hidden" name="drill" value="singleStrokeCVC">
 			<input type="hidden" name="type" value="randomly">
+			<input type="hidden" name="wpm" value="">
+			<input type="hidden" name="cpm" value="">
+			<input type="hidden" name="hints" value="">
 
 			Drill Time:
 			<input type="number" name="timeLimit" value="3" min="1" max="60" size="3">
 			minutes.
 			<br>
-
-			<div name="hints">
-				<label><input type="checkbox" name="hints" value="1" checked>Show hints</label>
-			</div>
 
 			<button>Start Drill &rarr;</button>
 		</form>
@@ -108,15 +119,14 @@
 		<form class="drill-options" action="form.html">
 			<input type="hidden" name="drill" value="NumberSentences">
 			<input type="hidden" name="type" value="randomly">
+			<input type="hidden" name="wpm" value="">
+			<input type="hidden" name="cpm" value="">
+			<input type="hidden" name="hints" value="">
 
 			Drill Time:
 			<input type="number" name="timeLimit" value="3" min="1" max="60">
 			minutes.
 			<br>
-
-			<div name="hints">
-				<label><input type="checkbox" name="hints" value="1" checked>Show hints</label>
-			</div>
 
 			<button>Start Drill &rarr;</button>
 		</form>
@@ -179,9 +189,22 @@ window.onload = function() {
 				var translations = TypeJig.shortestTranslations(TypeJig.Translations.Plover);
 				var hints = new StenoDisplay(strokes, translations, true);
 			}
+			var speed = {wpm: fields.wpm, cpm: fields.cpm};
 
 			display_only('lesson');
-			var jig = setExercise(exercise.name, exercise, hints);
+			var jig = setExercise(exercise.name, exercise, hints, speed);
+		}
+	} else {
+		var wpm = document.getElementById('wpm')
+		var cpm = document.getElementById('cpm')
+		var hints = document.getElementById('hints')
+		var forms = document.querySelectorAll('form')
+		for(var i=0; i<forms.length; ++i) {
+			forms[i].addEventListener('submit', function() {
+				if(cpm) this.elements.cpm.value = 5 * wpm.value
+				else this.elements.wpm.value = wpm.value
+				this.elements.hints.value = hints.checked? hints.value: ''
+			})
 		}
 	}
 }

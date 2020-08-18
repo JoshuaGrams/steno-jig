@@ -131,6 +131,7 @@ a, a:visited {
 	font-weight: bold;
 }
 
+.notYet { color: var(--answer-text); }
 .correct { background: var(--correct-text-bg); }
 .incorrect { background: var(--incorrect-text-bg); text-decoration: line-through; }
 .cursor { border-right: 2px solid var(--main-fg); }

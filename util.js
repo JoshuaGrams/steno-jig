@@ -56,7 +56,7 @@ function initializeHints(hints, floating_hints) {
     return new StenoDisplay(strokes, translations, true);
 }
 
-function setExercise(name, exercise, hints) {
+function setExercise(name, exercise, hints, speed) {
 	var h = document.getElementById('lesson-name');
 	h.appendChild(document.createTextNode(name));
 	document.title = name + ' - ' + document.title;
@@ -66,7 +66,7 @@ function setExercise(name, exercise, hints) {
 	var again = document.getElementById('again');
 	again.href = document.location.href;
 
-	return jig = new TypeJig(exercise, 'exercise', 'results', 'input', 'clock', hints);
+	return jig = new TypeJig(exercise, 'exercise', 'results', 'input', 'clock', hints, speed);
 }
 
 function prepareNextSeed(another) {
