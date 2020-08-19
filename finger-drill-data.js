@@ -24,250 +24,250 @@ const dreadedDuo = [
         // Section 3  - Right Hand
         ['UG', 'ELS'],     // 1
         ['EG', 'ULS'],     // 2
-        ['EL', 'USH'],     // 3
-        ['UL', 'ESH'],     // 4
-        ['ELS', 'UND'],    // 5
-        ['ULS', 'END'],    // 6
-        ['UF', 'ESHD'],    // 7
-        ['EF', 'USHD'],    // 8
+        ['EL', 'URB'],     // 3
+        ['UL', 'ERB'],     // 4
+        ['ELS', 'UPBD'],    // 5
+        ['ULS', 'EPBD'],    // 6
+        ['UF', 'ERBD'],    // 7
+        ['EF', 'URBD'],    // 8
         ['UF', 'EPD'],     // 9
         ['EF', 'UPD'],     // 10
-        ['ULS', 'ECH'],    // 11
-        ['ELS', 'UCH'],    // 12
-        ['UK', 'EPD'],     // 13
+        ['ULS', 'EFP'],    // 11
+        ['ELS', 'UFP'],    // 12
+        ['UBG', 'EPD'],     // 13
         ['URPD', 'EFGS'],  // 14
         ['ERPD', 'UFGS'],  // 15
-        ['UND', 'ELS'],    // 16
-        ['END', 'ULS'],    // 17
-        ['ED', 'UCHD'],    // 18
-        ['UN', 'ECH'],     // 19
-        ['URLS', 'ESHD'],  // 20
-        ['ERLS', 'USHD'],  // 21
-        ['UFGS', 'END'],   // 22
-        ['EFGS', 'UND'],   // 23
+        ['UPBD', 'ELS'],    // 16
+        ['EPBD', 'ULS'],    // 17
+        ['ED', 'UFPD'],    // 18
+        ['UPB', 'EFP'],     // 19
+        ['URLS', 'ERBD'],  // 20
+        ['ERLS', 'URBD'],  // 21
+        ['UFGS', 'EPBD'],   // 22
+        ['EFGS', 'UPBD'],   // 23
         ['UFS', 'EPD'],    // 24
     ],
     [
         // Section 4 - Left Hand
         ['STPHA', 'SPWO'],  // 1
         ['STPHO', 'SPWA'],  // 2
-        ['JO', 'SPWA'],     // 3
-        ['JA', 'SPWO'],     // 4
-        ['JA', 'SPWO'],     // 5
-        ['DWRA', 'KBLO'],   // 5
+        ['SKWRO', 'SPWA'],     // 3
+        ['SKWRA', 'SPWO'],     // 4
+        ['SKWRA', 'SPWO'],     // 5
+        ['TKWRA', 'KPWHRO'],   // 5
         ['THO', 'SPWRA'],   // 6
         ['THA', 'SPWRO'],   // 7
         ['TWRO', 'SPWA'],   // 8
         ['SPWO', 'TWRA'],   // 9
-        ['TWRO', 'KBLA'],   // 10
+        ['TWRO', 'KPWHRA'],   // 10
     ],
     [
         // Section 5  - Right Hand
-        ['URJ', 'EBS'],  // 1
+        ['URPBLG', 'EBS'],  // 1
         ['URT', 'ELS'],  // 2
         ['URS', 'ELS'],  // 3
         ['ULS', 'ELT'],  // 4
         ['UPT', 'ELD'],  // 5
         ['ULD', 'EPT'],  // 6
         ['EPS', 'UPD'],  // 7
-        ['UPG', 'ENT'],  // 8
-        ['EGS', 'UND'],  // 9
+        ['UPG', 'EPBT'],  // 8
+        ['EGS', 'UPBD'],  // 9
         ['URGS', 'UFD'],  // 10
-        ['URS', 'ECH'],  // 11
-        ['ERS', 'UCH'],  // 12
-        ['URLS', 'ECHD'],  // 13
-        ['ERLS', 'UCHD'],  // 14
-        ['UPG', 'END'],  // 15
-        ['UPGS', 'ENDS'],  // 16
-        ['EPG', 'UNT'],  // 17
+        ['URS', 'EFP'],  // 11
+        ['ERS', 'UFP'],  // 12
+        ['URLS', 'EFPD'],  // 13
+        ['ERLS', 'UFPD'],  // 14
+        ['UPG', 'EPBD'],  // 15
+        ['UPGS', 'EPBDS'],  // 16
+        ['EPG', 'UPBT'],  // 17
         ['URGS', 'UFD'],  // 18
     ],
     [
         // Section 6
-        ['TWRO', 'KPLA'],  // 1
-        ['TWRA', 'RPLO'],  // 2
-        ['STPHO', 'KPLA'],  // 3
-        ['STPHA', 'KPLO'],  // 4
+        ['TWRO', 'KPHRA'],  // 1
+        ['TWRA', 'RPHRO'],  // 2
+        ['STPHO', 'KPHRA'],  // 3
+        ['STPHA', 'KPHRO'],  // 4
         ['KPA', 'TWRO'],  // 5
         ['KPO', 'TWRA'],  // 6
-        ['JO', 'KPLA'],  // 7
-        ['JA', 'KPLO'],  // 8
+        ['SKWRO', 'KPHRA'],  // 7
+        ['SKWRA', 'KPHRO'],  // 8
     ],
     [
         // Section 7
-        ['EKT', 'UFTS'],  // 1
-        ['UKT', 'EFTS'],  // 2
-        ['EKT', 'UFDS'],  // 3
-        ['UKT', 'EFDS'],  // 4
-        ['UKT', 'IFTS'],  // 5
-        ['IKT', 'UFTS'],  // 6
-        ['EKD', 'INLS'],  // 7
-        ['UND', 'IFTS'],  // 8
-        ['IND', 'UFTS'],  // 9
-        ['EKT', 'UFDS'],  // 10
+        ['EBGT', 'UFTS'],  // 1
+        ['UBGT', 'EFTS'],  // 2
+        ['EBGT', 'UFDS'],  // 3
+        ['UBGT', 'EFDS'],  // 4
+        ['UBGT', 'EUFTS'],  // 5
+        ['EUBGT', 'UFTS'],  // 6
+        ['EBGD', 'EUPBLS'],  // 7
+        ['UPBD', 'EUFTS'],  // 8
+        ['EUPBD', 'UFTS'],  // 9
+        ['EBGT', 'UFDS'],  // 10
     ],
     [
         // Section 8
-        ['PLA', 'DWO'],  // 1
-        ['PLO', 'DWA'],  // 2
+        ['PHRA', 'TKWO'],  // 1
+        ['PHRO', 'TKWA'],  // 2
         ['PRA', 'SWO'],  // 3
         ['PRO', 'SWA'],  // 4
-        ['BLO', 'SHA'],  // 5
-        ['BLA', 'SHO'],  // 6
-        ['SNA', 'BRA'],  // 7
-        ['SNO', 'BRA'],  // 8
+        ['PWHRO', 'SHA'],  // 5
+        ['PWHRA', 'SHO'],  // 6
+        ['STPHA', 'PWRA'],  // 7
+        ['STPHO', 'PWRA'],  // 8
         ['SWA', 'THO'],  // 9
         ['SWO', 'THA'],  // 10
-        ['DRA', 'TWO'],  // 11
-        ['DRO', 'TWA'],  // 12
+        ['TKRA', 'TWO'],  // 11
+        ['TKRO', 'TWA'],  // 12
         ['THRO', 'KPA'],  // 13
         ['TRO', 'SWA'],  // 14
         ['TRA', 'SWO'],  // 15
-        ['STRO', 'KLA'],  // 16
-        ['SRA', 'KLO'],  // 17
-        ['KRA', 'SMO'],  // 18
-        ['KRO', 'SMA'],  // 19
-        ['VA', 'GLO'],  // 20
-        ['VO', 'GLA'],  // 21
+        ['STRO', 'KHRA'],  // 16
+        ['SRA', 'KHRO'],  // 17
+        ['KRA', 'SPHO'],  // 18
+        ['KRO', 'SPHA'],  // 19
+        ['VA', 'TKPWHRO'],  // 20
+        ['VO', 'TKPWHRA'],  // 21
         ['STA', 'KPO'],  // 22
         ['STO', 'KPA'],  // 23
-        ['SPA', 'DO'],  // 24
+        ['SPA', 'TKO'],  // 24
     ],
     [
         // Section 9
-        ['IGT', 'ILS'],  // 1
-        ['IGT', 'ULS'],  // 2
+        ['EUGT', 'EULS'],  // 1
+        ['EUGT', 'ULS'],  // 2
         ['UGT', 'ULS'],  // 3
         ['EGT', 'ULS'],  // 4
-        ['UGT', 'ILS'],  // 5
-        ['EGT', 'ILS'],  // 6
+        ['UGT', 'EULS'],  // 5
+        ['EGT', 'EULS'],  // 6
     ],
     [
         // Section 10
-        ['JA', 'FLA'],  // 1
-        ['JA', 'FLO'],  // 2
-        ['SHAO', 'DO'],  // 3
+        ['SKWRA', 'TPHRA'],  // 1
+        ['SKWRA', 'TPHRO'],  // 2
+        ['SHAO', 'TKO'],  // 3
         ['STO', 'SKA'],  // 4
         ['STA', 'SKO'],  // 5
-        ['SHO', 'DAO'],  // 6
+        ['SHO', 'TKAO'],  // 6
     ],
     [
         // Section 11
-        ['EFMDZ', 'EFMZ'],  // 1
-        ['EKT', 'EKS'],  // 2
-        ['EKTS', 'ERS'],  // 3
+        ['EFPLDZ', 'EFPLZ'],  // 1
+        ['EBGT', 'EBGS'],  // 2
+        ['EBGTS', 'ERS'],  // 3
         ['EFPTS', 'EFPS'],  // 4
         ['EFPD', 'EFPZ'],  // 5
         ['EFPDZ', 'EFPZ'],  // 6
-        ['EFMD', 'EFMZ'],  // 7
-        ['EKTS', 'EKS'],  // 8
-        ['EKT', 'EKTS'],  // 9
+        ['EFPLD', 'EFPLZ'],  // 7
+        ['EBGTS', 'EBGS'],  // 8
+        ['EBGT', 'EBGTS'],  // 9
         ['EFPT', 'EFPS'],  // 10
         ['EFPDZ', 'EFPD'],  // 11
-        ['EFMDZ', 'EFMD'],  // 12
+        ['EFPLDZ', 'EFPLD'],  // 12
     ],
     [
         // Section 12
-        ['KHA', 'DWO'],  // 1
-        ['KHO', 'DWA'],  // 2
-        ['SMO', 'DWA'],  // 3
-        ['SMA', 'DWO'],  // 4
-        ['CHA', 'FWO'],  // 5
-        ['KMO', 'STRA'],  // 6
-        ['KMA', 'STRO'],  // 7
-        ['JA', 'DPO'],  // 8
-        ['JO', 'DPA'],  // 9
-        ['KPO', 'FWA'],  // 10
+        ['KHA', 'TKWO'],  // 1
+        ['KHO', 'TKWA'],  // 2
+        ['SPHO', 'TKWA'],  // 3
+        ['SPHA', 'TKWO'],  // 4
+        ['KHA', 'TPWO'],  // 5
+        ['KPHO', 'STRA'],  // 6
+        ['KPHA', 'STRO'],  // 7
+        ['SKWRA', 'TKPO'],  // 8
+        ['SKWRO', 'TKPA'],  // 9
+        ['KPO', 'TPWA'],  // 10
     ],
     [
         // Section 13
-        ['EKD', 'UFR'],  // 1
-        ['UKD', 'EFR'],  // 2
-        ['UND', 'IFR'],  // 3
-        ['UBGS', 'IFL'],  // 4
+        ['EBGD', 'UFR'],  // 1
+        ['UBGD', 'EFR'],  // 2
+        ['UPBD', 'EUFR'],  // 3
+        ['UBGS', 'EUFL'],  // 4
         ['URT', 'EFL'],  // 6
         ['ERT', 'UFL'],  // 7
-        ['URS', 'EFN'],  // 8
-        ['UFN', 'ERS'],  // 9
-        ['UM', 'EFD'],  // 10
-        ['EFD', 'UNS'],  // 11
-        ['ILT', 'EKD'],  // 12
-        ['URG', 'EMS'],  // 13
-        ['URG', 'EMT'],  // 14
-        ['EMD', 'USH'],  // 15
+        ['URS', 'EFPB'],  // 8
+        ['UFPB', 'ERS'],  // 9
+        ['UPL', 'EFD'],  // 10
+        ['EFD', 'UPBS'],  // 11
+        ['EULT', 'EBGD'],  // 12
+        ['URG', 'EPLS'],  // 13
+        ['URG', 'EPLT'],  // 14
+        ['EPLD', 'URB'],  // 15
         ['UFRT', 'EFLS'],  // 16
-        ['UFLD', 'ENTS'],  // 17
+        ['UFLD', 'EPBTS'],  // 17
         ['URPD', 'EFTS'],  // 18
         ['ULDS', 'ERPS'],  // 19
         ['UFT', 'ERDS'],  // 20
     ],
     [
         // Section 14
-        ['FRO', 'SKA'],  // 1
-        ['FRA', 'SKO'],  // 2
+        ['TPRO', 'SKA'],  // 1
+        ['TPRA', 'SKO'],  // 2
         ['PRO', 'SKHA'],  // 3
-        ['FLA', 'SKWO'],  // 4
-        ['FLO', 'SKWA'],  // 5
-        ['SLA', 'KWO'],  // 6
-        ['SLO', 'KWA'],  // 7
+        ['TPHRA', 'SKWO'],  // 4
+        ['TPHRO', 'SKWA'],  // 5
+        ['SHRA', 'KWO'],  // 6
+        ['SHRO', 'KWA'],  // 7
         ['THRA', 'KPO'],  // 8
-        ['SPO', 'DA'],  // 9
+        ['SPO', 'TKA'],  // 9
         ['TWO', 'SKRA'],  // 10
         ['PRA', 'SKHO'],  // 11
         ['TWA', 'SKRO'],  // 12
         ['SPRA', 'KHO'],  // 13
         ['SPRA', 'KHA'],  // 14
-        ['SPLA', 'DO'],  // 15
-        ['SPLO', 'DA'],  // 16
+        ['SPHRA', 'TKO'],  // 15
+        ['SPHRO', 'TKA'],  // 16
     ],
     [
         // Section 15
-        ['ERBGS', 'UFN'],  // 1
+        ['ERBGS', 'UFPB'],  // 1
         ['URBGS', 'EFT'],  // 2
-        ['UMTS', 'EFRB'],  // 3
-        ['UFRB', 'EMTS'],  // 4
+        ['UPLTS', 'EFRB'],  // 3
+        ['UFRB', 'EPLTS'],  // 4
         ['ULS', 'EFRB'],  // 5
         ['UFRB', 'ELS'],  // 6
-        ['EFD', 'UFN'],  // 7
+        ['EFD', 'UFPB'],  // 7
         ['ERBGS', 'UFRP'],  // 8
         ['URBGS', 'EFRP'],  // 9
-        ['UFPLT', 'ILS'],  // 10
+        ['UFPLT', 'EULS'],  // 10
         ['UFPLT', 'EFRB'],  // 11
         ['EFPLT', 'EFRB'],  // 12
         ['UFRB', 'BGT'],  // 13
-        ['UFD', 'EFN'],  // 14
+        ['UFD', 'EFPB'],  // 14
     ],
     [
         // Section 16
-        ['TWRO', 'SPLA'],  // 1
-        ['TWRS', 'SPLO'],  // 2
-        ['TWRA', 'DMO'],  // 3
-        ['TWRO', 'DMO'],  // 4
-        ['JA', 'DMO'],  // 5
-        ['JO', 'DMA'],  // 6
-        ['SWRO', 'DMA'],  // 7
-        ['SWRA', 'DMO'],  // 8
+        ['TWRO', 'SPHRA'],  // 1
+        ['TWRS', 'SPHRO'],  // 2
+        ['TWRA', 'TKPHO'],  // 3
+        ['TWRO', 'TKPHO'],  // 4
+        ['SKWRA', 'TKPHO'],  // 5
+        ['SKWRO', 'TKPHA'],  // 6
+        ['SWRO', 'TKPHA'],  // 7
+        ['SWRA', 'TKPHO'],  // 8
     ],
     [
         // Section 17
-        ['EFD', 'URM'],  // 1
-        ['UPT', 'ESH'],  // 2
-        ['UFPLT', 'ERN'],  // 3
+        ['EFD', 'URPL'],  // 1
+        ['UPT', 'ERB'],  // 2
+        ['UFPLT', 'ERPB'],  // 3
         ['UFGS', 'ERL'],  // 4
         ['UPT', 'EFG'],  // 5
         ['URL', 'EFPT'],  // 6
-        ['URG', 'ENS'],  // 7
-        ['URM', 'EBL'],  // 8
+        ['URG', 'EPBS'],  // 7
+        ['URPL', 'EBL'],  // 8
         ['UFT', 'EBD'],  // 9
-        ['UFT', 'ERK'],  // 10
-        ['URTS', 'INDS'],  // 11
-        ['UMTS', 'ISHD'],  // 12
+        ['UFT', 'ERBG'],  // 10
+        ['URTS', 'EUPBDS'],  // 11
+        ['UPLTS', 'EURBD'],  // 12
         ['ET', 'ULS'],  // 13
         ['EL', 'UFD'],  // 14
         ['UL', 'EFT'],  // 15
         ['UFS', 'ERPD'],  // 16
-        ['URNS', 'ERLD'],  // 17
-        ['EPG', 'UNT'],  // 18
+        ['URPBS', 'ERLD'],  // 17
+        ['EPG', 'UPBT'],  // 18
         ['UR', 'EFS'],  // 19
         ['UF', 'ERS'],  // 20
     ],
@@ -275,121 +275,121 @@ const dreadedDuo = [
         // Section 18
         ['STKPO', 'THA'],  // 1
         ['STKPA', 'THO'],  // 2
-        ['SHA', 'GRO'],  // 3
-        ['JA', 'STKPO'],  // 4
-        ['JO', 'STKPA'],  // 5
+        ['SHA', 'TKPWRO'],  // 3
+        ['SKWRA', 'STKPO'],  // 4
+        ['SKWRO', 'STKPA'],  // 5
         ['PRO', 'STKA'],  // 6
         ['PRA', 'STKO'],  // 7
-        ['SHO', 'GRA'],  // 8
+        ['SHO', 'TKPWRA'],  // 8
         ['THA', 'SWRO'],  // 9
         ['THO', 'SWRA'],  // 10
         ['TWRO', 'STKPA'],  // 11
         ['TWRA', 'STKPO'],  // 12
-        ['MO', 'STKA'],  // 13
-        ['MA', 'STKO'],  // 14
+        ['PHO', 'STKA'],  // 13
+        ['PHA', 'STKO'],  // 14
     ],
     [
         // Section 19
         ['EFRPS', 'ERBTS'],  // 1
         ['EFRPS', 'ERBDZ'],  // 2
-        ['IFRP', 'ISHD'],  // 3
+        ['EUFRP', 'EURBD'],  // 3
         ['EFRPS', 'ERBT'],  // 4
         ['EFRPS', 'URBT'],  // 5
-        ['IFRP', 'ISHT'],  // 6
+        ['EUFRP', 'EURBT'],  // 6
         ['EFRPS', 'URBTS'],  // 7
-        ['IFRP', 'USHT'],  // 8
+        ['EUFRP', 'URBT'],  // 8
         ['UFRPS', 'ERBTS'],  // 9
         ['UFRPS', 'ERBT'],  // 10
         ['EFRPS', 'EBLTS'],  // 11
-        ['UFD', 'ENG'],  // 12
+        ['UFD', 'EPBG'],  // 12
         ['UGT', 'EFRPS'],  // 13
-        ['UFT', 'ENG'],  // 14
-        ['EFD', 'UNG'],  // 15
-        ['EFT', 'UNG'],  // 16
-        ['IGT', 'UFRP'],  // 17
-        ['UFRPS', 'EKTS'],  // 18
+        ['UFT', 'EPBG'],  // 14
+        ['EFD', 'UPBG'],  // 15
+        ['EFT', 'UPBG'],  // 16
+        ['EUGT', 'UFRP'],  // 17
+        ['UFRPS', 'EBGTS'],  // 18
         ['UFRPS', 'EGT'],  // 19
         ['UFRPS', 'EBLTS'],  // 20
         ['EFRPS', 'UBLTS'],  // 21
-        ['EFRPS', 'UKTS'],  // 22
+        ['EFRPS', 'UBGTS'],  // 22
     ],
     [
         // Section 20
-        ['TWRO', 'DMA'],  // 1
-        ['TWRA', 'DMO'],  // 2
-        ['DMO', 'PRA'],  // 3
-        ['DMA', 'PRO'],  // 4
-        ['DPO', 'WHO'],  // 5
-        ['DPA', 'WHO'],  // 6
-        ['SWRO', 'DPA'],  // 7
-        ['SWRA', 'DPO'],  // 8
+        ['TWRO', 'TKPHA'],  // 1
+        ['TWRA', 'TKPHO'],  // 2
+        ['TKPHO', 'PRA'],  // 3
+        ['TKPHA', 'PRO'],  // 4
+        ['TKPO', 'WHO'],  // 5
+        ['TKPA', 'WHO'],  // 6
+        ['SWRO', 'TKPA'],  // 7
+        ['SWRA', 'TKPO'],  // 8
     ],
     [
         // Section 21
-        ['EKT', 'ENS'],  // 1
-        ['UKT', 'ENS'],  // 2
-        ['UMZ', 'EKD'],  // 3
-        ['UKD', 'EMZ'],  // 4
-        ['EKT', 'UMS'],  // 5
-        ['EFS', 'UNT'],  // 6
-        ['ENT', 'UPS'],  // 7
-        ['UFG', 'INTS'],  // 8
-        ['UFG', 'END'],  // 9
-        ['UFS', 'ENT'],  // 10
-        ['UNT', 'EPS'],  // 11
-        ['EFD', 'INT'],  // 12
-        ['EFGS', 'UND'],  // 13
-        ['EFZ', 'ENT'],  // 14
-        ['EFG', 'UNT'],  // 15
-        ['EFD', 'UNT'],  // 16
-        ['UFGS', 'ENDZ'],  // 17
-        ['EFZ', 'UNT'],  // 18
-        ['UFG', 'ENT'],  // 19
-        ['UFD', 'INT'],  // 20
-        ['UFZ', 'ENT'],  // 21
-        ['UFZ', 'ENT'],  // 22
-        ['EPG', 'INTS'],  // 23
-        ['EFG', 'UND'],  // 24
+        ['EBGT', 'EPBS'],  // 1
+        ['UBGT', 'EPBS'],  // 2
+        ['UPLZ', 'EBGD'],  // 3
+        ['UBGD', 'EPLZ'],  // 4
+        ['EBGT', 'UPLS'],  // 5
+        ['EFS', 'UPBT'],  // 6
+        ['EPBT', 'UPS'],  // 7
+        ['UFG', 'EUPBTS'],  // 8
+        ['UFG', 'EPBD'],  // 9
+        ['UFS', 'EPBT'],  // 10
+        ['UPBT', 'EPS'],  // 11
+        ['EFD', 'EUPBT'],  // 12
+        ['EFGS', 'UPBD'],  // 13
+        ['EFZ', 'EPBT'],  // 14
+        ['EFG', 'UPBT'],  // 15
+        ['EFD', 'UPBT'],  // 16
+        ['UFGS', 'EPBDZ'],  // 17
+        ['EFZ', 'UPBT'],  // 18
+        ['UFG', 'EPBT'],  // 19
+        ['UFD', 'EUPBT'],  // 20
+        ['UFZ', 'EPBT'],  // 21
+        ['UFZ', 'EPBT'],  // 22
+        ['EPG', 'EUPBTS'],  // 23
+        ['EFG', 'UPBD'],  // 24
     ],
     [
         // Section 22
         ['THO', 'KHO'],  // 1
-        ['THO', 'DHO'],  // 2
-        ['DHO', 'KHO'],  // 3
-        ['SHAO', 'DA'],  // 4
-        ['SKRO', 'FLA'],  // 5
-        ['SHA', 'DAO'],  // 6
-        ['SKRA', 'DLO'],  // 7
+        ['THO', 'TKHO'],  // 2
+        ['TKHO', 'KHO'],  // 3
+        ['SHAO', 'TKA'],  // 4
+        ['SKRO', 'TPHRA'],  // 5
+        ['SHA', 'TKAO'],  // 6
+        ['SKRA', 'TKHRO'],  // 7
         ['THO', 'KHA'],  // 8
         ['KHO', 'SHA'],  // 9
-        ['SMO', 'SHA'],  // 10
+        ['SPHO', 'SHA'],  // 10
         ['SHO', 'KHA'],  // 11
         ['KHR', 'SPRO'],  // 12
         ['SHO', 'SPRA'],  // 13
-        ['KMA', 'SHO'],  // 14
+        ['KPHA', 'SHO'],  // 14
     ],
     [
         // Section 23
-        ['URD', 'EMGS'],  // 1
-        ['URBGS', 'ENGS'],  // 2
-        ['EKT', 'UMGS'],  // 3
-        ['EFG', 'UNLS'],  // 4
+        ['URD', 'EPLGS'],  // 1
+        ['URBGS', 'EPBGS'],  // 2
+        ['EBGT', 'UPLGS'],  // 3
+        ['EFG', 'UPBLS'],  // 4
         ['UFPLT', 'ERBTS'],  // 5
-        ['UFG', 'ENL'],  // 6
-        ['EPG', 'ENLS'],  // 7
-        ['ERD', 'UMGS'],  // 8
-        ['ERBGS', 'UMGS'],  // 9
+        ['UFG', 'EPBL'],  // 6
+        ['EPG', 'EPBLS'],  // 7
+        ['ERD', 'UPLGS'],  // 8
+        ['ERBGS', 'UPLGS'],  // 9
         ['URPS', 'ERBD'],  // 10
-        ['UFS', 'ENL'],  // 11
-        ['UFG', 'INLS'],  // 12
+        ['UFS', 'EPBL'],  // 11
+        ['UFG', 'EUPBLS'],  // 12
         ['URBTS', 'EFPLT'],  // 13
-        ['EFG', 'UNL'],  // 14
+        ['EFG', 'UPBL'],  // 14
     ],
     [
         // Section 24
         ['TRO', 'SPWA'],  // 1
         ['TRA', 'SPWO'],  // 2
-        ['DPRO', 'SPWA'],  // 3
+        ['TKPRO', 'SPWA'],  // 3
         ['KPRA', 'SPWO'],  // 4
         ['STRA', 'SPWO'],  // 5
         ['STRO', 'SPWA'],  // 6
@@ -398,20 +398,20 @@ const dreadedDuo = [
     ],
     [
         // Section 25
-        ['UBLS', 'ERNT'],  // 1
+        ['UBLS', 'ERPBT'],  // 1
         ['URLS', 'EBLD'],  // 2
         ['EFPLT', 'URGS'],  // 3
-        ['ILTS', 'ERKS'],  // 4
-        ['UFS', 'EJD'],  // 5
+        ['EULTS', 'ERBGS'],  // 4
+        ['UFS', 'EPBLGD'],  // 5
         ['UG', 'ELD'],  // 6
         ['EG', 'ULD'],  // 7
-        ['EPGS', 'UNDS'],  // 8
-        ['UNDS', 'EMS'],  // 9
-        ['EMD', 'URMS'],  // 10
-        ['EPS', 'UJD'],  // 11
-        ['UM', 'EPS'],  // 12
-        ['EM', 'UPS'],  // 13
-        ['EK', 'UPS'],  // 14
+        ['EPGS', 'UPBDS'],  // 8
+        ['UPBDS', 'EPLS'],  // 9
+        ['EPLD', 'URPLS'],  // 10
+        ['EPS', 'UPBLGD'],  // 11
+        ['UPL', 'EPS'],  // 12
+        ['EPL', 'UPS'],  // 13
+        ['EBG', 'UPS'],  // 14
     ],
     [
         // Section 26
@@ -419,8 +419,8 @@ const dreadedDuo = [
         ['TWRA', 'KPWO'],  // 2
         ['STPHA', 'KPWO'],  // 3
         ['STPHO', 'KPWA'],  // 4
-        ['JO', 'KPWA'],  // 5
-        ['JA', 'KPWO'],  // 6
+        ['SKWRO', 'KPWA'],  // 5
+        ['SKWRA', 'KPWO'],  // 6
     ],
     [
         // Section 27
