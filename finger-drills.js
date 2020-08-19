@@ -10,9 +10,10 @@ function generateFingerDrill(pair, iterations) {
 
 function generateDreadedDuoDrill(section, drill, iterations) {
 	let exercise = generateFingerDrill(dreadedDuo[section-1][drill-1], iterations)
+	let n = dreadedDuo[section-1].length
 
 	exercise.name = "Da Dreaded Dueling Digit Duo Drills";
-	exercise.name += ' (Section ' + section + ' #' + drill + ')';
+	exercise.name += ' (Section ' + section + ', #' + drill + ' of ' + n + ')';
 	return exercise;
 }
 
