@@ -53,7 +53,6 @@ const dreadedDuo = [
         ['STPHO', 'SPWA'],  // 2
         ['SKWRO', 'SPWA'],     // 3
         ['SKWRA', 'SPWO'],     // 4
-        ['SKWRA', 'SPWO'],     // 5
         ['TKWRA', 'KPWHRO'],   // 5
         ['THO', 'SPWRA'],   // 6
         ['THA', 'SPWRO'],   // 7
