@@ -77,9 +77,7 @@ TypeJig.prototype.reset = function() {
 }
 
 TypeJig.wordsAndSpaces = function(string) {
-	let out = string.match(/\S+|\s+/g) || [];
-	if(out.length > 0 && /^\s*$/.test(out[0])) out.shift();
-	return out;
+	return string.match(/\S+|\s+/g) || [];
 }
 
 // Can contain a text-to-pseudosteno dictionary for each steno theory.
@@ -161,7 +159,7 @@ TypeJig.prototype.answerChanged = function() {
 
 	// Get the exercise and the user's answer as arrays of
 	// words interspersed with whitespace.
-	var answer = TypeJig.wordsAndSpaces(this.input.value);
+	var answer = TypeJig.wordsAndSpaces(this.input.value.trim());
 	var exercise = this.getWords(Math.ceil(answer.length/2));
 
 	// Get the first word of the exercise, and create a range
@@ -264,11 +262,16 @@ TypeJig.prototype.getWords = function(n) {
 	while(this.exercise && (!n || exercise.length < n)) {
 		var text = this.exercise.getText();
 		if(text) {
-			var span = document.createElement('span');
-			span.appendChild(document.createTextNode(text));
-			if(this.speed) span.className = 'notYet';
-			this.display.appendChild(span);
-			exercise.push.apply(exercise, TypeJig.wordsAndSpaces(text));
+			var pieces = TypeJig.wordsAndSpaces(text);
+			console.log(JSON.stringify(text))
+			console.log(pieces)
+			for(let i=0; i<pieces.length; ++i) {
+				var span = document.createElement('span');
+				span.appendChild(document.createTextNode(pieces[i]));
+				if(this.speed) span.className = 'notYet';
+				this.display.appendChild(span);
+			}
+			exercise.push.apply(exercise, pieces);
 		} else delete(this.exercise);
 	}
 	return exercise;
