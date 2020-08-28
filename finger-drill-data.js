@@ -77,14 +77,14 @@ const dreadedDuo = [
         ['URLS', 'EFPD'],  // 13
         ['ERLS', 'UFPD'],  // 14
         ['UPG', 'EPBD'],  // 15
-        ['UPGS', 'EPBDS'],  // 16
+        ['UPGS', 'EPBDZ'],  // 16
         ['EPG', 'UPBT'],  // 17
         ['URGS', 'UFD'],  // 18
     ],
     [
         // Section 6
         ['TWRO', 'KPHRA'],  // 1
-        ['TWRA', 'RPHRO'],  // 2
+        ['TWRA', 'KPHRO'],  // 2
         ['STPHO', 'KPHRA'],  // 3
         ['STPHA', 'KPHRO'],  // 4
         ['KPA', 'TWRO'],  // 5
@@ -96,14 +96,14 @@ const dreadedDuo = [
         // Section 7
         ['EBGT', 'UFTS'],  // 1
         ['UBGT', 'EFTS'],  // 2
-        ['EBGT', 'UFDS'],  // 3
-        ['UBGT', 'EFDS'],  // 4
+        ['EBGT', 'UFDZ'],  // 3
+        ['UBGT', 'EFDZ'],  // 4
         ['UBGT', 'EUFTS'],  // 5
         ['EUBGT', 'UFTS'],  // 6
         ['EBGD', 'EUPBLS'],  // 7
         ['UPBD', 'EUFTS'],  // 8
         ['EUPBD', 'UFTS'],  // 9
-        ['EBGT', 'UFDS'],  // 10
+        ['EBGT', 'UFDZ'],  // 10
     ],
     [
         // Section 8
@@ -197,8 +197,8 @@ const dreadedDuo = [
         ['UFRT', 'EFLS'],  // 16
         ['UFLD', 'EPBTS'],  // 17
         ['URPD', 'EFTS'],  // 18
-        ['ULDS', 'ERPS'],  // 19
-        ['UFT', 'ERDS'],  // 20
+        ['ULDZ', 'ERPS'],  // 19
+        ['UFT', 'ERDZ'],  // 20
     ],
     [
         // Section 14
@@ -259,7 +259,7 @@ const dreadedDuo = [
         ['URPL', 'EBL'],  // 8
         ['UFT', 'EBD'],  // 9
         ['UFT', 'ERBG'],  // 10
-        ['URTS', 'EUPBDS'],  // 11
+        ['URTS', 'EUPBDZ'],  // 11
         ['UPLTS', 'EURBD'],  // 12
         ['ET', 'ULS'],  // 13
         ['EL', 'UFD'],  // 14
@@ -404,8 +404,8 @@ const dreadedDuo = [
         ['UFS', 'EPBLGD'],  // 5
         ['UG', 'ELD'],  // 6
         ['EG', 'ULD'],  // 7
-        ['EPGS', 'UPBDS'],  // 8
-        ['UPBDS', 'EPLS'],  // 9
+        ['EPGS', 'UPBDZ'],  // 8
+        ['UPBDZ', 'EPLS'],  // 9
         ['EPLD', 'URPLS'],  // 10
         ['EPS', 'UPBLGD'],  // 11
         ['UPL', 'EPS'],  // 12
