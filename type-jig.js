@@ -142,6 +142,7 @@ function nextItem(range) {
 	if(next != null) {
 		range.setStart(next, 0);
 		range.setEnd(next, 1);
+		if(/^\s+$/.test(range.toString())) nextItem(range)
 	}
 }
 
@@ -263,8 +264,6 @@ TypeJig.prototype.getWords = function(n) {
 		var text = this.exercise.getText();
 		if(text) {
 			var pieces = TypeJig.wordsAndSpaces(text);
-			console.log(JSON.stringify(text))
-			console.log(pieces)
 			for(let i=0; i<pieces.length; ++i) {
 				var span = document.createElement('span');
 				span.appendChild(document.createTextNode(pieces[i]));
