@@ -68,6 +68,7 @@ body {
  */
 
 input[type="number"] { width: 3.5em; }
+@supports  (-moz-appearance:none) { input[type="number"] { width: 5em; } }
 input[type="number"][name="timeLimit"] { width: 2.5em; }
 
 form.drill-options {
