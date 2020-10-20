@@ -126,8 +126,8 @@ const dreadedDuo = [
         ['SRA', 'KHRO'],  // 17
         ['KRA', 'SPHO'],  // 18
         ['KRO', 'SPHA'],  // 19
-        ['VA', 'TKPWHRO'],  // 20
-        ['VO', 'TKPWHRA'],  // 21
+        ['SRA', 'TKPWHRO'],  // 20
+        ['SRO', 'TKPWHRA'],  // 21
         ['STA', 'KPO'],  // 22
         ['STO', 'KPA'],  // 23
         ['SPA', 'TKO'],  // 24
