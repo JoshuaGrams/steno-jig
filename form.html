@@ -241,7 +241,7 @@ function runExercise(fields) {
 		var speed = {wpm: fields.wpm, cpm: fields.cpm};
 
 		display_only('lesson');
-		var jig = setExercise(exercise.name, exercise, hints, speed);
+		return setExercise(exercise.name, exercise, hints, speed);
 	}
 }
 
@@ -254,6 +254,19 @@ function getSettings() {
 	this.elements.hints.value = hints.checked ? hints.value : '';
 }
 
+function runCustom(evt) {
+	evt.preventDefault();
+	getSettings.call(this);
+	var fields = getFormFields(this);
+	fields.drill = fields.drill.split(/\s+/m);
+	var jig = runExercise(fields);
+	var again = document.getElementById('again');
+	again.addEventListener('click', function(evt){
+		evt.preventDefault();
+		jig.reset();
+	});
+}
+
 window.onload = function() {
 	if(document.location.search !== '') {
 		runExercise(parseQueryString(document.location.search));
@@ -263,13 +276,7 @@ window.onload = function() {
 		for(var i=0; i<forms.length; ++i) {
 			var form = forms[i]
 			if(form.id === 'custom') {
-				form.addEventListener('submit', function(evt) {
-					evt.preventDefault();
-					getSettings.call(this);
-					var fields = getFormFields(this);
-					fields.drill = fields.drill.split(/\s+/m);
-					runExercise(fields);
-				})
+				form.addEventListener('submit', runCustom);
 			} else {
 				form.addEventListener('submit', getSettings);
 			}
