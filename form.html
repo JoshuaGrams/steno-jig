@@ -258,6 +258,9 @@ function runCustom(evt) {
 	evt.preventDefault();
 	getSettings.call(this);
 	var fields = getFormFields(this);
+	if(storageAvailable('localStorage')) {
+		localStorage.custom = fields.drill
+	}
 	fields.drill = fields.drill.split(/\s+/m);
 	var jig = runExercise(fields);
 	var again = document.getElementById('again');
@@ -292,7 +295,11 @@ function display_only(show) {
 	}
 }
 
-setTheme()
+loadSettings()
+if(storageAvailable('localStorage') && localStorage.custom != null) {
+	let custom = document.getElementById('custom')
+	custom.elements.drill.value = localStorage.custom
+}
 </script>
 
 </body>

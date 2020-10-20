@@ -104,20 +104,35 @@ function displayOnly(show) {
 }
 
 function saveFormState(form) {
+	let radioButtons = document.getElementById('selectDrill').elements['type']
+	let drillType
+	for(let i=0; i<radioButtons.length; ++i) {
+		if(radioButtons[i].checked) {
+			drillType = radioButtons[i].value
+			break
+		}
+	}
     save({
         drill: form.drill.value,
         hints: form.hints.checked,
-        type: form.type.value,
+        type: drillType,
         timeLimit: form.timeLimit.value,
     });
 }
 
 function loadFormState(form) {
     var loaded = load();
-    if (loaded.drill) {
+    if(loaded.drill != null) {
         form.drill.value = loaded.drill;
     }
-    form.hints.checked = loaded.hints;
+	if(loaded.hints != null) form.hints.checked = !!loaded.hints;
+	if(loaded.type != null) {
+		let radioButtons = document.getElementById('selectDrill').elements['type']
+		for(let i=0; i<radioButtons.length; ++i) {
+			let b = radioButtons[i]
+			b.checked = (b.value === loaded.type)
+		}
+	}
     form.type.value = loaded.type;
     if (loaded.timeLimit) {
         form.timeLimit.value = loaded.timeLimit;

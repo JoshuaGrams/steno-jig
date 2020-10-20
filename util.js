@@ -120,6 +120,48 @@ function setTheme() {
 	}
 }
 
+function loadSettings() {
+	if(!storageAvailable('localStorage')) return
+
+	// Theme
+	if(localStorage.theme == null) {
+		document.body.removeAttribute('data-theme')
+	} else {
+		document.body.setAttribute('data-theme', localStorage.theme)
+	}
+
+	// Hints
+	const hints = document.getElementById('hints')
+	if(hints && hints.nodeName === 'INPUT' && hints.type === 'checkbox') {
+		if(localStorage.hints != null) {
+			hints.checked = JSON.parse(localStorage.hints)
+		}
+		hints.addEventListener('input', function(evt) {
+			localStorage.hints = !!hints.checked
+		})
+	}
+
+	// CPM
+	const cpm = document.getElementById('cpm')
+	if(cpm && cpm.nodeName === 'INPUT' && cpm.type === 'checkbox') {
+		if(localStorage.cpm != null) {
+			cpm.checked = JSON.parse(localStorage.cpm)
+		}
+		cpm.addEventListener('input', function(evt) {
+			localStorage.cpm = !!cpm.checked
+		})
+	}
+
+	// WPM
+	const wpm = document.getElementById('wpm')
+	if(wpm && wpm.nodeName === 'INPUT' && wpm.type === 'number') {
+		if(localStorage.wpm != null) wpm.value = localStorage.wpm
+		wpm.addEventListener('input', function(evt) {
+			localStorage.wpm = wpm.value
+		})
+	}
+}
+
 /**
  * Update a URL parameter and return the new URL.
  * Note that if handling anchors is needed in the future,
