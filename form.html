@@ -261,7 +261,7 @@ function runCustom(evt) {
 	if(storageAvailable('localStorage')) {
 		localStorage.custom = fields.drill
 	}
-	fields.drill = fields.drill.split(/\s+/m);
+	fields.drill = fields.drill.trim().split(/\s+/m);
 	var jig = runExercise(fields);
 	var again = document.getElementById('again');
 	again.addEventListener('click', function(evt){
