@@ -54,6 +54,29 @@
 		"wright"
 	];
 
+	TypeJig.WordSets['st/sp'] = [
+		"span", "spank", "spar", "spark", "spasm",
+		"spat", "spawn", "spec", "speck", "sped",
+		"spell", "spelt", "spend", "spent", "sperm",
+		"spew", "spill", "spilt", "spin", "spit",
+		"sport", "spot", "sprang", "sprat", "sprawl",
+		"sprig", "spring", "sprint", "spritz", "sprung",
+		"spud", "spun", "spunk", "spur", "spurn",
+		"spurt", "stab", "stack", "staff", "stag",
+		"stalk", "stall", "stamp", "stanch", "stand",
+		"stank", "staph", "star", "starch", "stark",
+		"start", "stash", "stem", "stench", "step",
+		"stern", "stew", "stick", "stiff", "still",
+		"stilt", "sting", "stink", "stint", "stir",
+		"stitch", "stock", "stomp", "stop", "stork",
+		"storm", "stow", "strand", "strap", "straw",
+		"strength", "strep", "stretch", "strew", "strewn",
+		"strict", "string", "strip", "stroll", "strong",
+		"strop", "struck", "strum", "strung", "strut",
+		"stub", "stuck", "stud", "stuff", "stump",
+		"stun", "stung", "stunk", "stunt"
+	];
+
 	// Phoenix-specific: Plover does a bunch of these differently.
 	TypeJig.WordSets['AI/OE/EE'] = TypeJig.wordCombos([
 		['he', 'hoe', 'hay'], ['lee', 'low', 'lay'],
