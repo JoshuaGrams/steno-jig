@@ -111,18 +111,20 @@ a, a:visited {
 	width: 100%;
 	margin-top: -0.8em;
 	line-height: 3;
-	white-space: pre-wrap;
 }
 #results {
 	line-height: 1;
+	white-space: pre-wrap;
 }
 #exercise {
 	position: relative;
+	white-space: pre-wrap;
 }
 #answer {
 	position: absolute;
 	padding-top: 2em;
 	color: var(--answer-text);
+	white-space: pre;
 	user-select: none;
 	-moz-user-select: none;
 	-webkit-user-select: none;

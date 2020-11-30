@@ -188,14 +188,14 @@ TypeJig.prototype.answerChanged = function() {
 		match = (ans == ex);
 
 		var r = range.getBoundingClientRect();
-		if(r.bottom > y + 0.001 && endOfAnswer) {
-			if(!match) {
-				output.appendChild(document.createTextNode('\n'));
+		if(r.bottom > y + 0.001) {
+			output.appendChild(document.createTextNode('\n'));
+			if(endOfAnswer) {
+				var limit = 0.66 * window.innerHeight;
+				var end = this.display.getBoundingClientRect().bottom;
+				var r = range.getBoundingClientRect();
+				if(end > window.innerHeight && r.bottom > limit) window.scrollBy(0, r.bottom - limit);
 			}
-			var limit = 0.66 * window.innerHeight;
-			var end = this.display.getBoundingClientRect().bottom;
-			var r = range.getBoundingClientRect();
-			if(end > window.innerHeight && r.bottom > limit) window.scrollBy(0, r.bottom - limit);
 		}
 		y = r.bottom;
 
