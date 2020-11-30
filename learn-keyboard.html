@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Learn the Steno Keyboard</title>
+	<link href="style.css" rel="stylesheet" type="text/css">
+	<script src="type-jig.js"></script>
+	<script src="util.js"></script>
+	<script src="word-drill.js"></script>
+	<script src="steno-display.js"></script>
+	<script src="learn-keyboard.js"></script>
+	<link rel="stylesheet" type="text/css" href="font-roboto.css">
+</head>
+<body>
+
+<div class="wrapper">
+	<div id="form">
+		<h1>Learn the Steno Keyboard</h1>
+		<div class="form-section">
+			<form id="selectDrill">
+				<ul style="list-style-type: none">
+					<li><select name="drill"></select></li>
+					<li><label><input name="hints" type="checkbox" value="yes" checked> Show hints?</label></li>
+					<li><label><input name="times" type="number" value="5" min="1" max="50" step="1"> Times.</label></li>
+					<li><label><input name="wpm" type="number" value="" step="5"> Speed (strokes per minute).</label></li>
+					<li><input type="submit" value="Go"></li>
+				</ul>
+			</form>
+		</div>
+	</div>
+</div>
+
+<div id="lesson" class="wrapper" style="display: none">
+	<h3 id="lesson-name" class="center"></h3>
+	<div id="drill-content">
+		<div id="answer"></div>
+		<div id="exercise"></div>
+		<div id="results"></div>
+	</div>
+
+	<div id="nav">
+		<p id="strokes"></p>
+		<p id="clock" class="clock"></p>
+
+		<p class="center"><a id="back" title="LeftArrow">&larr; Back to Menu <span class="shortcutkey">(LeftArrow)</span></a></p>
+		<p class="center"><a id="again" title="Enter">&#8634; Restart <span class="shortcutkey">(Enter)</span></a></p>
+	</div>
+
+	<textarea id="input"></textarea>
+</div>
+
+<script>
+window.onload = function() {
+	if(document.location.search === '') {
+		var form = document.getElementById('selectDrill');
+		var drill = form.elements.drill;
+		var order = Object.keys(TypeJig.WordSets.LearnKeyboard);
+		for(var i=0; i<order.length; ++i) {
+			var option = document.createElement('option');
+			option.appendChild(document.createTextNode(order[i]));
+			drill.appendChild(option);
+		}
+		drill.focus();
+
+		loadFormState(form);
+		form.addEventListener("submit", function(){
+		    saveFormState(form);
+		});
+	} else {
+		var fields = parseQueryString(document.location.search);
+		TypeJig.WordSets = TypeJig.WordSets.LearnKeyboard;
+		var exercise = wordDrill(fields);
+		if(exercise) {
+			if(fields.hints) {
+				var strokes = document.getElementById('strokes');
+				if(fields.floating_hints) {
+					strokes.style.position = 'fixed';
+				}
+				var translations = TypeJig.shortestTranslations(TypeJig.Translations.Plover);
+				var hints = new StenoDisplay(strokes, translations, true);
+				hints.lookupEntry = x => x
+			}
+			var speed = {wpm: fields.wpm, cpm: fields.cpm};
+
+			displayOnly('lesson');
+			var jig = setExercise(exercise.name, exercise, hints, speed);
+		}
+	}
+}
+
+function displayOnly(show) {
+	var i, tabs
+	tabs = ['form', 'lesson']
+	for (i in tabs) {
+		document.getElementById(tabs[i]).style.display = tabs[i] === show ? 'block' : 'none'
+	}
+}
+
+function saveFormState(form) {
+    save({
+        drill: form.drill.value,
+        hints: form.hints.checked,
+        times: form.times.value,
+        timeLimit: form.timeLimit.value,
+    });
+}
+
+function loadFormState(form) {
+    var loaded = load();
+    if (loaded.drill) {
+        form.drill.value = loaded.drill;
+    }
+    form.hints.checked = loaded.hints;
+    form.times.value = loaded.times;
+    if (loaded.timeLimit) {
+        form.timeLimit.value = loaded.timeLimit;
+    }
+}
+
+var LOCAL_STORAGE_KEY = "learn-plover-form";
+
+function save(obj) {
+    try {
+        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(obj));
+    } catch (e) {
+        console.error(e);
+    }
+}
+
+function load() {
+    try {
+        return JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY)) || {};
+    } catch (e) {
+        console.error(e);
+        return {};
+    }
+}
+
+setTheme()
+</script>
+</body>
+</html>
