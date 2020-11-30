@@ -7,7 +7,7 @@ const dreadedDuo = [
         ['UPG', 'EBL'],   // 4
         ['UPG', 'EBLS'],  // 5
         ['EBL', 'UGT'],   // 6
-        ['UBL', 'BGT'],   // 7
+        ['UBL', '-BGT'],  // 7
     ],
     [
         // Section 2 - Left Hand
