@@ -222,13 +222,7 @@
 <script>
 function runExercise(fields) {
 	if(fields.drill === 'NumberSentences') exercise = numberSentences(fields);
-	else {
-		if(Array.isArray(fields.drill)) {
-			TypeJig.WordSets.custom = fields.drill;
-			fields.drill = 'custom';
-		}
-		exercise = wordDrill(fields);
-	}
+	else exercise = wordDrill(fields);
 	if(exercise) {
 		if(fields.hints) {
 			var strokes = document.getElementById('strokes');
@@ -261,7 +255,8 @@ function runCustom(evt) {
 	if(storageAvailable('localStorage')) {
 		localStorage.custom = fields.drill
 	}
-	fields.drill = fields.drill.trim().split(/\s+/m);
+	TypeJig.WordSets.custom = fields.drill.trim().split(/\s+/m);
+	fields.drill = 'custom';
 	var jig = runExercise(fields);
 	var again = document.getElementById('again');
 	again.addEventListener('click', function(evt){
