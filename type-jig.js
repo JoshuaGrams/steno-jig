@@ -160,7 +160,7 @@ TypeJig.prototype.answerChanged = function() {
 
 	// Get the exercise and the user's answer as arrays of
 	// words interspersed with whitespace.
-	var answer = TypeJig.wordsAndSpaces(this.input.value.trim());
+	var answer = TypeJig.wordsAndSpaces(this.input.value.replace(/^\s+/, ''));
 	var exercise = this.getWords(Math.ceil(answer.length/2));
 
 	// Get the first word of the exercise, and create a range
