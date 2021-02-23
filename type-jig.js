@@ -13,6 +13,7 @@ function TypeJig(exercise, display, results, input, clock, hint, speed) {
 	this.clock = new TypeJig.Timer(documentElement(clock), exercise.seconds);
 	this.hint = hint;
 	this.errorCount = 0;
+	this.enterCount = 0;
 
 	this.lookahead = 1000;
 
@@ -46,6 +47,7 @@ function TypeJig(exercise, display, results, input, clock, hint, speed) {
 }
 
 TypeJig.prototype.reset = function() {
+	this.enter_count = 0;
 	this.resultsDisplay.textContent = '';
 	if(this.exercise && !this.exercise.started) {
 		this.display.textContent = '';
@@ -232,10 +234,17 @@ TypeJig.prototype.answerChanged = function() {
 
 TypeJig.prototype.keyDown = function (e) {
     var id;
-	if(e.metaKey || e.ctrlKey || e.altKey || e.shiftKey) return;
+	if(e.metaKey || e.ctrlKey || e.altKey || e.shiftKey) {
+		this.enter_count = 0;
+		return;
+	}
+	if(e.key === "Enter") ++this.enter_count; else this.enter_count = 0;
     switch (e.key) {
         case "Enter":
-            id = "again";
+			if(this.enter_count >= 3) {
+				id = "again";
+				this.enter_count = 0;
+			}
             break;
         case "ArrowLeft":
             id = "back";
