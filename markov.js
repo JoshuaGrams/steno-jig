@@ -49,7 +49,7 @@ window.onload = function() {
 	var hints = initializeHints(fields.hints, fields.floating_hints);
 	var speed = {wpm: fields.wpm, cpm: fields.cpm};
 
-	const ngrams = compute_ngrams(top_2k_sentences, 3);
+	const ngrams = compute_ngrams(sentences, 3);
 	var exercise = generateMarkovExercise(ngrams, word_count, rng);
 
 	var jig = setExercise(name, exercise, hints, speed);
