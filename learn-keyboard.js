@@ -65,7 +65,7 @@
 	// E['"Long" vowels'] = IndividualChords(['AEU','OEU','AOE','AOU','AOEU'],100)
 	// E["Diphthongs and Disambiguators"] = IndividualChords(['AO','OE','AE','OU','AU'],100)
 	E["Left hand"] = IndividualChords(['S','T','K','P','W','H','R'],100,false)
-	E["Right hand"] = IndividualChords(['-F','-R','-P','-B','-L','-G','-T','-S','-D','-Z'],false)
+	E["Right hand"] = IndividualChords(['-F','-R','-P','-B','-L','-G','-T','-S','-D','-Z'],100,false)
 	E["Left + Vowel"] = ChordCombos([
 		['S','T','K','P','W','H','R'],
 		['A','O','E','U']
