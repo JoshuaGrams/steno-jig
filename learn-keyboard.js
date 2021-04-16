@@ -16,7 +16,7 @@
 		return a;
 	}
 
-	function IndividualChords(chords, count, intro) {
+	function IndividualChords(chords, count, intro, line_length) {
 		const reversed = [...chords].reverse()
 		const shuffled = shuffle([...chords])
 		if(intro === false) intro = []
@@ -31,10 +31,10 @@
 			if(this.i < this.intro.length) {
 				return this.intro[this.i++]
 			} else if(this.i<count) {
-				const N = this.chords.length
+				const N = line_length || 2*this.chords.length
 				const i = this.i - this.intro.length
 				++this.i
-				const r = i%(2*N) === 0 && this.i>1 && this.i<count? '\n' : ''
+				const r = i%N === 0 && this.i>1 && this.i<count? '\n' : ''
 				const c = Math.floor(this.chords.length * Math.random())
 				return r + this.chords[c]
 			} else this.i = 0
@@ -64,8 +64,13 @@
 	E["Vowels"] = IndividualChords(['A','O','E','U'],100)
 	// E['"Long" vowels'] = IndividualChords(['AEU','OEU','AOE','AOU','AOEU'],100)
 	// E["Diphthongs and Disambiguators"] = IndividualChords(['AO','OE','AE','OU','AU'],100)
-	E["Left hand"] = IndividualChords(['S','T','K','P','W','H','R'],100,false)
-	E["Right hand"] = IndividualChords(['-F','-R','-P','-B','-L','-G','-T','-S','-D','-Z'],100,false)
+	E["Left hand"] = IndividualChords(['S','T','K','P','W','H','R'],100,false,20)
+	E["Right hand"] = IndividualChords(['-F','-R','-P','-B','-L','-G','-T','-S','-D','-Z'],100,false,20)
+	E["All keys"] = IndividualChords(['S','T','K','P','W','H','R','A','O','E','U','-F','-R','-P','-B','-L','-G','-T','-S','-D','-Z'],100,false,20)
+	E["Left + Right"] = ChordCombos([
+		['S','T','K','P','W','H','R'],
+		['-F','-R','-P','-B','-L','-G','-T','-S','-D','-Z']
+	], 104, false)
 	E["Left + Vowel"] = ChordCombos([
 		['S','T','K','P','W','H','R'],
 		['A','O','E','U']
