@@ -81,7 +81,7 @@
 
 	Plover["Long Vowel Chords"] = [
 		'aids', 'ace', 'ate', 'able', 'ape',
-		'raid', 'raise', 'rail', 'rate', 'pay',
+		'raid', 'raise', 'rail', 'rate', 'race', 'pay',
 		'paid', 'pace', 'tape', 'spray', 'praise',
 		'weaver', 'trees', 'eel', 'eat', 'evil',
 		'ear', 'heat', 'heap', 'wield', 'weird',
@@ -89,7 +89,7 @@
 		'seat', 'cease', 'seed', 'seize', 'secrete',
 		'ire', "I'll", 'ice', 'rife', 'ripe',
 		'right', 'height', 'wild', 'pipe', 'pride',
-		'prize', 'kite', 'type', 'spite', 'drive',
+		'prize', 'kite', 'type', 'spite',
 		'hope', 'spore', 'post', 'sold', 'prose',
 		'ode', 'oat', 'over', 'robe', 'rope',
 		'roar', 'rove', 'host', 'wove', 'wrote', 'pole',
