@@ -133,6 +133,10 @@ TypeJig.prototype.tick = function() {
 	var fn = this.tick.bind(this);
 	var ms = 1000 * 60 / s.value;
 	if(s.type === 'cpm') ms *= s.current.textContent.length;
+	else while(/^(\s*|\p{Punctuation})$/u.test(s.current.textContent)) {
+		s.current.className = '';
+		s.current = s.current.nextElementSibling;
+	}
 	s.current.className = '';
 	s.current = s.current.nextElementSibling;
 	if(s.current) setTimeout(fn, ms);
