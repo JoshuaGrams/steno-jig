@@ -22,9 +22,15 @@ function wordDrill(params) {
 
 	var first = +params.first || 0;
 	var count = +params.count || words.length;
+	var choose = +params.choose || count;
 	if(first !== 0 || count !== words.length) {
 		words = words.slice(first, first+count);
 		name += ' ' + first + ' to ' + (first+count);
+	}
+	if(choose < count) {
+		shuffle(words)
+		words = words.slice(0, choose)
+		count = choose
 	}
 	if(params.type === 'randomly') {
 		timeLimit = Math.round(60 * params.timeLimit);
