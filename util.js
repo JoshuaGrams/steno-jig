@@ -66,6 +66,13 @@ function initializeHints(hints, floating_hints) {
     return new StenoDisplay(strokes, translations, true);
 }
 
+function changeName(name) {
+	var h = document.getElementById('lesson-name')
+	h.removeChild(h.lastChild)
+	h.appendChild(document.createTextNode(name))
+	document.title = name + ' - ' + document.title.replace(/^.*? - /, '')
+}
+
 function setExercise(name, exercise, hints, speed) {
 	var h = document.getElementById('lesson-name');
 	h.appendChild(document.createTextNode(name));
@@ -186,5 +193,5 @@ function updateURLParameter(url, param, paramVal){
     }
 
     var rows_txt = temp + "" + param + "=" + paramVal;
-    return baseURL + "?" + newAdditionalURL + rows_txt;
+    return baseURL + "?" + newAdditionalURL + (paramVal==null?'':rows_txt);
 }

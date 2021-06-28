@@ -42,6 +42,7 @@
 
 			<textarea name="drill"></textarea><br>
 			<input type="checkbox" name="type" value="shuffled"> Shuffle words.<br>
+			Or <input type="checkbox" name="shuffleLines" value="shuffled"> shuffle lines.<br>
 
 			<button>Start Drill &rarr;</button>
 		</form>
@@ -126,6 +127,26 @@
 
 			<script>document.write('<input type="hidden" name="seed" value="' + Math.random().toString() + '">')</script>
 
+			<button>Start Drill &rarr;</button>
+		</form>
+	</div>
+
+	<div class="form-section">
+		<div class="caption"><strong>Quotes</strong> from <a href="https://github.com/Miodec/monkeytype/blob/master/static/quotes/english.json">Monkeytype</a>.</div>
+
+		<form class="drill-options" action="monkeytype-quote.html">
+			<input type="hidden" name="wpm" value = "">
+			<input type="hidden" name="cpm" value="">
+			<input type="hidden" name="hints" value="">
+
+			Drill length:
+			<ul>
+				<li style="list-style:none"><input type="radio" id="length" value="all" checked><label for="length">All</label></li>
+				<li style="list-style:none"><input type="radio" id="length" value="short"><label for="length">Short (&lt;100 characters)</label></li>
+				<li style="list-style:none"><input type="radio" id="length" value="medium"><label for="length">Medium (101-300 characters)</label></li>
+				<li style="list-style:none"><input type="radio" id="length" value="long"><label for="length">Long (301-600 characters)</label></li>
+				<li style="list-style:none"><input type="radio" id="length" value="thicc"><label for="length">Thicc (&gt;600 characters)</label></li>
+			</ul>
 			<button>Start Drill &rarr;</button>
 		</form>
 	</div>
@@ -257,6 +278,10 @@ function runCustom(evt) {
 	var fields = getFormFields(this);
 	if(storageAvailable('localStorage')) {
 		localStorage.custom = fields.drill
+	}
+	if(fields.shuffleLines) {
+		delete(fields.type);
+		fields.drill = shuffle(fields.drill.trim().split(/\n+/m)).join(' ');
 	}
 	TypeJig.WordSets.custom = fields.drill.trim().split(/\s+/m);
 	fields.drill = 'custom';
