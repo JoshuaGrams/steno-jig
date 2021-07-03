@@ -24,6 +24,8 @@ function generateExercise(id, lo, hi) {
 	return exercise
 }
 
+loadSettings()
+
 window.onload = function() {
 	var fields = parseQueryString(document.location.search)
 	switch(fields.length) {
