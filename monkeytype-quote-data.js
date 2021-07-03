@@ -32241,7 +32241,7 @@ monkeytype = {
     },
     {
       "text": "Now, if you two don't mind I'll be off to bed before either of you come up with another clever idea to get us killed - or worse, expelled!",
-      "source": "Harry Potter and the Philosopher’s Stone",
+      "source": "Harry Potter and the Philosopher's Stone",
       "length": 138,
       "id": 5425
     },
@@ -32384,7 +32384,7 @@ monkeytype = {
       "id": 5449
     },
     {
-      "text": "If you ain’t scared... you ain’t human.",
+      "text": "If you ain't scared... you ain't human.",
       "source": "Alby, The Maze Runner",
       "length": 37,
       "id": 5451
@@ -32462,7 +32462,7 @@ monkeytype = {
       "id": 5464
     },
     {
-      "text": "My friend Kira always said that life is like an extremely difficult, horribly unbalanced videogame. When you’re born, you’re given a randomly generated character, with a randomly determined name, race, face, and social class. Your body is your avatar, and you spawn in a random geographic location, at a random moment in human history, surrounded by a random group of people, and then you have to try to survive for as long as you can. Sometimes the game might seem easy. Even fun. Other times it might be so difficult you want to give up and quit. But unfortunately, in this game you only get one life. When your body grows too hungry or thirsty or ill or injured or old, your health meter runs out and then it’s Game Over. Some people play the game for a hundred years without ever figuring out that it’s a game, or that there is a way to win it. To win the videogame of life you just have to try to make the experience of being forced to play it as pleasant as possible, for yourself, and for all of the other players you encounter in your travels. Kira says that if everyone played the game to win, it’d be a lot more fun for everyone.",
+      "text": "My friend Kira always said that life is like an extremely difficult, horribly unbalanced videogame. When you're born, you're given a randomly generated character, with a randomly determined name, race, face, and social class. Your body is your avatar, and you spawn in a random geographic location, at a random moment in human history, surrounded by a random group of people, and then you have to try to survive for as long as you can. Sometimes the game might seem easy. Even fun. Other times it might be so difficult you want to give up and quit. But unfortunately, in this game you only get one life. When your body grows too hungry or thirsty or ill or injured or old, your health meter runs out and then it's Game Over. Some people play the game for a hundred years without ever figuring out that it's a game, or that there is a way to win it. To win the videogame of life you just have to try to make the experience of being forced to play it as pleasant as possible, for yourself, and for all of the other players you encounter in your travels. Kira says that if everyone played the game to win, it'd be a lot more fun for everyone.",
       "source": "Anorak's Almanac, Ready Player Two",
       "length": 1139,
       "id": 5465
@@ -32486,7 +32486,7 @@ monkeytype = {
       "id": 5468
     },
     {
-      "text": "The world’s population was fast approaching ten billion people, and Mother Earth was making it abundantly clear that she could no longer sustain all of us",
+      "text": "The world's population was fast approaching ten billion people, and Mother Earth was making it abundantly clear that she could no longer sustain all of us",
       "source": "Wade Watts, Ready Player Two",
       "length": 154,
       "id": 5469
@@ -32568,7 +32568,7 @@ monkeytype = {
       "id": 5483
     },
     {
-      "text": "Have you ever watched the jet cars race on the boulevard?...I sometimes think drivers don’t know what grass is, or flowers, because they never see them slowly...If you showed a driver a green blur, Oh yes! He'd say, that’s grass! A pink blur! That’s a rose garden! White blurs are houses. Brown blurs are cows.",
+      "text": "Have you ever watched the jet cars race on the boulevard?...I sometimes think drivers don't know what grass is, or flowers, because they never see them slowly...If you showed a driver a green blur, Oh yes! He'd say, that's grass! A pink blur! That's a rose garden! White blurs are houses. Brown blurs are cows.",
       "source": "Fahrenheit 451",
       "length": 310,
       "id": 5484
@@ -32946,7 +32946,7 @@ monkeytype = {
       "id": 5546
     },
     {
-      "text": "You don’t want to go for realism, you can go for better than realism. What do you mean better than realism? How about an elephant with blue eyes.",
+      "text": "You don't want to go for realism, you can go for better than realism. What do you mean better than realism? How about an elephant with blue eyes.",
       "source": "Terry A. Devis",
       "length": 145,
       "id": 5547
