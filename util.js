@@ -68,7 +68,7 @@ function initializeHints(hints, floating_hints) {
 
 function changeName(name) {
 	var h = document.getElementById('lesson-name')
-	h.removeChild(h.lastChild)
+	if(h.lastChild) h.removeChild(h.lastChild)
 	h.appendChild(document.createTextNode(name))
 	document.title = name + ' - ' + document.title.replace(/^.*? - /, '')
 }
