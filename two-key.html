@@ -41,6 +41,7 @@
 </div>
 
 	<script>
+		var query = parseQueryString(document.location.search);
 		var words = TypeJig.WordSets.twoKeySentences;
 		var translations = TypeJig.shortestTranslations(TypeJig.Translations.Plover);
 		var extra = {
@@ -52,6 +53,7 @@
 		for(key in extra) translations[key] = extra[key];
 		var strokes = document.getElementById('strokes');
 		var hints = new StenoDisplay(strokes, translations, true);
+		if(query.hints === '') hints = null;
 		var exercise = new TypeJig.Exercise(words);
 		var jig = new TypeJig(exercise, 'exercise', 'results', 'input', 'clock', hints);
 
