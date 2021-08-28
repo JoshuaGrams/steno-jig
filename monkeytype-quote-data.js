@@ -32982,20 +32982,20 @@ monkeytype = {
       "id": 5562
     },
     {
-      "text": "\"Hello? Hello?\" \"Hello?\" \"Who's this?\" \"Who's this?\" \"I'm asking the questions. I called you.\" \"No, I called you. And you sound like the ugliest son of a bitch I ever heard.\" \"You sound like the physical manifestation of some loser's inner demons.\" \"Well, you sound like some total chode's inability to confront the reality of his past actions.\" \"If I ever get your stinky mug in my line of sight I swear to Chekov I'll cock your clock off. \"Well, I'm going to be the bigger man and hang up first-- Damn it!",
+      "text": "\"Hello? Hello?\" \"Hello?\" \"Who's this?\" \"Who's this?\" \"I'm asking the questions. I called you.\" \"No, I called you. And you sound like the ugliest son of a bitch I ever heard.\" \"You sound like the physical manifestation of some loser's inner demons.\" \"Well, you sound like some total chode's inability to confront the reality of his past actions.\" \"If I ever get your stinky mug in my line of sight I swear to Chekhov I'll cock your clock off. \"Well, I'm going to be the bigger man and hang up first-- Damn it!",
       "source": "Xavier: Renegade Angel",
       "length": 507,
       "id": 5563
     },
     {
       "text": "There's something very strange about this place... the layout seems to change all the time. I've never seen the same room twice!",
-      "source": "Splunky",
+      "source": "Spelunky",
       "length": 128,
       "id": 5564
     },
     {
       "text": "Greetings! My name is Yang, and this is my journal. Dusty maps and rumors of amazing treasures have led me here, deep under the desert.",
-      "source": "Splunky",
+      "source": "Spelunky",
       "length": 135,
       "id": 5565
     },
@@ -33010,6 +33010,54 @@ monkeytype = {
       "source": "Banana Man, Tally Hall",
       "length": 50,
       "id": 5567
-    }
+    },
+	{
+		"text": "\"It's a very funny thing,\" said Bear, \"but there seem to be two animals now. This - whatever-it-was - has been joined by another - whatever-it-is - and the two of them are now proceeding in company. Would you mind coming with me, Piglet, in case they turn out to be \"Hostile Animals?\"",
+		"source": "Winnie-the-Pooh",
+		"length": 284,
+		"id": 100000
+	},
+	{
+		"text": "Yet profitability is not the purpose of but a limiting factor on business enterprise and business activity. Profit is not the explanation, cause, or rationale of business behavior and business decisions, but the test of their validity. If archangels instead of businessmen sat in directors' chairs, they would still have to be concerned with profitability, despite their total lack of personal interest in making profits.",
+		"source": "Management: Tasks, Responsibilities, Practices",
+		"length": 421,
+		"id": 100001
+	},
+	{
+		"text": "It is the customer who determines what a business is. It is the customer alone whose willingness to pay for a good or for a service converts economic resources into wealth, things into goods. What the business thinks it produces is not of first importance - especially not to the future of the business and to its success.",
+		"source": "Management: Tasks, Responsibilities, Practices",
+		"length": 322,
+		"id": 100002
+	},
+	{
+		"text": "There is no reason to believe that the people who staff the managerial and professional positions in our service institutions are any less qualified, any less competent or honest, or any less hard-working than the men who manage businesses. Conversely, there is no reason to believe that business managers, put in control of service institutions, would do better than the \"bureaucrats.\" Indeed, we know that they immediately became bureaucrats themselves.",
+		"source": "Management: Tasks, Responsibilities, Practices",
+		"length": 455,
+		"id": 100003
+	},
+	{
+		"text": "One of the shortest-lived creatures on the planet Earth is the adult common mayfly. It lasts for one day. The longest-living things are bristlecone pine trees, at 4,700 years and still counting. This may seem tough on mayflies. But the important thing is not how long your life is but how long it seems.",
+		"source": "Truckers",
+		"length": 303,
+		"id": 100004
+	},
+	{
+		"text": "Perhaps old mayflies sit around complaining about how life this minute isn't a patch on the good old minutes of long ago, when the world was young and the sun seemed so much brighter and larvae showed you a bit of respect.",
+		"source": "Truckers",
+		"length": 222,
+		"id": 100005
+	},
+	{
+		"text": "He'd thought it would be difficult, learning to drive, learning how a truck worked, learning to read, but they were, well, just tasks. You could see all the difficulties before you started. If you worked at them for long enough, then you were bound to succeed. He'd been right. The difficult thing was going to be all the people.",
+		"source": "Truckers",
+		"length": 329,
+		"id": 100006
+	},
+	{
+		"text": "Bit of a trade secret, see? Electricity can't abide rubber. It stops the stuff from biting you.",
+		"source": "Truckers",
+		"length": 95,
+		"id": 100007
+	}
   ]
 }
