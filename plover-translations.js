@@ -5587,7 +5587,7 @@ TypeJig.Translations.Plover = {
 	"fiction": "FI*KS",
 	"fiddle": "FID/*L",
 	"fidelity": "FI/DELT",
-	"fidget": "FIGT",
+	"fidget": "FIJT",
 	"field": "FEELD",
 	"fields": "FEELDZ",
 	"fierce": "FEERS",
