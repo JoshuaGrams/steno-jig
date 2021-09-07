@@ -33058,6 +33058,13 @@ monkeytype = {
 		"source": "Truckers",
 		"length": 95,
 		"id": 100007
+	},
+	{
+		"text": "Oliver was a very minor mage. His familiar reminded him of this several times a day. He only knew three spells, and one of them was to control his allergy to armadillo dander. His attempts to summon elementals resulted in nosebleeds, and there is nothing more embarrasing than having your elemental leave the circle to get you a tissue, pat you comfortingly, and then disappear in a puff of magic. The armadillo had about wet himself laughing. He was a very minor mage. Unfortunately, he was all they had.",
+		"source": "Minor Mage",
+		"length": 505,
+		"id": 100008
 	}
   ]
 }
+
