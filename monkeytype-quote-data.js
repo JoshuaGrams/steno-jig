@@ -6110,7 +6110,7 @@ monkeytype = {
       "length": 155
     },
     {
-      "text": "Joy to hearts which have suffered long is like the dew on the ground after a long drought; both the heart and the ground absorb that beneficent moisture falling on them, and nothing is outwardly apparent.",
+      "text": "Joy to hearts which have suffered long is like the dew on the ground after a long drought; both the heart and the ground absorb that beneficient moisture falling on them, and nothing is outwardly apparent.",
       "source": "The Count of Monte Cristo",
       "id": 1025,
       "length": 204
