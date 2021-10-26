@@ -30080,7 +30080,7 @@ monkeytype = {
       "length": 120
     },
     {
-      "text": "We also live in strange places; each in a universe of our own. The people With whom we populate our universes are the shadows of whole other universes intersecting with our own.",
+      "text": "We also live in strange places; each in a universe of our own. The people with whom we populate our universes are the shadows of whole other universes intersecting with our own.",
       "source": "Mostly Harmless",
       "id": 5065,
       "length": 177
@@ -32856,7 +32856,7 @@ monkeytype = {
       "id": 5531
     },
     {
-      "text": "I have little sympathy with the rather prevalent concept that man is basically irrational, and that his impulses, if not controlled, will lead to destruction of others and self. Man's behavior is exquisitely rational, moving with subtle and ordered complexity toward the goals his organism is endeavoring to achieve. The tragedy for most of us is that our defenses keep us from being aware of this rationality, so that conciously we are moving in one direction, while organismically we are moving in another.",
+      "text": "I have little sympathy with the rather prevalent concept that man is basically irrational, and that his impulses, if not controlled, will lead to destruction of others and self. Man's behavior is exquisitely rational, moving with subtle and ordered complexity toward the goals his organism is endeavoring to achieve. The tragedy for most of us is that our defenses keep us from being aware of this rationality, so that consciously we are moving in one direction, while organismically we are moving in another.",
       "source": "Carl Rogers, On Becoming a Person",
       "length": 508,
       "id": 5532
