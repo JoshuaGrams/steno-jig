@@ -49,6 +49,7 @@ window.onload = function() {
 	}
 
 	var jig = setExercise(exercise.name, exercise, null, speed);
+	jig.actualWords = 'strokes per minute';
 
 	var back = document.getElementById('back');
 	var again = document.getElementById('again');
