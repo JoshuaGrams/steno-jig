@@ -40,8 +40,8 @@ window.onload = function() {
 	var speed = {wpm: fields.wpm, cpm: fields.cpm};
 
 	var exercise;
-	if(fields.a && fields.b) {
-		exercise = generateFingerDrill([fields.a, fields.b], fields.iterations);
+	if(fields.strokes) {
+		exercise = generateFingerDrill(fields.strokes.split('/'), fields.iterations);
 	} else {
 		fields.section = Math.max(1, Math.min(fields.section || 1, dreadedDuo.length))
 		fields.drill = Math.max(1, Math.min(fields.drill || 1, dreadedDuo[fields.section-1].length))
