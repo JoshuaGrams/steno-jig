@@ -17864,7 +17864,7 @@ monkeytype = {
       "length": 134
     },
     {
-      "text": "Do you believe in God? That's a complicated question. It depends on what you mean by \"God\". You see, it helps no one to be reductive. I believe that that we are here implies to some degree that there are forces larger than us. Now, we can get into the semanticalities... The very notion of belief itself can be rhetorically whittled to the bare nub of its meaning. I'd like to talk to you a lot more about this. Would you be interested in reading some of my literature?",
+      "text": "Do you believe in God? That's a complicated question. It depends on what you mean by \"God.\" You see, it helps no one to be reductive. I believe that we are here implies to some degree that there are forces larger than us. Now, we can get into the semanticalities... The very notion of belief itself can be rhetorically whittled to the bare nub of its meaning. I'd like to talk to you a lot more about this. Would you be interested in reading some of my literature?",
       "source": "Xavier: Renegade Angel",
       "id": 3013,
       "length": 469
@@ -32006,7 +32006,7 @@ monkeytype = {
       "id": 5385
     },
     {
-      "text": "I don't wanna be \"the bee's knees\". I don't wanna be any kind of \"knees\"! I just wanna be a normal girl, with normal knees.",
+      "text": "I don't wanna be \"the bee's knees.\" I don't wanna be any kind of \"knees!\" I just wanna be a normal girl, with normal knees.",
       "source": "RWBY",
       "length": 123,
       "id": 5386

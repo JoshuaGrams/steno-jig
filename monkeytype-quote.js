@@ -21,7 +21,14 @@ function generateExercise(id, lo, hi) {
 	const words = quote.text.trim().split(/\s+/)
 	const exercise = new TypeJig.Exercise(words, 0, false, 'ordered')
 	exercise.name = "Monkeytype English Quote #" + quote.id + " (from " + quote.source + ")"
+	exercise.quote = quote
 	return exercise
+}
+
+function replaceID(href, id) {
+	href = href.split('&').filter(x => !/^id=/.test(x)).join('&')
+	let sep = document.location.search==='' ? '?' : '&'
+	return href + sep + 'id=' + id
 }
 
 loadSettings()
@@ -42,6 +49,7 @@ window.onload = function() {
 	var speed = {wpm: fields.wpm, cpm: fields.cpm}
 
 	var exercise = generateExercise(fields.id, fields.lo, fields.hi)
+	window.history.replaceState(null, '', replaceID(document.location.href, exercise.quote.id))
 
 	var jig = setExercise(exercise.name, exercise, hints, speed)
 
@@ -53,12 +61,13 @@ window.onload = function() {
 		jig.reset()
 	})
 	var another = document.getElementById('new')
-	another.href = document.location.href
+	another.href = document.location.href.split('&').filter(x => !/^id=/.test(x)).join('&')
 	another.addEventListener('click', function(evt) {
 		evt.preventDefault()
-		let exercise = generateExercise(fields.id, fields.lo, fields.hi)
+		let exercise = generateExercise(null, fields.lo, fields.hi)
 		jig.exercise = exercise
 		changeName(exercise.name)
+		window.history.pushState(null, '', replaceID(document.location.href, exercise.quote.id))
 		jig.reset()
 	})
 }
