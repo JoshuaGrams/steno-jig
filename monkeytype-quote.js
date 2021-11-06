@@ -33,7 +33,7 @@ function replaceID(href, id) {
 
 loadSettings()
 
-window.onload = function() {
+function go() {
 	var fields = parseQueryString(document.location.search)
 	switch(fields.length) {
 		case 'short': fields.lo = 0; fields.hi = 100; break
@@ -71,3 +71,6 @@ window.onload = function() {
 		jig.reset()
 	})
 }
+
+window.addEventListener('load', go)
+window.addEventListener('popstate', go)
