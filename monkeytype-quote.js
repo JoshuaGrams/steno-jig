@@ -73,4 +73,3 @@ function go() {
 }
 
 window.addEventListener('load', go)
-window.addEventListener('popstate', go)
