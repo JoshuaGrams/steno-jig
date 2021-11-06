@@ -160,6 +160,7 @@ function nextWord(words) {
 
 TypeJig.prototype.answerChanged = function() {
 	delete this.pendingChange;
+	if(this.resultsDisplay.textContent !== '') return
 	if(!this.running && !!this.input.value.trim()) {
 		this.start();
 	}
