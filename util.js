@@ -73,17 +73,20 @@ function changeName(name) {
 	document.title = name + ' - ' + document.title.replace(/^.*? - /, '')
 }
 
-function setExercise(name, exercise, hints, speed) {
+function setExercise(name, exercise, hints, speed, jig) {
 	var h = document.getElementById('lesson-name');
-	h.appendChild(document.createTextNode(name));
-	document.title = name + ' - ' + document.title;
+	h.textContent = name;
+	document.title = name + ' - Steno Jig';
 
 	var back = document.getElementById('back');
-	back.href = document.location.href.replace(/\?.*$/, '');
+	back.href = document.location.href.replace(/\?.*$/, '').replace(/\/[^\/]*$/,'') + '/form.html';
 	var again = document.getElementById('again');
 	again.href = document.location.href;
 
-	return jig = new TypeJig(exercise, 'exercise', 'results', 'input', 'clock', hints, speed);
+	if(jig != null) jig.exercise = exercise;
+	else jig = new TypeJig(exercise, 'exercise', 'results', 'input', 'clock', hints, speed);
+	window.setTimeout(function(){jig.reset()}, 0)
+	return jig
 }
 
 function prepareNextSeed(another) {

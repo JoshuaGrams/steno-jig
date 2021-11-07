@@ -33,43 +33,39 @@ function replaceID(href, id) {
 
 loadSettings()
 
-function go() {
-	var fields = parseQueryString(document.location.search)
-	switch(fields.length) {
-		case 'short': fields.lo = 0; fields.hi = 100; break
-		case 'medium': fields.lo = 101; fields.hi = 300; break
-		case 'long': fields.lo = 301; fields.hi = 600; break
-		case 'thicc': fields.lo = 601; fields.hi = Infinity; break
-		case 'all':
-		default:
-			fields.lo = 0; fields.hi = Infinity; break
-	}
+let jig, exercise, fields
 
-	var hints = initializeHints(fields.hints, fields.floating_hints)
-	var speed = {wpm: fields.wpm, cpm: fields.cpm}
+function go(ex) {
+	fields = parseQueryString(document.location.search)
+	let hints = initializeHints(fields.hints, fields.floating_hints)
+	let speed = {wpm: fields.wpm, cpm: fields.cpm}
 
-	var exercise = generateExercise(fields.id, fields.lo, fields.hi)
+	if(ex == null) {
+		switch(fields.length) {
+			case 'short': fields.lo = 0; fields.hi = 100; break
+			case 'medium': fields.lo = 101; fields.hi = 300; break
+			case 'long': fields.lo = 301; fields.hi = 600; break
+			case 'thicc': fields.lo = 601; fields.hi = Infinity; break
+			case 'all':
+			default:
+				fields.lo = 0; fields.hi = Infinity; break
+		}
+		exercise = generateExercise(fields.id, fields.lo, fields.hi)
+	} else exercise = ex
+
+	jig = setExercise(exercise.name, exercise, hints, speed, jig)
+}
+
+window.addEventListener('load', function() {
+	go()
 	window.history.replaceState(null, '', replaceID(document.location.href, exercise.quote.id))
 
-	var jig = setExercise(exercise.name, exercise, hints, speed)
-
-	var back = document.getElementById('back')
-	back.href = back.href.replace('monkeytype-quote', 'form')
-	var again = document.getElementById('again')
+	let again = document.getElementById('again')
 	again.addEventListener('click', function(evt) {
 		evt.preventDefault()
 		jig.reset()
 	})
-	var another = document.getElementById('new')
+	let another = document.getElementById('new')
 	another.href = document.location.href.split('&').filter(x => !/^id=/.test(x)).join('&')
-	another.addEventListener('click', function(evt) {
-		evt.preventDefault()
-		let exercise = generateExercise(null, fields.lo, fields.hi)
-		jig.exercise = exercise
-		changeName(exercise.name)
-		window.history.pushState(null, '', replaceID(document.location.href, exercise.quote.id))
-		jig.reset()
-	})
-}
-
-window.addEventListener('load', go)
+})
+window.addEventListener('popstate', function(){ go() })
