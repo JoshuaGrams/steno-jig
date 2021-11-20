@@ -26,9 +26,10 @@ function generateExercise(id, lo, hi) {
 }
 
 function replaceID(href, id) {
-	href = href.split('&').filter(x => !/^id=/.test(x)).join('&')
-	let sep = document.location.search==='' ? '?' : '&'
-	return href + sep + 'id=' + id
+	let [h,q] = href.split('?')
+	q = (q||'').split('&').filter(x => !/^id=/.test(x))
+	if(id) q.push('id='+id)
+	return h+'?'+q.join('&')
 }
 
 loadSettings()
@@ -66,6 +67,6 @@ window.addEventListener('load', function() {
 		jig.reset()
 	})
 	let another = document.getElementById('new')
-	another.href = document.location.href.split('&').filter(x => !/^id=/.test(x)).join('&')
+	another.href = replaceID(document.location.href)
 })
 window.addEventListener('popstate', function(){ go() })
