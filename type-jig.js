@@ -192,7 +192,7 @@ TypeJig.prototype.answerChanged = function() {
 		}
 
 		ex = nextWord(exercise);
-		match = (ans == ex);
+		match = this.match == null? (ans == ex) : this.match(ans, ex)
 
 		var r = range.getBoundingClientRect();
 		if(r.bottom > y + 0.001) {

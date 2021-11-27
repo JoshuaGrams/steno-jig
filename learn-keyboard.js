@@ -84,6 +84,9 @@
 		['A','O','E','U'],
 		['F','R','P','B','L','G','T','S','D','Z']
 	], 104, false)
-	E["Columns: D, B, L, -N"] = IndividualChords(['TK','PW','HR','-PB'],100)
+	E["Columns: D, B, L, -N"] = IndividualChords(['D-','B-','L-','-N'],100)
+	E["Rows (2-key): F, M, Q, -M, -K"] = IndividualChords(['F-', 'M-', 'Q-', '-M', '-K'],100)
+	E["Rows: N, Y, J, C, V"] = IndividualChords(['N-', 'Y-', 'J-', 'C-', 'V-'], 100)
+	E["Other chords: G, X, Z, -J"] = IndividualChords(['G-', 'X-', 'Z-', '-J'], 100)
 
 })();  // Execute the code in the wrapper function.
