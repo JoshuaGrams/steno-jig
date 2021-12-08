@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Steno Jig</title>
+	<link href="style.css" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" type="text/css" href="font-roboto.css">
+</head>
+<body>
+
+<div id="form" class="wrapper">
+
+	<p>For finger drills and learning the keys on the steno keyboard,
+	you'll want to make Plover send the raw output instead of
+	translating it into words. To do this, show Plover's main window
+	(<code>PHROBGS</code> is the usual chord for this, or there should
+	be an icon in the task bar). Then un-check the checkboxes next to
+	<code>main.json</code> and <code>user.json</code> to turn them off
+	temporarily.</p>
+
+	<div style="text-align:center"><img src="plover-4.png" alt="Plover main window, showing the
+	dictionary list with checkboxes to disable each one."></div>
+
+	<hr style="margin: 2em 0px 3em">
+
+	<p>Alternatively, you can open the Plugins Manager from the Plover
+	main window and install the <code>plover_dict_commands</code>
+	plugin. You may need to restart Plover after installing the plugin?
+	Not sure about that.</p>
+
+	<p>Define a dictionary entry to switch to raw steno: maybe in
+	<code>commands.json</code>. I think many people use
+	<code>RA*U</code> as <code>{PLOVER:solo_dict:+commands.json}</code>.
+	This will ensure that <code>commands.json</code> is enabled, and
+	will disable all other dictionaries. Then you'll need a definition
+	to enable your dictionaries again. The command for this is
+	<code>{PLOVER:end_solo_dict}</code>.</p>
+
+	<p>Personally I do this slightly differently: I have a special
+	dictionary <code>return-from-raw.json</code> (which I put at the
+	very bottom of the dictionary list) with the following contents:</p>
+
+	<div><code><pre>{
+	"R*AU": "{PLOVER:end_solo_dict}",
+	"R-R": "{^~|\n^}",
+	"STK-G": "{#right}"
+}</pre></code></div>
+
+	<p>Then my normal <code>R*AU</code> command is
+	<code>{PLOVER:solo_dict:+return-from-raw.json}</code>. So I can use
+	<code>R*AU</code> to toggle raw-mode on and off, and in raw mode I
+	only have Return (which you press three times to repeat an exercise
+	in Steno Jig) and the right arrow (which randomly generates a new
+	exercise).</p>
+
+	</div>
+
+</body>
+</html>
