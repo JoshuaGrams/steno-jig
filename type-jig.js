@@ -297,7 +297,7 @@ TypeJig.prototype.endExercise = function(seconds) {
 	unbindEvent(this.input, this.changeHandler)
 
 	var minutes = seconds / 60;  // KEEP fractional part for WPM calculation!
-	seconds = Math.round(seconds % 60 * 10)/10;
+	seconds = Math.floor(seconds % 60 * 10)/10;
 	if(seconds < 10) seconds = '0' + seconds;
 	var time = Math.floor(minutes) + ':' + seconds;
 
