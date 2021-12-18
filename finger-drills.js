@@ -1,19 +1,33 @@
-function generateFingerDrill(pair, iterations) {
-	let words = [];
-	for(let i=0; i<iterations; ++i) words.push.apply(words, pair);
-	words.push(pair[0]);
+function addSet(strokes, iterations, drill) {
+	if(drill == null) drill = []
+	strokes = strokes.split('/')
+	if(drill.length === 0) {
+		drill.push.apply(drill, strokes)
+		--iterations
+	}
+	strokes[0] = '\n' + strokes[0]
+	for(let i=0; i<iterations; ++i) {
+		drill.push.apply(drill, strokes)
+	}
+	drill.push(strokes[0])
+	return drill
+}
 
-	var exercise = new TypeJig.Exercise(words, 0, false, 'ordered');
-	exercise.name = "Finger Drill: " + pair[0] + ', ' + pair[1]
+function generateFingerDrill(drills, iterations, name) {
+	let out = []
+	for(const drill of drills) addSet(drill, iterations, out)
+	var exercise = new TypeJig.Exercise(out, 0, false, 'ordered');
+	if(name) exercise.name = name
+	else exercise.name = "Finger Drill: " + drills.join(' ')
 	return exercise
 }
 
 function generateDreadedDuoDrill(section, drill, iterations) {
-	let exercise = generateFingerDrill(dreadedDuo[section-1][drill-1], iterations)
 	let n = dreadedDuo[section-1].length
-
-	exercise.name = "Da Dreaded Dueling Digit Duo Drills";
-	exercise.name += ' (Section ' + section + ', #' + drill + ' of ' + n + ')';
+	let name = "Da Dreaded Dueling Digit Duo Drills"
+	name += ' (Section ' + section + ', #' + drill + ' of ' + n + ')'
+	let drills = [ dreadedDuo[section-1][drill-1] ]
+	let exercise = generateFingerDrill(drills, iterations, name)
 	return exercise;
 }
 
@@ -39,9 +53,14 @@ window.onload = function() {
 
 	var speed = {wpm: fields.wpm, cpm: fields.cpm};
 
-	var exercise;
+	let exercise;
 	if(fields.strokes) {
-		exercise = generateFingerDrill(fields.strokes.split('/'), fields.iterations);
+		const drills = fields.strokes.split(/\s+/)
+		exercise = generateFingerDrill(drills, fields.iterations);
+	} else if(fields.book === 'Stenotype Finger Technique') {
+		let name = fields.book + ': ' + fields.section
+		const drills = stenotypeFingerTechnique[fields.section]
+		exercise = generateFingerDrill(drills, fields.iterations, name)
 	} else {
 		fields.section = Math.max(1, Math.min(fields.section || 1, dreadedDuo.length))
 		fields.drill = Math.max(1, Math.min(fields.drill || 1, dreadedDuo[fields.section-1].length))
@@ -54,7 +73,7 @@ window.onload = function() {
 	var back = document.getElementById('back');
 	var again = document.getElementById('again');
 	var next = document.getElementById('new');
-	if(fields.a && fields.b) next.parentNode.removeChild(next);
+	if(fields.strokes || fields.book) next.parentNode.removeChild(next);
 	else linkNextDrill(next, fields);
 	back.href = back.href.replace('finger-drills', 'form');
 	again.addEventListener('click', function(evt) {
