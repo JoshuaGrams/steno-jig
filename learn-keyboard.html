@@ -112,7 +112,7 @@ function fromPseudo(stroke) {
 				}
 				var translations = TypeJig.shortestTranslations(TypeJig.Translations.Plover);
 				var hints = new StenoDisplay(strokes, translations, true);
-				hints.lookupEntry = x => x
+				hints.lookupEntry = fromPseudo
 			}
 			var speed = {wpm: fields.wpm, cpm: fields.cpm};
 
