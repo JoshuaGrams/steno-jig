@@ -176,7 +176,7 @@ function loadSettings() {
  * Update a URL parameter and return the new URL.
  * Note that if handling anchors is needed in the future,
  * this function will need to be extended. See the link below.
- * 
+ *
  * http://stackoverflow.com/a/10997390/11236
  */
 function updateURLParameter(url, param, paramVal){
@@ -198,3 +198,12 @@ function updateURLParameter(url, param, paramVal){
     var rows_txt = temp + "" + param + "=" + paramVal;
     return baseURL + "?" + newAdditionalURL + (paramVal==null?'':rows_txt);
 }
+
+function displayOnly(show) {
+	const tabs = ['form', 'lesson']
+	for (const tab of tabs) {
+		const displayType = tab === 'lesson' ? 'flex' : 'block';
+		document.getElementById(tab).style.display = tab === show ? displayType : 'none'
+	}
+}
+
