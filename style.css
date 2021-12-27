@@ -50,6 +50,8 @@ body {
 #nav {
 	flex: 0 0;
 	height: min-content;
+	min-width: 8em;
+	margin-left: 1.5em;
 	position: sticky;
 	top: 0;
 }
