@@ -5,7 +5,7 @@
  * `output`, and `clock` are elements (or element ID strings).
  */
 
-function TypeJig(exercise, display, results, input, clock, hint, speed) {
+function TypeJig(exercise, display, results, input, clock, hint, options) {
 	this.exercise = exercise;
 	this.display = documentElement(display);
 	this.input = documentElement(input);
@@ -17,11 +17,15 @@ function TypeJig(exercise, display, results, input, clock, hint, speed) {
 
 	this.lookahead = 1000;
 
-	if(speed) {
-		if(speed.wpm !== '' && Math.floor(+speed.wpm) == speed.wpm) {
-			this.speed = {type: 'wpm', value: speed.wpm}
-		} else if(speed.cpm !== '' && Math.floor(+speed.cpm) == speed.cpm) {
-			this.speed = {type: 'cpm', value: speed.cpm}
+	if(options) {
+		if(options.wpm !== '' && Math.floor(+options.wpm) == options.wpm) {
+			this.options = {type: 'wpm', value: options.wpm}
+		} else if(options.cpm !== '' && Math.floor(+options.cpm) == options.cpm) {
+			this.options = {type: 'cpm', value: options.cpm}
+		}
+		if(typeof options.alternate === 'string' && options.alternate !== '') {
+			this.alternateWith = TypeJig.wordsAndSpaces(options.alternate)
+			this.alternateWith.push(' ')
 		}
 	}
 
@@ -278,6 +282,19 @@ TypeJig.prototype.getWords = function(n) {
 		var text = this.exercise.getText();
 		if(text) {
 			var pieces = TypeJig.wordsAndSpaces(text);
+			if(this.alternateWith) {
+				let alt = this.alternateWith
+				var words = []
+				for(let i=0; i<pieces.length; ++i) {
+					if(/^\S+$/.test(pieces[i])) {
+						for(let j=0; j<alt.length; ++j) {
+							words.push(alt[j])
+						}
+					}
+					words.push(pieces[i])
+				}
+				pieces = words
+			}
 			for(let i=0; i<pieces.length; ++i) {
 				var span = document.createElement('span');
 				span.appendChild(document.createTextNode(pieces[i]));

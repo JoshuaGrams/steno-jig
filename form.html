@@ -28,6 +28,10 @@
 		<div name="speed">
 			<label><input id="wpm" type="number" name="wpm" value="" step="5"> Speed (words per minute)
 				(or <input type="checkbox" id="cpm" value="1"> x5 chars per minute) </label>
+		</div><br>
+
+		<div name="alt">
+			<label>Alternate with: <input id="alternate" type="text" name="alternate"></label>
 		</div>
 	</div>
 
@@ -39,6 +43,7 @@
 			<input type="hidden" name="wpm" value="">
 			<input type="hidden" name="cpm" value="">
 			<input type="hidden" name="hints" value="">
+			<input type="hidden" name="alternate" value="">
 
 			<textarea name="drill"></textarea><br>
 			<input type="checkbox" name="type" value="shuffled"> Shuffle words.<br>
@@ -73,6 +78,7 @@
 			<input type="hidden" name="wpm" value="">
 			<input type="hidden" name="cpm" value="">
 			<input type="hidden" name="hints" value="">
+			<input type="hidden" name="alternate" value="">
 
 			Drill
 			<input type="number" name="count" value="100" min="25" max="1000" step="25">
@@ -94,6 +100,7 @@
 			<input type="hidden" name="wpm" value="">
 			<input type="hidden" name="cpm" value="">
 			<input type="hidden" name="hints" value="">
+			<input type="hidden" name="alternate" value="">
 
 			Drill sentences containing only the top
 			<input type="number" name="top" value="100" min="100" max="8000" step="100">
@@ -118,6 +125,7 @@
 			<input type="hidden" name="wpm" value="">
 			<input type="hidden" name="cpm" value="">
 			<input type="hidden" name="hints" value="">
+			<input type="hidden" name="alternate" value="">
 
 			Drill Length:
 			<input type="number" name="word_count" value="100" min="50" max="1000" step="50">
@@ -137,6 +145,7 @@
 			<input type="hidden" name="wpm" value = "">
 			<input type="hidden" name="cpm" value="">
 			<input type="hidden" name="hints" value="">
+			<input type="hidden" name="alternate" value="">
 
 			Drill length:
 			<ul>
@@ -159,6 +168,7 @@
 			<input type="hidden" name="wpm" value="">
 			<input type="hidden" name="cpm" value="">
 			<input type="hidden" name="hints" value="">
+			<input type="hidden" name="alternate" value="">
 
 			Drill Time:
 			<input type="number" name="timeLimit" value="3" min="1" max="60" size="3">
@@ -178,6 +188,7 @@
 			<input type="hidden" name="wpm" value="">
 			<input type="hidden" name="cpm" value="">
 			<input type="hidden" name="hints" value="">
+			<input type="hidden" name="alternate" value="">
 
 			Drill Time:
 			<input type="number" name="timeLimit" value="3" min="1" max="60">
@@ -257,10 +268,10 @@ function runExercise(fields) {
 			var translations = TypeJig.shortestTranslations(TypeJig.Translations.Plover);
 			var hints = new StenoDisplay(strokes, translations, true);
 		}
-		var speed = {wpm: fields.wpm, cpm: fields.cpm};
+		var options = {wpm: fields.wpm, cpm: fields.cpm, alternate: fields.alternate};
 
 		displayOnly('lesson');
-		return setExercise(exercise.name, exercise, hints, speed);
+		return setExercise(exercise.name, exercise, hints, options);
 	}
 }
 
@@ -268,9 +279,11 @@ function getSettings() {
 	var wpm = document.getElementById('wpm');
 	var cpm = document.getElementById('cpm');
 	var hints = document.getElementById('hints');
+	var alt = document.getElementById('alternate');
 	if(cpm.checked) this.elements.cpm.value = 5 * wpm.value;
 	else this.elements.wpm.value = wpm.value;
 	this.elements.hints.value = hints.checked ? hints.value : '';
+	if(this.elements.alternate) this.elements.alternate.value = alt.value;
 }
 
 function runCustom(evt) {
@@ -281,7 +294,9 @@ function runCustom(evt) {
 		localStorage.custom = fields.drill
 	}
 	if(fields.shuffleLines) {
+		// Don't shuffle words.
 		delete(fields.type);
+		// Pre-shuffle lines.
 		fields.drill = shuffle(fields.drill.trim().split(/\n+/m)).join(' ');
 	}
 	TypeJig.WordSets.custom = fields.drill.trim().split(/\s+/m);

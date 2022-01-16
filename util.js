@@ -170,6 +170,15 @@ function loadSettings() {
 			localStorage.wpm = wpm.value
 		})
 	}
+
+	// ALTERNATE
+	const alt = document.getElementById('alternate')
+	if(alt && alt.nodeName === 'INPUT' && alt.type === 'text') {
+		if(localStorage.alternate != null) alt.value = localStorage.alternate
+		alt.addEventListener('input', function(evt) {
+			localStorage.alternate = alt.value
+		})
+	}
 }
 
 /**
