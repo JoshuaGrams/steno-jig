@@ -19,9 +19,9 @@ function TypeJig(exercise, display, results, input, clock, hint, options) {
 
 	if(options) {
 		if(options.wpm !== '' && Math.floor(+options.wpm) == options.wpm) {
-			this.options = {type: 'wpm', value: options.wpm}
+			this.speed = {type: 'wpm', value: options.wpm}
 		} else if(options.cpm !== '' && Math.floor(+options.cpm) == options.cpm) {
-			this.options = {type: 'cpm', value: options.cpm}
+			this.speed = {type: 'cpm', value: options.cpm}
 		}
 		if(typeof options.alternate === 'string' && options.alternate !== '') {
 			this.alternateWith = TypeJig.wordsAndSpaces(options.alternate)
