@@ -48,6 +48,7 @@
 			<textarea name="drill"></textarea><br>
 			<input type="checkbox" name="type" value="shuffled"> Shuffle words.<br>
 			Or <input type="checkbox" name="shuffleLines" value="shuffled"> shuffle lines.<br>
+			Repeat <input type="number" name="repeat" min="1" max="100" step="1" value="1"> times.<br>
 
 			<button>Start Drill &rarr;</button>
 		</form>
@@ -299,7 +300,10 @@ function runCustom(evt) {
 		// Pre-shuffle lines.
 		fields.drill = shuffle(fields.drill.trim().split(/\n+/m)).join(' ');
 	}
-	TypeJig.WordSets.custom = fields.drill.trim().split(/\s+/m);
+	let drill =  fields.drill.trim().split(/\s+/m);
+	let n = +fields.repeat || 1;
+	TypeJig.WordSets.custom = [];
+	for(let i=0; i<n; ++i) TypeJig.WordSets.custom.push(...drill);
 	fields.drill = 'custom';
 	var jig = runExercise(fields);
 	var again = document.getElementById('again');
