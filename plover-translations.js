@@ -14564,7 +14564,7 @@ TypeJig.Translations.Plover = {
 	"wars": "WAR/-S",
 	"wart": "WART",
 	"wary": "WAYR/YI",
-	"was": "WA",
+	"was": "-FS",
 	"wasn't": "WUNT",
 	"wash": "WASH",
 	"washed": "WASHD",
