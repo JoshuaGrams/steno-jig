@@ -46,7 +46,9 @@ function PRNG(seed) {
 	const s = [mash(' '), mash(' '), mash(' '), 1]
 	s[0] -= mash(''+seed)
 	if(s[0] < 0) s[0] += 1
+	s[1] -= mash(''+seed)
 	if(s[1] < 0) s[1] += 1
+	s[2] -= mash(''+seed)
 	if(s[2] < 0) s[2] += 1
 
 	// Return a random number in the range [0..1)
