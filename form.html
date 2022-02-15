@@ -97,23 +97,29 @@
 	<div class="form-section">
 		<div class="caption"><strong>Sentences</strong> extracted from <a href="https://www.gutenberg.org/">Project Gutenberg</a></div>
 
-		<form class="drill-options" action="gutenberg.html">
+		<form class="drill-options" action="short-sentences.html">
 			<input type="hidden" name="wpm" value="">
 			<input type="hidden" name="cpm" value="">
 			<input type="hidden" name="hints" value="">
 			<input type="hidden" name="alternate" value="">
 
+			<p><b class="red">NEW</b>: top "0" words gives a set of nearly 200k sentences with unrestricted vocabulary.</p>
 			Drill sentences containing only the top
-			<input type="number" name="top" value="100" min="100" max="8000" step="100">
-			most used words
-			<br>
+			<input id="gutnum" type="number" name="top" value="0" min="0" max="8000" step="100">
+			most used words<br>
 
 			Drill Length:
 			<input type="number" name="word_count" value="100" min="50" max="1000" step="50">
 			words <small>(plus the rest of the last sentence.)</small>
 			<br>
 
-			<script>document.write('<input type="hidden" name="seed" value="' + Math.random().toString() + '">')</script>
+			<script>
+			document.write('<input type="hidden" name="seed" value="' + Math.random().toString() + '">')
+			document.getElementById('gutnum').addEventListener('input', function(evt) {
+				const num = evt.target, form = num.form
+				form.action = (num.value === '0') ? 'short-sentences.html' : 'gutenberg.html'
+			})
+			</script>
 
 			<button>Start Drill &rarr;</button>
 		</form>

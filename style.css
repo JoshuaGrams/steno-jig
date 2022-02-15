@@ -27,6 +27,8 @@ html, body {
 	--incorrect-text-bg: #300;
 }
 
+.red { color: #f55; }
+
 
 /* Main Layout and Visual Styling of Block Elements */
 body {
