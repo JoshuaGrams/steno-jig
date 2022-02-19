@@ -231,6 +231,8 @@ TypeJig.prototype.answerChanged = function() {
 	}
 	this.updateCursor(output);
 
+	this.lastAnswered = range.endContainer
+
 	if(match) ex = nextWord(exercise, range);
 	var r = range.getBoundingClientRect();
 
@@ -312,6 +314,11 @@ TypeJig.prototype.endExercise = function(seconds) {
 
 	if(document.activeElement != document.body) document.activeElement.blur();
 	unbindEvent(this.input, this.changeHandler)
+
+	if(this.lastAnswered) {
+		let elt = this.lastAnswered
+		while(elt.nextSibling) elt.parentNode.removeChild(elt.nextSibling)
+	}
 
 	var minutes = seconds / 60;  // KEEP fractional part for WPM calculation!
 	seconds = Math.floor(seconds % 60 * 10)/10;

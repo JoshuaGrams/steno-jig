@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Introductory Lessons</title>
+	<link href="style.css" rel="stylesheet" type="text/css">
+	<script src="type-jig.js"></script>
+	<script src="util.js"></script>
+	<script src="word-drill.js"></script>
+	<script src="steno-display.js"></script>
+	<script src="intro.js"></script>
+	<script src="plover-translations.js"></script>
+	<link rel="stylesheet" type="text/css" href="font-roboto.css">
+</head>
+<body>
+
+<div class="wrapper">
+	<div id="form">
+		<h1>Introductory Lessons</h1>
+		<div class="form-section">
+			<form id="selectDrill">
+				<ul style="list-style-type: none">
+					<li><select name="drill" multiple></select></li>
+					<li><label><input name="hints" type="checkbox" value="yes" checked> Show hints?</label></li>
+					<li><label>Randomly</label> for <input name="timeLimit" type="text" size="2", value="1"> minutes.</li>
+					<li><label><input name="wpm" type="number" value="" step="5"> Speed (WPM).</label></li>
+					<li><input type="submit" value="Go"></li>
+				</ul>
+			</form>
+		</div>
+	</div>
+</div>
+
+<div id="lesson" class="wrapper" style="display: none">
+	<div id="leftside">
+		<h3 id="lesson-name" class="center"></h3>
+		<div id="drill-content">
+			<div id="answer"></div>
+			<div id="exercise"></div>
+			<div id="results"></div>
+		</div>
+	</div>
+
+	<div id="nav">
+		<p id="strokes"></p>
+		<p id="clock" class="clock"></p>
+
+		<p class="center"><a id="back" title="LeftArrow">&larr; Back to Menu <span class="shortcutkey">(LeftArrow)</span></a></p>
+		<p class="center"><a id="again" title="Enter">&#8634; Restart <span class="shortcutkey">(Enter 3x)</span></a></p>
+	</div>
+
+	<textarea id="input"></textarea>
+</div>
+
+<script>
+window.onload = function() {
+	if(document.location.search === '') {
+		var form = document.getElementById('selectDrill')
+		var drill = form.elements.drill
+		var order = Object.keys(TypeJig.WordSets.Intro)
+		for(var i=0; i<order.length; ++i) {
+			var option = document.createElement('option')
+			option.appendChild(document.createTextNode(order[i]))
+			drill.appendChild(option)
+		}
+		drill.focus()
+
+		loadFormState(form)
+		form.addEventListener("submit", function(){ saveFormState(form) })
+	} else {
+		let L = document.getElementById('lesson')
+		L.style['max-width'] = '22em'
+		var fields = parseQueryString(document.location.search)
+		TypeJig.WordSets = TypeJig.WordSets.Intro
+
+		let drills = Array.isArray(fields.drill) ? fields.drill : [fields.drill]
+		let alternate = null
+		for(let drill of drills) {
+			let d = TypeJig.WordSets[drill]
+			if(d.alternate) { alternate = d.alternate; break }
+		}
+
+		fields.type = "randomly"
+		var exercise = wordDrill(fields)
+		if(exercise) {
+			if(fields.hints) {
+				var strokes = document.getElementById('strokes')
+				if(fields.floating_hints) { strokes.style.position = 'fixed' }
+				var translations = TypeJig.shortestTranslations(TypeJig.Translations.Plover)
+				translations['will'] = 'WEUL'
+				var hints = new StenoDisplay(strokes, translations, true)
+			}
+			var options = {wpm: fields.wpm, cpm: fields.cpm, alternate: alternate, menu: 'intro'}
+
+			displayOnly('lesson')
+			var jig = setExercise(exercise.name, exercise, hints, options)
+		}
+	}
+}
+
+function saveFormState(form) {
+    save({
+        drill: form.drill.value,
+        hints: form.hints.checked,
+        timeLimit: form.timeLimit.value,
+    })
+}
+
+function loadFormState(form) {
+    var loaded = load()
+    if(loaded.drill != null) {
+        form.drill.value = loaded.drill
+    }
+	if(loaded.hints != null) form.hints.checked = !!loaded.hints
+    if (loaded.timeLimit) {
+        form.timeLimit.value = loaded.timeLimit
+    }
+}
+
+var LOCAL_STORAGE_KEY = "intro-form"
+
+function save(obj) {
+    try {
+        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(obj))
+    } catch (e) {
+        console.error(e)
+    }
+}
+
+function load() {
+    try {
+        return JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY)) || {}
+    } catch (e) {
+        console.error(e)
+        return {}
+    }
+}
+
+setTheme()
+</script>
+</body>
+</html>

@@ -84,7 +84,7 @@ window.onload = function() {
 				var translations = TypeJig.shortestTranslations(TypeJig.Translations.Plover);
 				var hints = new StenoDisplay(strokes, translations, true);
 			}
-			var speed = {wpm: fields.wpm, cpm: fields.cpm};
+			var speed = {wpm: fields.wpm, cpm: fields.cpm, menu: 'learn-plover'};
 
 			displayOnly('lesson');
 			var jig = setExercise(exercise.name, exercise, hints, speed);

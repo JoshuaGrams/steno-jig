@@ -73,18 +73,19 @@ function changeName(name) {
 	document.title = name + ' - ' + document.title.replace(/^.*? - /, '')
 }
 
-function setExercise(name, exercise, hints, speed, jig) {
+function setExercise(name, exercise, hints, options, jig) {
+	console.log('options:', options)
 	var h = document.getElementById('lesson-name');
 	h.textContent = name;
 	document.title = name + ' - Steno Jig';
 
 	var back = document.getElementById('back');
-	back.href = document.location.href.replace(/\?.*$/, '').replace(/\/[^\/]*$/,'') + '/form.html';
+	back.href = document.location.href.replace(/\?.*$/, '').replace(/\/[^\/]*$/,'') + '/' + (options.menu || 'form') + '.html';
 	var again = document.getElementById('again');
 	again.href = document.location.href;
 
 	if(jig != null) jig.exercise = exercise;
-	else jig = new TypeJig(exercise, 'exercise', 'results', 'input', 'clock', hints, speed);
+	else jig = new TypeJig(exercise, 'exercise', 'results', 'input', 'clock', hints, options);
 	window.setTimeout(function(){jig.reset()}, 0)
 	return jig
 }
