@@ -116,7 +116,7 @@ function fromPseudo(stroke) {
 				var hints = new StenoDisplay(strokes, translations, true);
 				hints.lookupEntry = fromPseudo
 			}
-			var speed = {wpm: fields.wpm, cpm: fields.cpm};
+			var speed = {wpm: fields.wpm, cpm: fields.cpm, menu: 'learn-keyboard'};
 
 			displayOnly('lesson');
 			var jig = setExercise(exercise.name, exercise, hints, speed);
