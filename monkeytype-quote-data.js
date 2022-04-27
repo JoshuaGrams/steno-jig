@@ -33070,7 +33070,12 @@ monkeytype = {
 		"source": "Summer in Orcus",
 		"length": 312,
 		"id": 100009
+	},
+	{
+		"text": "There's another trait on the side which I want to talk about; that trait is ambiguity. It took me a while to discover its importance. Most people like to believe that something is or is not true. Great scientists tolerate ambiguity very well. They believe the theory enough to go ahead; they doubt it enough to notice the errors and faults so they can step forward and create the new replacement theory. If you believe too much you'll never notice the flaws; if you doubt too much you won't get started. It requires a lovely balance. But most great scientists are well aware of why their theories are true and they're also well aware of some slight misfits which don't quite fit and they don't forget it.",
+		"source": "You and Your Research",
+		"length": 704,
+		"id": 100010
 	}
   ]
 }
-
