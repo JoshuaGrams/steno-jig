@@ -220,7 +220,7 @@ TypeJig.prototype.answerChanged = function() {
 			this.errorCount += !match;
 			// Add it as a span marked as correct or incorrect.
 			var span = document.createElement('span');
-			span.appendChild(document.createTextNode(ans));
+			span.appendChild(document.createTextNode(match ? ex : ans));
 			span.className = match ? 'correct' : 'incorrect';
 			output.appendChild(span);
 		}
