@@ -27,7 +27,7 @@ function generate_sentence(ngrams, rnd) {
 	return sentence
 }
 
-function generateMarkovExercise(ngrams, word_count, rnd) {
+function generate_exercise(ngrams, word_count, rnd) {
 	let words = []
 	let chars_left = word_count * 5 + 1
 	while (chars_left > 0) {
@@ -38,40 +38,11 @@ function generateMarkovExercise(ngrams, word_count, rnd) {
 	return new TypeJig.Exercise(words, 0, false, 'ordered');
 }
 
-window.onload = function() {
-	var fields = parseQueryString(document.location.search)
-
-	var rng = new_rng(fields.seed)
-
-	var word_count = fields.word_count == null ? 100 : parseInt(fields.word_count)
-
-	var name = "Markov-chain generated sentences";
-	var hints = initializeHints(fields.hints, fields.floating_hints);
-	var speed = {wpm: fields.wpm, cpm: fields.cpm, alternate: fields.alternate};
-
-	const ngrams = compute_ngrams(sentences, 3);
-	var exercise = generateMarkovExercise(ngrams, word_count, rng);
-
-	var jig = setExercise(name, exercise, hints, speed);
-
-	var back = document.getElementById('back');
-	var again = document.getElementById('again');
-	var another = document.getElementById('new');
-	var nextSeed = this.prepareNextSeed(another);
-	back.href = back.href.replace('markov', 'form');
-	again.addEventListener('click', function(evt) {
-		evt.preventDefault();
-		jig.reset();
-	})
-	another.addEventListener('click', function(evt) {
-		evt.preventDefault();
-		window.history.replaceState('', '', updateURLParameter(window.location.href, 'seed', nextSeed));
-		let rng = new_rng(nextSeed);
-		let exercise = generateMarkovExercise(ngrams, word_count, rng);
-		jig.exercise = exercise;
-		jig.reset();
-		nextSeed = prepareNextSeed(another);
-	})
-}
-
-setTheme()
+window.addEventListener('load', () => loadExercisePage(args => {
+	const ngrams = compute_ngrams(sentences, 3)
+	const nwords = args.word_count==null ? 100 : parseInt(args.word_count)
+	return {
+		generate: (rnd, options) => generate_exercise(ngrams, word_count, rnd),
+		options: { name: "Markov-chain generated sentences" }
+	}
+}))
