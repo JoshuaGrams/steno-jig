@@ -648,7 +648,7 @@ TypeJig.LiveWPM.prototype.update = function (seconds) {
         " WPM.";
   }
   this.WPMHistory.push(correctedWPM);
-  this.elt.innerHTML = correctedWPM + " WPM";
+  if (this.showLiveWPM) this.elt.innerHTML = correctedWPM + " WPM";
 };
 
 // -----------------------------------------------------------------------
