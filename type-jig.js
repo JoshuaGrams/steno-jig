@@ -643,42 +643,6 @@ TypeJig.prototype.renderChart = function(series) {
 	)
 }
 
-TypeJig.LiveWPM.prototype.update = function (seconds) {
-  var minutes = seconds / 60; // KEEP fractional part for WPM calculation!
-  seconds = Math.floor((seconds % 60) * 10) / 10;
-  var time = Math.floor(minutes) + ":" + seconds;
-
-  var actualWords = this.typeJig.input.value.split(/\s+/).length;
-  var standardWords = this.typeJig.input.value.length / 5;
-  var visibleWords = this.typeJig.actualWords ? actualWords : standardWords;
-  var visibleWPM = Math.floor(visibleWords / minutes);
-  var plural = this.typeJig.errorCount === 1 ? "" : "s";
-  var accuracy = Math.floor(100 * (1 - this.typeJig.errorCount / actualWords));
-  var correctedWPM = Math.round(
-    (visibleWords - this.typeJig.errorCount) / minutes
-  );
-  var results = "Time: " + time + " - " + visibleWPM;
-  if (this.typeJig.actualWords) results += " " + this.typeJig.actualWords;
-  else {
-    results += " WPM (chars per minute/5)";
-    if (this.typeJig.errorCount === 0)
-      results += " with no uncorrected errors!";
-    else
-      results +=
-        ", adjusting for " +
-        this.errorCount +
-        " incorrect word" +
-        plural +
-        " (" +
-        accuracy +
-        "%) gives " +
-        correctedWPM +
-        " WPM.";
-  }
-  this.WPMHistory.push(correctedWPM);
-  if (this.showLiveWPM) this.elt.innerHTML = correctedWPM + " WPM";
-};
-
 // -----------------------------------------------------------------------
 
 TypeJig.Timer = function(elt, seconds, onUpdate) {
