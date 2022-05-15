@@ -42,7 +42,7 @@ window.addEventListener('load', () => loadExercisePage(args => {
 	const ngrams = compute_ngrams(sentences, 3)
 	const nwords = args.word_count==null ? 100 : parseInt(args.word_count)
 	return {
-		generate: (rnd, options) => generate_exercise(ngrams, word_count, rnd),
+		generate: (rnd, options) => generate_exercise(ngrams, nwords, rnd),
 		options: { name: "Markov-chain generated sentences" }
 	}
 }))
