@@ -1,3 +1,20 @@
+
+
+function movingAvg(array, countBefore, countAfter) {
+  if (countAfter == undefined) countAfter = 0;
+  const result = [];
+  for (let i = 0; i < array.length; i++) {
+    const subArr = array.slice(
+      Math.max(i - countBefore, 0),
+      Math.min(i + countAfter + 1, array.length)
+    );
+    const avg =
+      subArr.reduce((a, b) => a + (isNaN(b) ? 0 : b), 0) / subArr.length;
+    result.push(avg);
+  }
+  return result;
+}
+
 /* -----------------------------------------------------------------------
  * TypeJig - run a typing lesson.
  *
@@ -345,9 +362,9 @@ TypeJig.prototype.currentSpeed = function(seconds) {
 	var actualWords = this.input.value.split(/\s+/).length;
 	var standardWords = this.input.value.length / 5;
 	var selectedWords = this.actualWords ? actualWords : standardWords;
-	var selectedWPM = Math.floor(selectedWords / minutes);
-	var correctedWPM = Math.round(selectedWPM - (this.errorCount / minutes));
-	var accuracy = Math.floor(100 * (1 - this.errorCount / actualWords));
+	var selectedWPM = selectedWords / minutes;
+	var correctedWPM = selectedWPM - (this.errorCount / minutes);
+	var accuracy = (1 - this.errorCount / actualWords);
 	return {
 		time: time,
 		words: actualWords,
@@ -371,7 +388,7 @@ TypeJig.prototype.endExercise = function(seconds) {
 	}
 
 	const stats = this.currentSpeed(seconds);
-	var results = 'Time: ' + stats.time + ' - ' + stats.selectedWPM;
+	var results = 'Time: ' + stats.time + ' - ' + Math.floor(stats.selectedWPM);
 	if(this.actualWords) {
 		if(this.actualWords.unit) results += ' ' + this.actualWords.unit;
 		else results += ' ' + this.actualWords;
@@ -380,7 +397,7 @@ TypeJig.prototype.endExercise = function(seconds) {
 		results += ' WPM (chars per minute/5)';
 		if(this.errorCount === 0) results += ' with no uncorrected errors!';
 		else results += ', adjusting for ' + this.errorCount + ' incorrect word' + plural
-			+ ' (' + stats.accuracy + '%) gives ' + stats.correctedWPM + ' WPM.'
+			+ ' (' + Math.floor(100*stats.accuracy) + '%) gives ' + Math.floor(stats.correctedWPM) + ' WPM.'
 	}
 	results = '\n\n' + results;
 	var start = this.resultsDisplay.textContent.length;
@@ -563,7 +580,7 @@ TypeJig.LiveWPM.prototype.update = function(seconds) {
 	const unit = aw && aw.u ? aw.u : 'WPM'
 	const stats = this.typeJig.currentSpeed(seconds)
 	this.WPMHistory.push(stats.correctedWPM)
-	if (this.showLiveWPM) this.elt.innerHTML = stats.correctedWPM + ' ' + unit
+	if (this.showLiveWPM) this.elt.innerHTML = Math.floor(stats.correctedWPM) + ' ' + unit
 }
 
 TypeJig.LiveWPM.prototype.reset = function() {
@@ -583,6 +600,11 @@ TypeJig.prototype.renderChart = function(series) {
 		for(var j=0; j<i+1; ++j) rollingAverage += series[j]
 		series[i] = rollingAverage / (i+1)
 	}
+
+	series = movingAvg(series, 4,4);
+
+	//Apply a rolling average of 5 to the data
+	
 
 	const aw = this.actualWords
 	const unit = aw && aw.u ? aw.u : 'WPM'
