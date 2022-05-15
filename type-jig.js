@@ -269,7 +269,7 @@ TypeJig.prototype.answerChanged = function() {
 		this.hint.update(ex, r.left, r.top);
 	}
 
-	if(ex !== this.showing_hint_on_word && this.hint_on_fail && match){
+	if(ex !== this.showing_hint_on_word && this.hint_on_fail && match && this.hint){
 		this.showing_hint_on_word = "";
 		this.hint.hide();
 	}
