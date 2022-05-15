@@ -10,6 +10,8 @@
 	<script src="plover-translations.js"></script>
 	<script src="finger-drill-data.js"></script>
 	<script src="stenotype-finger-technique.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 	<link rel="stylesheet" type="text/css" href="font-roboto.css">
 </head>
 <body>
@@ -22,12 +24,16 @@
 			<div id="answer"></div>
 			<div id="exercise"></div>
 			<div id="results"></div>
+			<div style="height: 300px">
+				<canvas id="chartDiv" width="400" height="400"></canvas>
+			</div>
 		</div>
 	</div>
 
 	<div id="nav">
 		<p id="strokes"></p>
 		<p id="clock" class="clock"></p>
+		<p id="live-wpm-display" class="wpm"></p>	
 		<p class="center"><a id="back" title="LeftArrow">&larr; Back to Menu <span class="shortcutkey">(LeftArrow)</span></a></p>
 		<p class="center"><a id="again" title="Enter">&#8634; Repeat Drill <span class="shortcutkey">(Enter 3x)</span></a></p>
 		<p class="center"><a id="new" title="RightArrow">&rarr; Next Drill <span class="shortcutkey">(RightArrow)</span></a></p>

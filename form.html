@@ -11,6 +11,8 @@
 	<script src="steno-display.js"></script>
 	<script src="word-sets.js"></script>
 	<script src="plover-translations.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 	<link rel="stylesheet" type="text/css" href="font-roboto.css">
 </head>
 <body>
@@ -23,7 +25,15 @@
 
 		<div name="hints">
 			<label><input id="hints" type="checkbox" name="hints" value="1" checked>Show hints</label>
-		</div><br>
+		</div>
+		<br>
+
+		<div name="live_wpm">
+			<label><input id="live_wpm" type="checkbox" name="live_wpm" value="1" checked>Show Live WPM</label>
+		</div>
+
+		<br>
+
 
 		<div name="speed">
 			<label><input id="wpm" type="number" name="wpm" value="" step="5"> Speed (words per minute)
@@ -44,6 +54,7 @@
 			<input type="hidden" name="cpm" value="">
 			<input type="hidden" name="hints" value="">
 			<input type="hidden" name="alternate" value="">
+			<input type="hidden" name="live_wpm" value="">
 
 			<textarea name="drill"></textarea><br>
 			<input type="checkbox" name="type" value="shuffled"> Shuffle words.<br>
@@ -61,6 +72,7 @@
 			<input type="hidden" name="wpm" value="">
 			<input type="hidden" name="cpm" value="">
 			<input type="hidden" name="hints" value="">
+			<input type="hidden" name="live_wpm" value="">
 
 			Repeat strokes <input type="text" name="strokes" size="18">
 			<input type="number" name="iterations" value="20" step="5"> times.<br>
@@ -102,6 +114,7 @@
 			<input type="hidden" name="cpm" value="">
 			<input type="hidden" name="hints" value="">
 			<input type="hidden" name="alternate" value="">
+			<input type="hidden" name="live_wpm" value="">
 
 			<p><b class="red">NEW</b>: top "0" words gives a set of nearly 200k sentences with unrestricted vocabulary.</p>
 			Drill sentences containing only the top
@@ -133,6 +146,7 @@
 			<input type="hidden" name="cpm" value="">
 			<input type="hidden" name="hints" value="">
 			<input type="hidden" name="alternate" value="">
+			<input type="hidden" name="live_wpm" value="">
 
 			Drill Length:
 			<input type="number" name="word_count" value="100" min="50" max="1000" step="50">
@@ -153,6 +167,7 @@
 			<input type="hidden" name="cpm" value="">
 			<input type="hidden" name="hints" value="">
 			<input type="hidden" name="alternate" value="">
+			<input type="hidden" name="live_wpm" value="">
 
 			Drill length:
 			<ul>
@@ -176,6 +191,7 @@
 			<input type="hidden" name="cpm" value="">
 			<input type="hidden" name="hints" value="">
 			<input type="hidden" name="alternate" value="">
+			<input type="hidden" name="live_wpm" value="">
 
 			Drill Time:
 			<input type="number" name="timeLimit" value="3" min="1" max="60" size="3">
@@ -196,6 +212,7 @@
 			<input type="hidden" name="cpm" value="">
 			<input type="hidden" name="hints" value="">
 			<input type="hidden" name="alternate" value="">
+			<input type="hidden" name="live_wpm" value="">
 
 			Drill Time:
 			<input type="number" name="timeLimit" value="3" min="1" max="60">
@@ -213,6 +230,7 @@
 			<input type="hidden" name="wpm" value="">
 			<input type="hidden" name="cpm" value="">
 			<input type="hidden" name="hints" value="">
+			<input type="hidden" name="live_wpm" value="">
 
 			Section <input type="number" name="section" value="1" min="1" max="27"><br>
 
@@ -248,12 +266,16 @@
 			<div id="answer"></div>
 			<div id="exercise"></div>
 			<div id="results"></div>
+			<div style="height: 300px">
+				<canvas id="chartDiv" width="400" height="400"></canvas>
+			</div>
 		</div>
 	</div>
 
 	<div id="nav">
 		<p id="strokes"></p>
 		<p id="clock" class="clock"></p>
+		<p id="live-wpm-display" class="wpm"></p>
 
 		<p class="center"><a id="back" title="LeftArrow">&larr; Back to Menu <span class="shortcutkey">(LeftArrow)</span></a></p>
 		<p class="center"><a id="again" title="Enter">&#8634; Restart <span class="shortcutkey">(Enter 3x)</span></a></p>
@@ -275,7 +297,7 @@ function runExercise(fields) {
 			var translations = TypeJig.shortestTranslations(TypeJig.Translations.Plover);
 			var hints = new StenoDisplay(strokes, translations, true);
 		}
-		var options = {wpm: fields.wpm, cpm: fields.cpm, alternate: fields.alternate};
+		var options = {wpm: fields.wpm, cpm: fields.cpm, alternate: fields.alternate,live_wpm: fields.live_wpm,live_cpm: fields.live_cpm};
 
 		displayOnly('lesson');
 		return setExercise(exercise.name, exercise, hints, options);
@@ -287,9 +309,14 @@ function getSettings() {
 	var cpm = document.getElementById('cpm');
 	var hints = document.getElementById('hints');
 	var alt = document.getElementById('alternate');
+	var live_wpm = document.getElementById('live_wpm');
 	if(cpm.checked) this.elements.cpm.value = 5 * wpm.value;
 	else this.elements.wpm.value = wpm.value;
 	this.elements.hints.value = hints.checked ? hints.value : '';
+
+	this.elements.live_wpm.value = live_wpm.checked ? live_wpm.value : '';
+
+
 	if(this.elements.alternate) this.elements.alternate.value = alt.value;
 }
 
