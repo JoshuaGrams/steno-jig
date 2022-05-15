@@ -39,15 +39,13 @@ let jig, exercise, fields
 function go(ex) {
 	fields = parseQueryString(document.location.search)
 	let hints = initializeHints(fields.hints, fields.floating_hints)
-  fields = parseQueryString(document.location.search)
-  let hints = initializeHints(fields.hints, fields.floating_hints)
-  let speed = {
-    wpm: fields.wpm,
-    cpm: fields.cpm,
-    alternate: fields.alternate,
-    live_wpm: fields.live_wpm,
-    live_cpm: fields.live_cpm,
-  };
+	let options = {
+		wpm: fields.wpm,
+		cpm: fields.cpm,
+		alternate: fields.alternate,
+		live_wpm: fields.live_wpm,
+		live_cpm: fields.live_cpm,
+	}
 
 	if(ex == null) {
 		switch(fields.length) {
@@ -62,7 +60,7 @@ function go(ex) {
 		exercise = generateExercise(fields.id, fields.lo, fields.hi)
 	} else exercise = ex
 
-	jig = setExercise(exercise.name, exercise, hints, speed, jig)
+	jig = setExercise(exercise.name, exercise, hints, options, jig)
 }
 
 window.addEventListener('load', function() {

@@ -31,19 +31,17 @@ window.onload = function() {
 
 	var name = "Short Sentences"
 	var hints = initializeHints(fields.hints, fields.floating_hints)
-  var name = "Short Sentences";
-  var hints = initializeHints(fields.hints, fields.floating_hints);
-  var speed = {
-    wpm: fields.wpm,
-    cpm: fields.cpm,
-    alternate: fields.alternate,
-    live_wpm: fields.live_wpm,
-    live_cpm: fields.live_cpm,
-  };
+	var options = {
+		wpm: fields.wpm,
+		cpm: fields.cpm,
+		alternate: fields.alternate,
+		live_wpm: fields.live_wpm,
+		live_cpm: fields.live_cpm,
+	}
 
 	var exercise = generateExercise(wordCount, rng)
 
-	var jig = setExercise(name, exercise, hints, speed)
+	var jig = setExercise(name, exercise, hints, options)
 
 	var back = document.getElementById('back')
 	var again = document.getElementById('again')

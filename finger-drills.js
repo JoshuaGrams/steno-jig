@@ -51,12 +51,12 @@ window.onload = function() {
 	var fields = parseQueryString(document.location.search)
 	fields.iterations = fields.iterations || 20;
 
-  var speed = {
-    wpm: fields.wpm,
-    cpm: fields.cpm,
-    live_wpm: fields.live_wpm,
-    live_cpm: fields.live_cpm,
-  };
+	var options = {
+		wpm: fields.wpm,
+		cpm: fields.cpm,
+		live_wpm: fields.live_wpm,
+		live_cpm: fields.live_cpm,
+	};
 
 	let exercise;
 	if(fields.strokes) {
@@ -72,7 +72,7 @@ window.onload = function() {
 		exercise = generateDreadedDuoDrill(fields.section, fields.drill, fields.iterations);
 	}
 
-	var jig = setExercise(exercise.name, exercise, null, speed);
+	var jig = setExercise(exercise.name, exercise, null, options);
 	jig.actualWords = 'strokes per minute';
 
 	var back = document.getElementById('back');

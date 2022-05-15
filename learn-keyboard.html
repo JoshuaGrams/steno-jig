@@ -9,7 +9,7 @@
 	<script src="word-drill.js"></script>
 	<script src="steno-display.js"></script>
 	<script src="learn-keyboard.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+	<script src="chart.js"></script>
 	<link rel="stylesheet" type="text/css" href="font-roboto.css">
 </head>
 <body>
@@ -121,10 +121,15 @@ function fromPseudo(stroke) {
 				var hints = new StenoDisplay(strokes, translations, true);
 				hints.lookupEntry = fromPseudo
 			}
-			var speed = {wpm: fields.wpm, cpm: fields.cpm, menu: 'learn-keyboard'};
+			var options = {
+				menu: 'learn-keyboard',
+				wpm: fields.wpm, cpm: fields.cpm,
+				alternate: fields.alternate,
+				live_wpm: fields.live_wpm,
+			};
 
 			displayOnly('lesson');
-			var jig = setExercise(exercise.name, exercise, hints, speed);
+			var jig = setExercise(exercise.name, exercise, hints, options);
 			jig.match = function(a, b) {
 				return a == fromPseudo(b)
 			}

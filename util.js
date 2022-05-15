@@ -74,7 +74,6 @@ function changeName(name) {
 }
 
 function setExercise(name, exercise, hints, options, jig) {
-	console.log('options:', options)
 	var h = document.getElementById('lesson-name');
 	h.textContent = name;
 	document.title = name + ' - Steno Jig';

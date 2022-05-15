@@ -11,8 +11,7 @@
 	<script src="steno-display.js"></script>
 	<script src="word-sets.js"></script>
 	<script src="plover-translations.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
+	<script src="chart.js"></script>
 	<link rel="stylesheet" type="text/css" href="font-roboto.css">
 </head>
 <body>
@@ -30,10 +29,7 @@
 
 		<div name="live_wpm">
 			<label><input id="live_wpm" type="checkbox" name="live_wpm" value="1" checked>Show Live WPM</label>
-		</div>
-
-		<br>
-
+		</div><br>
 
 		<div name="speed">
 			<label><input id="wpm" type="number" name="wpm" value="" step="5"> Speed (words per minute)
@@ -92,6 +88,7 @@
 			<input type="hidden" name="cpm" value="">
 			<input type="hidden" name="hints" value="">
 			<input type="hidden" name="alternate" value="">
+			<input type="hidden" name="live_wpm" value="">
 
 			Drill
 			<input type="number" name="count" value="100" min="25" max="1000" step="25">
@@ -313,9 +310,7 @@ function getSettings() {
 	if(cpm.checked) this.elements.cpm.value = 5 * wpm.value;
 	else this.elements.wpm.value = wpm.value;
 	this.elements.hints.value = hints.checked ? hints.value : '';
-
 	this.elements.live_wpm.value = live_wpm.checked ? live_wpm.value : '';
-
 
 	if(this.elements.alternate) this.elements.alternate.value = alt.value;
 }
