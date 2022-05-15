@@ -10,7 +10,7 @@
 	<script src="steno-display.js"></script>
 	<script src="learn-plover.js"></script>
 	<script src="plover-translations.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+	<script src="chart.js"></script>
 	<link rel="stylesheet" type="text/css" href="font-roboto.css">
 </head>
 <body>
@@ -89,10 +89,15 @@ window.onload = function() {
 				var translations = TypeJig.shortestTranslations(TypeJig.Translations.Plover);
 				var hints = new StenoDisplay(strokes, translations, true);
 			}
-			var speed = {wpm: fields.wpm, cpm: fields.cpm, menu: 'learn-plover'};
+			var options = {
+				menu: 'learn-plover',
+				wpm: fields.wpm, cpm: fields.cpm,
+				alternate: fields.alternate,
+				live_wpm: fields.live_wpm,
+			};
 
 			displayOnly('lesson');
-			var jig = setExercise(exercise.name, exercise, hints, speed);
+			var jig = setExercise(exercise.name, exercise, hints, options);
 		}
 	}
 }

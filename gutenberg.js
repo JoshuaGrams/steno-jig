@@ -44,11 +44,9 @@ window.onload = function () {
     var from_n = top_n - 99, to_n = top_n
     var name = "Project Gutenberg sentences for words " + from_n + " to " + to_n + ".";
     var hints = initializeHints(fields.hints, fields.floating_hints);
-    var speed = fields
-
     var exercise = generateExercise(word_count, top_n, rng);
 
-    var jig = setExercise(name, exercise, hints, speed);
+    var jig = setExercise(name, exercise, hints, fields);
 
     var back = document.getElementById('back');
     var again = document.getElementById('again');

@@ -11,19 +11,16 @@ function TypeJig(exercise, display, results, input, clock, hint, options) {
 	this.display = documentElement(display);
 	this.input = documentElement(input);
 	this.resultsDisplay = documentElement(results);
-	this.liveWPM = new TypeJig.LiveWPM(
-		documentElement("live-wpm-display"),
-		this,
-    	options.live_wpm
- 	);
-  	this.clock = new TypeJig.Timer(
-    	documentElement(clock),
-    	exercise.seconds,
-    	this.liveWPM.update.bind(this.liveWPM)
-  	);
+
+	const liveWPM = documentElement('live-wpm-display');
+	const clockElt = documentElement(clock);
+	this.liveWPM = new TypeJig.LiveWPM(liveWPM, this, options.live_wpm);
+	const updateWPM = this.liveWPM.update.bind(this.liveWPM);
+	this.clock = new TypeJig.Timer(clockElt, exercise.seconds, updateWPM);
+	this.hint = hint;
 	if(!options.show_timer) this.clock.hide();
 
-	this.hint = hint;
+
 	this.live_wpm = options.live_wpm;
 	this.live_cpm = options.live_cpm;
 	this.hint_on_fail = options.hints == "fail";
@@ -45,6 +42,7 @@ function TypeJig(exercise, display, results, input, clock, hint, options) {
 			this.alternateWith = TypeJig.wordsAndSpaces(options.alternate)
 			this.alternateWith.push(' ')
 		}
+		this.actualWords = options.actualWords
 	}
 
 	var self = this;  // close over `this` for event handlers.
@@ -69,6 +67,8 @@ function TypeJig(exercise, display, results, input, clock, hint, options) {
 }
 
 TypeJig.prototype.reset = function() {
+	this.liveWPM.reset();
+
 	this.enter_count = 0;
 	this.resultsDisplay.textContent = '';
 	if(this.exercise && !this.exercise.started) {
@@ -343,6 +343,28 @@ TypeJig.prototype.getWords = function(n) {
 	return exercise;
 };
 
+TypeJig.prototype.currentSpeed = function(seconds) {
+	var minutes = seconds / 60;  // KEEP fractional part for WPM calculation!
+	seconds = Math.floor((seconds % 60) * 10) / 10;
+	var time = Math.floor(minutes)+':'+seconds;
+
+	var actualWords = this.input.value.split(/\s+/).length;
+	var standardWords = this.input.value.length / 5;
+	var selectedWords = this.actualWords ? actualWords : standardWords;
+	var selectedWPM = Math.floor(selectedWords / minutes);
+	var correctedWPM = Math.round(selectedWPM - (this.errorCount / minutes));
+	var accuracy = Math.floor(100 * (1 - this.errorCount / actualWords));
+	return {
+		time: time,
+		words: actualWords,
+		standardWords: standardWords,
+		selectedWords: selectedWords,
+		selectedWPM: selectedWPM,
+		correctedWPM: correctedWPM,
+		accuracy: accuracy,
+	}
+}
+
 TypeJig.prototype.endExercise = function(seconds) {
 	if(this.running) this.running = false; else return;
 
@@ -354,38 +376,26 @@ TypeJig.prototype.endExercise = function(seconds) {
 		while(elt.nextSibling) elt.parentNode.removeChild(elt.nextSibling)
 	}
 
-	var minutes = seconds / 60;  // KEEP fractional part for WPM calculation!
-	seconds = Math.floor(seconds % 60 * 10)/10;
-	if(seconds < 10) seconds = '0' + seconds;
-	var time = Math.floor(minutes) + ':' + seconds;
-
-	var actualWords = this.input.value.split(/\s+/).length;
-	var standardWords = this.input.value.length / 5;
-	var visibleWords = this.actualWords ? actualWords : standardWords;
-	var visibleWPM = Math.floor(visibleWords / minutes);
-	var plural = this.errorCount===1 ? '' : 's';
-	var accuracy = Math.floor(100 * (1 - this.errorCount / actualWords));
-	var correctedWPM = Math.round(visibleWPM - (this.errorCount / minutes));
-	var results = 'Time: ' + time + ' - ' + visibleWPM;
-	if(this.actualWords) results += ' ' + this.actualWords;
-	else {
+	const stats = this.currentSpeed(seconds);
+	var results = 'Time: ' + stats.time + ' - ' + stats.selectedWPM;
+	if(this.actualWords) {
+		if(this.actualWords.unit) results += ' ' + this.actualWords.unit;
+		else results += ' ' + this.actualWords;
+	} else {
+		var plural = this.errorCount===1 ? '' : 's';
 		results += ' WPM (chars per minute/5)';
 		if(this.errorCount === 0) results += ' with no uncorrected errors!';
 		else results += ', adjusting for ' + this.errorCount + ' incorrect word' + plural
-			+ ' (' + accuracy + '%) gives ' + correctedWPM + ' WPM.'
+			+ ' (' + stats.accuracy + '%) gives ' + stats.correctedWPM + ' WPM.'
 	}
 	results = '\n\n' + results;
 	var start = this.resultsDisplay.textContent.length;
 	var end = start + results.length;
 	this.resultsDisplay.textContent += results;
 
-	var range = document.createRange();
-	range.setStart(this.resultsDisplay.firstChild, start);
-	range.setEnd(this.resultsDisplay.firstChild, end);
-  	this.renderChart(this.liveWPM.WPMHistory);
-	var rect = range.getBoundingClientRect();
-	var scroll = rect.bottom - window.innerHeight;
-	if(scroll > 0) setTimeout(function(){window.scrollBy(0, scroll)}, 2);
+	this.renderChart(this.liveWPM.WPMHistory);
+
+	this.resultsDisplay.scrollIntoView(true);
 }
 
 TypeJig.prototype.addCursor = function(output) {
@@ -397,54 +407,6 @@ TypeJig.prototype.addCursor = function(output) {
 	output.appendChild(document.createTextNode('\u200b'));
 	output.appendChild(cursor);
 }
-
-TypeJig.prototype.renderChart = function (series) {
-  series[0] = 0;
-  var rollingAverage = 0;
-  for (var i = 5; i > 0; i--) {
-    rollingAverage = 0;
-    for (var j = 0; j < i + 1; j++) {
-      rollingAverage += series[j];
-    }
-    series[i] = rollingAverage / (i + 1);
-}
-
-  const labels = [...Array(series.length).keys()];
-  const data = {
-    labels: labels,
-    datasets: [
-      {
-        label: "WPM",
-        data: series,
-        fill: false,
-        borderColor: "rgb(75, 192, 192)",
-        pointRadius: 0,
-        tension: 0.4,
-      },
-    ],
-  };
-
-  const options = {
-    scales: {
-      y: {
-        beginAtZero: true,
-      },
-    },
-    responsive: true,
-    maintainAspectRatio: false,
-  };
-
-  const config = {
-    type: "line",
-    data: data,
-    options: options,
-  };
-
-  const myChart = new Chart(
-    document.getElementById("chartDiv").getContext("2d"),
-    config
-  );
-};
 
 TypeJig.prototype.removeCursor = function(output) {
 	if(!output) output = this.display.previousElementSibling;
@@ -594,14 +556,70 @@ TypeJig.wordCombos = function(combos) {
 
 // -----------------------------------------------------------------------
 
-TypeJig.LiveWPM = function (elt, typeJig, showLiveWPM) {
-  this.elt = elt;
-  elt.innerHTML = "";
-  this.typeJig = typeJig;
-  this.WPMHistory = [];
-  this.showLiveWPM = showLiveWPM;
-  console.log("showLiveWPM", showLiveWPM);
-};
+TypeJig.LiveWPM = function(elt, typeJig, showLiveWPM) {
+	this.elt = elt
+	elt.innerHTML = ""
+	this.typeJig = typeJig
+	this.WPMHistory = []
+	this.showLiveWPM = showLiveWPM
+}
+
+TypeJig.LiveWPM.prototype.update = function(seconds) {
+	const aw = this.typeJig.actualWords
+	const unit = aw && aw.u ? aw.u : 'WPM'
+	const stats = this.typeJig.currentSpeed(seconds)
+	this.WPMHistory.push(stats.correctedWPM)
+	if (this.showLiveWPM) this.elt.innerHTML = stats.correctedWPM + ' ' + unit
+}
+
+TypeJig.LiveWPM.prototype.reset = function() {
+	this.WPMHistory = []
+}
+
+TypeJig.prototype.renderChart = function(series) {
+	if(this.wpmChart) {
+		this.wpmChart.destroy()
+		delete this.wpmChart
+	}
+
+	series[0] = 0
+	var rollingAverage = 0
+	for(var i=5; i>0; --i) {
+		rollingAverage = 0
+		for(var j=0; j<i+1; ++j) rollingAverage += series[j]
+		series[i] = rollingAverage / (i+1)
+	}
+
+	const aw = this.actualWords
+	const unit = aw && aw.u ? aw.u : 'WPM'
+	const labels = [...Array(series.length).keys()]
+	const data = {
+		labels: labels,
+		datasets: [{
+			label: unit,
+			data: series,
+			fill: false,
+			borderColor: "rgb(75, 192, 192)",
+			pointRadius: 0,
+			tension: 0.4,
+		}],
+	}
+
+	const config = {
+		type: "line",
+		data: data,
+		options: {
+			scales: {y: {beginAtZero: true }},
+			responsive: true,
+			maintainAspectRatio: false,
+		}
+	}
+
+	this.wpmChart = new Chart(
+		document.getElementById("chartDiv").getContext("2d"),
+		config
+	)
+}
 
 TypeJig.LiveWPM.prototype.update = function (seconds) {
   var minutes = seconds / 60; // KEEP fractional part for WPM calculation!
@@ -648,8 +666,8 @@ TypeJig.Timer = function(elt, seconds, onUpdate) {
 	this.seconds = this.setting;
 	this.fn = this.update.bind(this);
 	this.showTime();
-  	this.onUpdate = onUpdate || function () {};
-};
+	this.onUpdate = onUpdate || function() {};
+}
 
 TypeJig.Timer.prototype.reset = function() {
 	delete this.beginning;
@@ -686,12 +704,9 @@ TypeJig.Timer.prototype.update = function() {
 		}
 		this.seconds = Math.round(ms/1000);
 		this.showTime();
-		
-		if (this.end) {
-			this.onUpdate(this.setting - this.seconds);
-		} else {
-			this.onUpdate(this.seconds);
-		}
+
+		if(this.end) this.onUpdate(this.setting - this.seconds);
+		else this.onUpdate(this.seconds);
 
 		if(running) window.setTimeout(this.fn, msTilNext);
 		else this.stop();

@@ -31,13 +31,10 @@ window.onload = function() {
 
 	var name = "Short Sentences"
 	var hints = initializeHints(fields.hints, fields.floating_hints)
-  var name = "Short Sentences";
-  var hints = initializeHints(fields.hints, fields.floating_hints);
-  var speed = fields
-
+	
 	var exercise = generateExercise(wordCount, rng)
 
-	var jig = setExercise(name, exercise, hints, speed)
+	var jig = setExercise(name, exercise, hints, fields)
 
 	var back = document.getElementById('back')
 	var again = document.getElementById('again')

@@ -10,7 +10,7 @@
 	<script src="steno-display.js"></script>
 	<script src="intro.js"></script>
 	<script src="plover-translations.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+	<script src="chart.js"></script>
 	<link rel="stylesheet" type="text/css" href="font-roboto.css">
 </head>
 <body>
@@ -95,7 +95,12 @@ window.onload = function() {
 				translations['will'] = 'WEUL'
 				var hints = new StenoDisplay(strokes, translations, true)
 			}
-			var options = {wpm: fields.wpm, cpm: fields.cpm, alternate: alternate, menu: 'intro'}
+			var options = {
+				wpm: fields.wpm,
+				 cpm: fields.cpm,
+				 alternate: fields.alternate,
+				 live_wpm: fields.live_wpm,
+			}
 
 			displayOnly('lesson')
 			var jig = setExercise(exercise.name, exercise, hints, options)
