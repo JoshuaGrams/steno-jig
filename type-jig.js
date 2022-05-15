@@ -10,8 +10,20 @@ function TypeJig(exercise, display, results, input, clock, hint, options) {
 	this.display = documentElement(display);
 	this.input = documentElement(input);
 	this.resultsDisplay = documentElement(results);
-	this.clock = new TypeJig.Timer(documentElement(clock), exercise.seconds);
+	this.liveWPM = new TypeJig.LiveWPM(
+		documentElement("live-wpm-display"),
+		this,
+    	options.live_wpm
+ 	);
+  	this.clock = new TypeJig.Timer(
+    	documentElement(clock),
+    	exercise.seconds,
+    	this.liveWPM.update.bind(this.liveWPM)
+  	);
+
 	this.hint = hint;
+	this.live_wpm = options.live_wpm;
+	this.live_cpm = options.live_cpm;
 	this.errorCount = 0;
 	this.enterCount = 0;
 
@@ -348,6 +360,7 @@ TypeJig.prototype.endExercise = function(seconds) {
 	var range = document.createRange();
 	range.setStart(this.resultsDisplay.firstChild, start);
 	range.setEnd(this.resultsDisplay.firstChild, end);
+  	this.renderChart(this.liveWPM.WPMHistory);
 	var rect = range.getBoundingClientRect();
 	var scroll = rect.bottom - window.innerHeight;
 	if(scroll > 0) setTimeout(function(){window.scrollBy(0, scroll)}, 2);
@@ -362,6 +375,54 @@ TypeJig.prototype.addCursor = function(output) {
 	output.appendChild(document.createTextNode('\u200b'));
 	output.appendChild(cursor);
 }
+
+TypeJig.prototype.renderChart = function (series) {
+  series[0] = 0;
+  var rollingAverage = 0;
+  for (var i = 5; i > 0; i--) {
+    rollingAverage = 0;
+    for (var j = 0; j < i + 1; j++) {
+      rollingAverage += series[j];
+    }
+    series[i] = rollingAverage / (i + 1);
+}
+
+  const labels = [...Array(series.length).keys()];
+  const data = {
+    labels: labels,
+    datasets: [
+      {
+        label: "WPM",
+        data: series,
+        fill: false,
+        borderColor: "rgb(75, 192, 192)",
+        pointRadius: 0,
+        tension: 0.4,
+      },
+    ],
+  };
+
+  const options = {
+    scales: {
+      y: {
+        beginAtZero: true,
+      },
+    },
+    responsive: true,
+    maintainAspectRatio: false,
+  };
+
+  const config = {
+    type: "line",
+    data: data,
+    options: options,
+  };
+
+  const myChart = new Chart(
+    document.getElementById("chartDiv").getContext("2d"),
+    config
+  );
+};
 
 TypeJig.prototype.removeCursor = function(output) {
 	if(!output) output = this.display.previousElementSibling;
@@ -506,10 +567,57 @@ TypeJig.wordCombos = function(combos) {
 		}
 	}
 
-	return nextWord
+  return nextWord
 }
 
+// -----------------------------------------------------------------------
 
+TypeJig.LiveWPM = function (elt, typeJig, showLiveWPM) {
+  this.elt = elt;
+  elt.innerHTML = "";
+  this.typeJig = typeJig;
+  this.WPMHistory = [];
+  this.showLiveWPM = showLiveWPM;
+  console.log("showLiveWPM", showLiveWPM);
+};
+
+TypeJig.LiveWPM.prototype.update = function (seconds) {
+  console.log("update", seconds);
+  console.log("element", this.elt);
+  var minutes = seconds / 60; // KEEP fractional part for WPM calculation!
+  seconds = Math.floor((seconds % 60) * 10) / 10;
+  var time = Math.floor(minutes) + ":" + seconds;
+
+  var actualWords = this.typeJig.input.value.split(/\s+/).length;
+  var standardWords = this.typeJig.input.value.length / 5;
+  var visibleWords = this.typeJig.actualWords ? actualWords : standardWords;
+  var visibleWPM = Math.floor(visibleWords / minutes);
+  var plural = this.typeJig.errorCount === 1 ? "" : "s";
+  var accuracy = Math.floor(100 * (1 - this.typeJig.errorCount / actualWords));
+  var correctedWPM = Math.round(
+    (visibleWords - this.typeJig.errorCount) / minutes
+  );
+  var results = "Time: " + time + " - " + visibleWPM;
+  if (this.typeJig.actualWords) results += " " + this.typeJig.actualWords;
+  else {
+    results += " WPM (chars per minute/5)";
+    if (this.typeJig.errorCount === 0)
+      results += " with no uncorrected errors!";
+    else
+      results +=
+        ", adjusting for " +
+        this.errorCount +
+        " incorrect word" +
+        plural +
+        " (" +
+        accuracy +
+        "%) gives " +
+        correctedWPM +
+        " WPM.";
+  }
+  this.WPMHistory.push(correctedWPM);
+  if (this.showLiveWPM) this.elt.innerHTML = correctedWPM + " WPM";
+};
 
 // -----------------------------------------------------------------------
 
@@ -520,7 +628,8 @@ TypeJig.Timer = function(elt, seconds) {
 	this.seconds = this.setting;
 	this.fn = this.update.bind(this);
 	this.showTime();
-}
+  	this.onUpdate = onUpdate || function () {};
+};
 
 TypeJig.Timer.prototype.reset = function() {
 	delete this.beginning;
@@ -557,6 +666,12 @@ TypeJig.Timer.prototype.update = function() {
 		}
 		this.seconds = Math.round(ms/1000);
 		this.showTime();
+		
+		if (this.end) {
+			this.onUpdate(this.setting - this.seconds);
+		} else {
+			this.onUpdate(this.seconds);
+		}
 
 		if(running) window.setTimeout(this.fn, msTilNext);
 		else this.stop();

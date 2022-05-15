@@ -47,7 +47,13 @@ window.onload = function() {
 
 	var name = "Markov-chain generated sentences";
 	var hints = initializeHints(fields.hints, fields.floating_hints);
-	var speed = {wpm: fields.wpm, cpm: fields.cpm, alternate: fields.alternate};
+  var speed = {
+    wpm: fields.wpm,
+    cpm: fields.cpm,
+    alternate: fields.alternate,
+    live_wpm: fields.live_wpm,
+    live_cpm: fields.live_cpm,
+  };
 
 	const ngrams = compute_ngrams(sentences, 3);
 	var exercise = generateMarkovExercise(ngrams, word_count, rng);

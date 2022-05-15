@@ -27,6 +27,11 @@ another.parentNode.remove()
 
 const fields = parseQueryString(document.location.search)
 const hints = initializeHints(fields.hints, fields.floating_hints)
-const speed = {wpm: fields.wpm, cpm: fields.cpm}
+const speed = {
+  wpm: fields.wpm,
+  cpm: fields.cpm,
+  live_wpm: fields.live_wpm,
+  live_cpm: fields.live_cpm,
+};
 let exercise, jig
 textLesson(fields.url)
