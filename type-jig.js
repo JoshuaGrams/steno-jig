@@ -6,6 +6,7 @@
  */
 
 function TypeJig(exercise, display, results, input, clock, hint, options) {
+	
 	this.exercise = exercise;
 	this.display = documentElement(display);
 	this.input = documentElement(input);
@@ -20,10 +21,15 @@ function TypeJig(exercise, display, results, input, clock, hint, options) {
     	exercise.seconds,
     	this.liveWPM.update.bind(this.liveWPM)
   	);
+	if(!options.show_timer) this.clock.hide();
 
 	this.hint = hint;
 	this.live_wpm = options.live_wpm;
 	this.live_cpm = options.live_cpm;
+	this.hint_on_fail = options.hints == "fail";
+	this.hint_on_fail = true;
+	this.showing_hint_on_word = "";
+
 	this.errorCount = 0;
 	this.enterCount = 0;
 
@@ -79,6 +85,11 @@ TypeJig.prototype.reset = function() {
 		var rect = this.display.getBoundingClientRect();
 		this.hint.update(word, rect.left, rect.top);
 	}
+
+	if(this.hint && this.hint_on_fail){
+		this.hint.hide();
+	}
+
 
 	this.display.previousElementSibling.textContent = '';
 
@@ -229,12 +240,18 @@ TypeJig.prototype.answerChanged = function() {
 			// Don't yet know whether it matched, so add it as raw text.
 			output.appendChild(document.createTextNode(ans));
 		} else {
+				
 			this.errorCount += !match;
 			// Add it as a span marked as correct or incorrect.
 			var span = document.createElement('span');
 			span.appendChild(document.createTextNode(match ? ex : ans));
 			span.className = match ? 'correct' : 'incorrect';
 			output.appendChild(span);
+
+			if (!match && this.hint && i == answer.length - 1) {
+        this.hint.show();
+        this.showing_hint_on_word = ex;
+      }
 		}
 
 		// End the exercise if the last word was answered correctly.
@@ -250,6 +267,11 @@ TypeJig.prototype.answerChanged = function() {
 
 	if(this.hint && this.hint.update) {
 		this.hint.update(ex, r.left, r.top);
+	}
+
+	if(ex !== this.showing_hint_on_word && this.hint_on_fail && match){
+		this.showing_hint_on_word = "";
+		this.hint.hide();
 	}
 
 	this.display.parentNode.replaceChild(output, oldOutput);
@@ -582,8 +604,6 @@ TypeJig.LiveWPM = function (elt, typeJig, showLiveWPM) {
 };
 
 TypeJig.LiveWPM.prototype.update = function (seconds) {
-  console.log("update", seconds);
-  console.log("element", this.elt);
   var minutes = seconds / 60; // KEEP fractional part for WPM calculation!
   seconds = Math.floor((seconds % 60) * 10) / 10;
   var time = Math.floor(minutes) + ":" + seconds;
@@ -683,6 +703,10 @@ TypeJig.Timer.prototype.showTime = function() {
 	var m = Math.floor(this.seconds / 60);
 	var s = this.seconds % 60; if(s < 10) s = '0' + s;
 	this.elt.innerHTML = m + ':' + s;
+}
+
+TypeJig.Timer.prototype.hide = function() {
+	this.elt.style.display = 'none';
 }
 
 

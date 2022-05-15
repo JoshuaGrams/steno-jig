@@ -33,13 +33,7 @@ window.onload = function() {
 	var hints = initializeHints(fields.hints, fields.floating_hints)
   var name = "Short Sentences";
   var hints = initializeHints(fields.hints, fields.floating_hints);
-  var speed = {
-    wpm: fields.wpm,
-    cpm: fields.cpm,
-    alternate: fields.alternate,
-    live_wpm: fields.live_wpm,
-    live_cpm: fields.live_cpm,
-  };
+  var speed = fields
 
 	var exercise = generateExercise(wordCount, rng)
 

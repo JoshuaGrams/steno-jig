@@ -130,6 +130,17 @@ function setTheme() {
 		}
 	}
 }
+function loadSetting(elementID,settingName) {
+	const element = document.getElementById(elementID);
+ 	if (element && element.nodeName === "INPUT" && element.type === "checkbox") {
+    	if (localStorage[settingName] != null) {
+        element.checked = JSON.parse(localStorage[settingName]);
+      }
+    element.addEventListener("input", function (evt) {
+      localStorage[settingName] = !!element.checked;
+    });
+  }
+}
 
 function loadSettings() {
 	if(!storageAvailable('localStorage')) return
@@ -142,16 +153,22 @@ function loadSettings() {
 	}
 
 	// Hints
-	const hints = document.getElementById('hints')
-	if(hints && hints.nodeName === 'INPUT' && hints.type === 'checkbox') {
-		if(localStorage.hints != null) {
-			hints.checked = JSON.parse(localStorage.hints)
-		}
-		hints.addEventListener('input', function(evt) {
-			localStorage.hints = !!hints.checked
+	const hints = document.getElementsByName('hints');
+	for(var i=0; i<hints.length; ++i) {
+		hints[i].addEventListener('click', function(e) {
+			localStorage.hints = e.target.value
 		})
 	}
 
+	for(let i=0; i<hints.length; ++i) {
+		if(localStorage.hints == hints[i].value) {
+			hints[i].checked = true;
+			break;
+		}
+	}
+
+	loadSetting("live_wpm","live_wpm");
+	loadSetting("show_timer", "show_timer");
 	// CPM
 	const cpm = document.getElementById('cpm')
 	if(cpm && cpm.nodeName === 'INPUT' && cpm.type === 'checkbox') {

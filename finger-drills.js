@@ -51,12 +51,7 @@ window.onload = function() {
 	var fields = parseQueryString(document.location.search)
 	fields.iterations = fields.iterations || 20;
 
-  var speed = {
-    wpm: fields.wpm,
-    cpm: fields.cpm,
-    live_wpm: fields.live_wpm,
-    live_cpm: fields.live_cpm,
-  };
+  	var speed = fields;
 
 	let exercise;
 	if(fields.strokes) {
