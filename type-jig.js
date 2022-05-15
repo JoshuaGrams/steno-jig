@@ -33,6 +33,7 @@ function TypeJig(exercise, display, results, input, clock, hint, options) {
 			this.alternateWith = TypeJig.wordsAndSpaces(options.alternate)
 			this.alternateWith.push(' ')
 		}
+		this.actualWords = options.actualWords
 	}
 
 	var self = this;  // close over `this` for event handlers.
@@ -57,6 +58,8 @@ function TypeJig(exercise, display, results, input, clock, hint, options) {
 }
 
 TypeJig.prototype.reset = function() {
+	this.liveWPM.reset();
+
 	this.enter_count = 0;
 	this.resultsDisplay.textContent = '';
 	if(this.exercise && !this.exercise.started) {
@@ -350,8 +353,10 @@ TypeJig.prototype.endExercise = function(seconds) {
 
 	const stats = this.currentSpeed(seconds);
 	var results = 'Time: ' + stats.time + ' - ' + stats.selectedWPM;
-	if(this.actualWords) results += ' ' + this.actualWords;
-	else {
+	if(this.actualWords) {
+		if(this.actualWords.unit) results += ' ' + this.actualWords.unit;
+		else results += ' ' + this.actualWords;
+	} else {
 		var plural = this.errorCount===1 ? '' : 's';
 		results += ' WPM (chars per minute/5)';
 		if(this.errorCount === 0) results += ' with no uncorrected errors!';
@@ -366,44 +371,6 @@ TypeJig.prototype.endExercise = function(seconds) {
 	this.renderChart(this.liveWPM.WPMHistory);
 
 	this.resultsDisplay.scrollIntoView(true);
-}
-
-TypeJig.prototype.renderChart = function(series) {
-	series[0] = 0
-	var rollingAverage = 0
-	for(var i=5; i>0; --i) {
-		rollingAverage = 0
-		for(var j=0; j<i+1; ++j) rollingAverage += series[j]
-		series[i] = rollingAverage / (i+1)
-	}
-
-	const labels = [...Array(series.length).keys()]
-	const data = {
-		labels: labels,
-		datasets: [{
-			label: "WPM",
-			data: series,
-			fill: false,
-			borderColor: "rgb(75, 192, 192)",
-			pointRadius: 0,
-			tension: 0.4,
-		}],
-	}
-
-	const config = {
-		type: "line",
-		data: data,
-		options: {
-			scales: {y: {beginAtZero: true }},
-			responsive: true,
-			maintainAspectRatio: false,
-		}
-	}
-
-	const myChart = new Chart(
-		document.getElementById("chartDiv").getContext("2d"),
-		config
-	)
 }
 
 TypeJig.prototype.addCursor = function(output) {
@@ -573,10 +540,62 @@ TypeJig.LiveWPM = function(elt, typeJig, showLiveWPM) {
 }
 
 TypeJig.LiveWPM.prototype.update = function(seconds) {
+	const aw = this.typeJig.actualWords
+	const unit = aw && aw.u ? aw.u : 'WPM'
 	const stats = this.typeJig.currentSpeed(seconds)
 	this.WPMHistory.push(stats.correctedWPM)
-	if (this.showLiveWPM) this.elt.innerHTML = stats.correctedWPM + " WPM"
+	if (this.showLiveWPM) this.elt.innerHTML = stats.correctedWPM + ' ' + unit
 }
+
+TypeJig.LiveWPM.prototype.reset = function() {
+	this.WPMHistory = []
+}
+
+TypeJig.prototype.renderChart = function(series) {
+	if(this.wpmChart) {
+		this.wpmChart.destroy()
+		delete this.wpmChart
+	}
+
+	series[0] = 0
+	var rollingAverage = 0
+	for(var i=5; i>0; --i) {
+		rollingAverage = 0
+		for(var j=0; j<i+1; ++j) rollingAverage += series[j]
+		series[i] = rollingAverage / (i+1)
+	}
+
+	const aw = this.actualWords
+	const unit = aw && aw.u ? aw.u : 'WPM'
+	const labels = [...Array(series.length).keys()]
+	const data = {
+		labels: labels,
+		datasets: [{
+			label: unit,
+			data: series,
+			fill: false,
+			borderColor: "rgb(75, 192, 192)",
+			pointRadius: 0,
+			tension: 0.4,
+		}],
+	}
+
+	const config = {
+		type: "line",
+		data: data,
+		options: {
+			scales: {y: {beginAtZero: true }},
+			responsive: true,
+			maintainAspectRatio: false,
+		}
+	}
+
+	this.wpmChart = new Chart(
+		document.getElementById("chartDiv").getContext("2d"),
+		config
+	)
+}
+
 
 // -----------------------------------------------------------------------
 

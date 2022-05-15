@@ -53,6 +53,7 @@ window.onload = function() {
 
 	var options = {
 		wpm: fields.wpm,
+		actualWords: {unit: 'strokes per minute', u: 'SPM'},
 		cpm: fields.cpm,
 		live_wpm: fields.live_wpm,
 		live_cpm: fields.live_cpm,
@@ -73,7 +74,6 @@ window.onload = function() {
 	}
 
 	var jig = setExercise(exercise.name, exercise, null, options);
-	jig.actualWords = 'strokes per minute';
 
 	var back = document.getElementById('back');
 	var again = document.getElementById('again');
