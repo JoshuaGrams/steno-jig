@@ -621,7 +621,7 @@ TypeJig.LiveWPM.prototype.update = function (seconds) {
 
 // -----------------------------------------------------------------------
 
-TypeJig.Timer = function(elt, seconds) {
+TypeJig.Timer = function(elt, seconds, onUpdate) {
 	this.elt = elt;
 	elt.innerHTML = '';
 	this.setting = seconds || 0;
