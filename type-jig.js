@@ -6,7 +6,6 @@
  */
 
 function TypeJig(exercise, display, results, input, clock, hint, options) {
-	
 	this.exercise = exercise;
 	this.display = documentElement(display);
 	this.input = documentElement(input);
@@ -19,7 +18,6 @@ function TypeJig(exercise, display, results, input, clock, hint, options) {
 	this.clock = new TypeJig.Timer(clockElt, exercise.seconds, updateWPM);
 	this.hint = hint;
 	if(!options.show_timer) this.clock.hide();
-
 
 	this.live_wpm = options.live_wpm;
 	this.live_cpm = options.live_cpm;
@@ -86,10 +84,7 @@ TypeJig.prototype.reset = function() {
 		this.hint.update(word, rect.left, rect.top);
 	}
 
-	if(this.hint && this.hint_on_fail){
-		this.hint.hide();
-	}
-
+	if(this.hint && this.hint_on_fail) this.hint.hide();
 
 	this.display.previousElementSibling.textContent = '';
 
@@ -240,7 +235,6 @@ TypeJig.prototype.answerChanged = function() {
 			// Don't yet know whether it matched, so add it as raw text.
 			output.appendChild(document.createTextNode(ans));
 		} else {
-				
 			this.errorCount += !match;
 			// Add it as a span marked as correct or incorrect.
 			var span = document.createElement('span');
@@ -687,7 +681,6 @@ TypeJig.Timer.prototype.showTime = function() {
 TypeJig.Timer.prototype.hide = function() {
 	this.elt.style.display = 'none';
 }
-
 
 // -----------------------------------------------------------------------
 

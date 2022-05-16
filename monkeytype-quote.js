@@ -37,8 +37,8 @@ loadSettings()
 let jig, exercise, fields
 
 function go(ex) {
-  	fields = parseQueryString(document.location.search)
-  	let hints = initializeHints(fields.hints, fields.floating_hints)
+	fields = parseQueryString(document.location.search)
+	let hints = initializeHints(fields.hints, fields.floating_hints)
 	if(ex == null) {
 		switch(fields.length) {
 			case 'short': fields.lo = 0; fields.hi = 100; break

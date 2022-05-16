@@ -23,21 +23,18 @@
 		<div class="caption"><strong>Settings</strong> that apply to all drills</div><br>
 
 		<div name="hints">
-			<label><input id="hints" type="radio" name="hints" value="1" checked>Show hints</label> 
-			<label><input id="hints" type="radio" name="hints" value="fail" checked>Hint on fail</label> 
+			<label><input id="hints" type="radio" name="hints" value="1" checked>Show hints</label>
+			<label><input id="hints" type="radio" name="hints" value="fail" checked>Hint on fail</label>
 			<label><input id="hints" type="radio" name="hints" value="" checked>No hints</label>
-		</div>
-		<br>
+		</div><br>
 
 		<div name="live_wpm">
 			<label><input id="live_wpm" type="checkbox" name="live_wpm" value="1" checked>Show Live WPM</label>
-		</div>
-		<br>
+		</div><br>
 
 		<div name="show_timer">
 			<label><input id="show_timer" type="checkbox" name="show_timer" value="1" checked>Show Timer</label>
-		</div>
-		<br>
+		</div><br>
 
 		<div name="speed">
 			<label><input id="wpm" type="number" name="wpm" value="" step="5"> Speed (words per minute)
@@ -97,10 +94,9 @@
 			<input type="hidden" name="wpm" value="">
 			<input type="hidden" name="cpm" value="">
 			<input type="hidden" name="hints" value="">
-			<input type="hidden" name="live_wpm" value="">
 			<input type="hidden" name="alternate" value="">
-			<input type="hidden" name="show_timer" value="">
 			<input type="hidden" name="live_wpm" value="">
+			<input type="hidden" name="show_timer" value="">
 
 			Drill
 			<input type="number" name="count" value="100" min="25" max="1000" step="25">
@@ -320,33 +316,23 @@ function runExercise(fields) {
 }
 
 function getSettings() {
-	var wpm = document.getElementById('wpm');
-	var cpm = document.getElementById('cpm');
-	
-	var radios = document.getElementsByName('hints');
+	var hints = document.getElementsByName('hints');
 	this.elements.hints.value = ''
-
-	for (var radio of radios) {
-		if (radio.checked) {
-			this.elements.hints.value = radio.value		
-		}
+	for(var radio of hints) {
+		if(radio.checked) this.elements.hints.value = radio.value
 	}
 
-
-
-	var alt = document.getElementById('alternate');
-	
 	var live_wpm = document.getElementById('live_wpm');
 	this.elements.live_wpm.value = live_wpm.checked ? live_wpm.value : '';
 
-	
 	var show_timer = document.getElementById('show_timer');
 	this.elements.show_timer.value = show_timer.checked ? show_timer.value : '';
-
-
+	var wpm = document.getElementById('wpm');
+	var cpm = document.getElementById('cpm');
 	if(cpm.checked) this.elements.cpm.value = 5 * wpm.value;
 	else this.elements.wpm.value = wpm.value;
 
+	var alt = document.getElementById('alternate');
 	if(this.elements.alternate) this.elements.alternate.value = alt.value;
 }
 
