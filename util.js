@@ -227,3 +227,53 @@ function displayOnly(show) {
 	}
 }
 
+// ---------------------------------------------------------------------
+// Add attributes, properties, and children to a DOM node
+// (possibly creating it first).
+// args:
+//     target: an Element or a tag name (e.g. "div")
+//     then optional in any order (type determines function)
+//         Element: child
+//         string: text node child
+//         array: values are treated as args
+//         null/undefined: ignored
+//         object: set attributes and properties of `target`.
+//             string: set attribute
+//             array: set property to array[0]
+//             object: set property properties. example: N('span', {style: {color: 'red'}})
+//             function: add event listener.
+
+function N(target, ...args) {
+	const el = typeof target === 'string' ?
+		document.createElement(target) : target;
+	for(const arg of args) {
+		if(arg instanceof Element || arg instanceof Text) {
+			el.appendChild(arg);
+		} else if(Array.isArray(arg)) {
+			N(el, ...arg);
+		} else if(typeof arg === 'string') {
+			el.appendChild(document.createTextNode(arg));
+		} else if(arg instanceof Object) {
+			for(const k in arg) {
+				const v = arg[k];
+				if(Array.isArray(v)) {
+					el[k] = v[0];
+				} else if(v instanceof Function) {
+					el.addEventListener(k, v)
+				} else if(v instanceof Object) {
+					for(const vk in v) el[k][vk] = v[vk];
+				} else {
+					el.setAttribute(k, v);
+				}
+			}
+		}
+	}
+	return el;
+}
+
+function hiddenField(form, name, value) {
+	if(value === '') return
+	if(form.elements[name]) form.elements[name].value = value
+	else N(form, N('input', {type: 'hidden', name: name, value: value}))
+}
+
