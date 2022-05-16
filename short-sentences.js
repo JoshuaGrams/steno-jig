@@ -31,7 +31,7 @@ window.onload = function() {
 
 	var name = "Short Sentences"
 	var hints = initializeHints(fields.hints, fields.floating_hints)
-	
+
 	var exercise = generateExercise(wordCount, rng)
 
 	var jig = setExercise(name, exercise, hints, fields)

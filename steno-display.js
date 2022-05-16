@@ -112,7 +112,6 @@ StenoDisplay.prototype.numberStrokes = function(text) {
 }
 
 StenoDisplay.prototype.set = function(pseudoSteno, showEmpty) {
-
 	for(i=0; i<this.strokes.length; ++i) this.strokes[i].hide();
 
 	if(pseudoSteno !== '' || showEmpty) {
@@ -152,11 +151,11 @@ StenoDisplay.prototype.showTranslation = function(pseudoSteno, i0, separator) {
 }
 
 StenoDisplay.prototype.hide = function(){
-	this.container.style.display = 'none';
+	this.container.style.display = 'none'
 }
 StenoDisplay.prototype.show = function () {
-  	this.container.style.display = "block";
-};
+	this.container.style.display = 'block'
+}
 
 // ---------------------------------------------------------------------
 

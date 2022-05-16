@@ -23,7 +23,6 @@ function movingAvg(array, countBefore, countAfter) {
  */
 
 function TypeJig(exercise, display, results, input, clock, hint, options) {
-	
 	this.exercise = exercise;
 	this.display = documentElement(display);
 	this.input = documentElement(input);
@@ -36,7 +35,6 @@ function TypeJig(exercise, display, results, input, clock, hint, options) {
 	this.clock = new TypeJig.Timer(clockElt, exercise.seconds, updateWPM);
 	this.hint = hint;
 	if(!options.show_timer) this.clock.hide();
-
 
 	this.live_wpm = options.live_wpm;
 	this.live_cpm = options.live_cpm;
@@ -103,10 +101,7 @@ TypeJig.prototype.reset = function() {
 		this.hint.update(word, rect.left, rect.top);
 	}
 
-	if(this.hint && this.hint_on_fail){
-		this.hint.hide();
-	}
-
+	if(this.hint && this.hint_on_fail) this.hint.hide();
 
 	this.display.previousElementSibling.textContent = '';
 
@@ -257,7 +252,6 @@ TypeJig.prototype.answerChanged = function() {
 			// Don't yet know whether it matched, so add it as raw text.
 			output.appendChild(document.createTextNode(ans));
 		} else {
-				
 			this.errorCount += !match;
 			// Add it as a span marked as correct or incorrect.
 			var span = document.createElement('span');
@@ -360,23 +354,25 @@ TypeJig.prototype.getWords = function(n) {
 	return exercise;
 };
 
-TypeJig.prototype.currentSpeed = function(seconds) {
+TypeJig.prototype.currentSpeed = function(seconds, prev) {
 	var minutes = seconds / 60;  // KEEP fractional part for WPM calculation!
 	seconds = Math.floor((seconds % 60) * 10) / 10;
 	var time = Math.floor(minutes)+':'+seconds;
 
-	var actualWords = this.input.value.split(/\s+/).length;
-	var standardWords = this.input.value.length / 5;
-	var selectedWords = this.actualWords ? actualWords : standardWords;
-	var selectedWPM = selectedWords / minutes;
-	var correctedWPM = selectedWPM - (this.errorCount / minutes);
-	var accuracy = (1 - this.errorCount / actualWords);
+	var wordsFromSpaces = this.input.value.split(/\s+/).length;
+	var wordsFromChars = this.input.value.length / 5;
+	var words = this.actualWords ? wordsFromSpaces : wordsFromChars;
+	var WPM = words / minutes;
+	if(prev) WPM = (words - prev.words) / (minutes - prev.minutes)
+	var correctedWPM = WPM - (this.errorCount / minutes);
+	var accuracy = (1 - this.errorCount / wordsFromSpaces);
 	return {
+		minutes: minutes,
 		time: time,
-		words: actualWords,
-		standardWords: standardWords,
-		selectedWords: selectedWords,
-		selectedWPM: selectedWPM,
+		wordsFromSpaces: wordsFromSpaces,
+		wordsFromChars: wordsFromChars,
+		words: words,
+		WPM: WPM,
 		correctedWPM: correctedWPM,
 		accuracy: accuracy,
 	}
@@ -394,7 +390,7 @@ TypeJig.prototype.endExercise = function(seconds) {
 	}
 
 	const stats = this.currentSpeed(seconds);
-	var results = 'Time: ' + stats.time + ' - ' + Math.floor(stats.selectedWPM);
+	var results = 'Time: ' + stats.time + ' - ' + Math.floor(stats.WPM);
 	if(this.actualWords) {
 		if(this.actualWords.unit) results += ' ' + this.actualWords.unit;
 		else results += ' ' + this.actualWords;
@@ -577,6 +573,7 @@ TypeJig.LiveWPM = function(elt, typeJig, showLiveWPM) {
 	this.elt = elt
 	elt.innerHTML = ""
 	this.typeJig = typeJig
+	this.prevSpeed = null
 	this.WPMHistory = []
 	this.showLiveWPM = showLiveWPM
 }
@@ -584,13 +581,33 @@ TypeJig.LiveWPM = function(elt, typeJig, showLiveWPM) {
 TypeJig.LiveWPM.prototype.update = function(seconds) {
 	const aw = this.typeJig.actualWords
 	const unit = aw && aw.u ? aw.u : 'WPM'
-	const stats = this.typeJig.currentSpeed(seconds)
+	const stats = this.typeJig.currentSpeed(seconds, this.prevSpeed)
+	this.prevSpeed = stats
 	this.WPMHistory.push(stats.correctedWPM)
-	if (this.showLiveWPM) this.elt.innerHTML = Math.floor(stats.correctedWPM) + ' ' + unit
+	// Show the average of the last (up to) 5 samples
+	let WPM = 0
+	const n = this.WPMHistory.length, i0 = Math.max(0, n-1 - 5)
+	for(let i=i0; i<n; ++i) WPM += this.WPMHistory[i]
+	WPM = WPM / (n - i0)
+	if (this.showLiveWPM) this.elt.innerHTML = Math.floor(WPM) + ' ' + unit
 }
 
 TypeJig.LiveWPM.prototype.reset = function() {
 	this.WPMHistory = []
+}
+
+function movingAvg(array, countBefore, countAfter) {
+	if (countAfter == undefined) countAfter = 0
+	const result = []
+	for (let i=0; i<array.length; ++i) {
+		const subArr = array.slice(
+			Math.max(i - countBefore, 0),
+			Math.min(i + countAfter + 1, array.length)
+		)
+		const avg = subArr.reduce((a, b) => a + (isNaN(b) ? 0 : b), 0) / subArr.length
+		result.push(avg)
+	}
+	return result
 }
 
 TypeJig.prototype.renderChart = function(series) {
@@ -709,7 +726,6 @@ TypeJig.Timer.prototype.showTime = function() {
 TypeJig.Timer.prototype.hide = function() {
 	this.elt.style.display = 'none';
 }
-
 
 // -----------------------------------------------------------------------
 

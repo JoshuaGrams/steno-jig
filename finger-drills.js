@@ -50,6 +50,7 @@ function linkNextDrill(link, fields, updateFields) {
 window.onload = function() {
 	var fields = parseQueryString(document.location.search)
 	fields.iterations = fields.iterations || 20;
+	fields.actualWords = {unit: 'strokes per minute', u: 'SPM'}
 
 	let exercise;
 	if(fields.strokes) {
