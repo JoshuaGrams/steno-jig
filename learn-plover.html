@@ -89,15 +89,10 @@ window.onload = function() {
 				var translations = TypeJig.shortestTranslations(TypeJig.Translations.Plover);
 				var hints = new StenoDisplay(strokes, translations, true);
 			}
-			var options = {
-				menu: 'learn-plover',
-				wpm: fields.wpm, cpm: fields.cpm,
-				alternate: fields.alternate,
-				live_wpm: fields.live_wpm,
-			};
+			fields.menu = 'learn-plover'
 
 			displayOnly('lesson');
-			var jig = setExercise(exercise.name, exercise, hints, options);
+			var jig = setExercise(exercise.name, exercise, hints, fields);
 		}
 	}
 }

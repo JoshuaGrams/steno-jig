@@ -121,16 +121,11 @@ function fromPseudo(stroke) {
 				var hints = new StenoDisplay(strokes, translations, true);
 				hints.lookupEntry = fromPseudo
 			}
-			var options = {
-				menu: 'learn-keyboard',
-				actualWords: {unit: 'strokes per minute', u: 'SPM'},
-				wpm: fields.wpm, cpm: fields.cpm,
-				alternate: fields.alternate,
-				live_wpm: fields.live_wpm,
-			};
+			fields.menu = 'learn-keyboard'
+			fields.actualWords = {unit: 'strokes per minute', u: 'SPM'}
 
 			displayOnly('lesson');
-			var jig = setExercise(exercise.name, exercise, hints, options);
+			var jig = setExercise(exercise.name, exercise, hints, fields);
 			jig.match = function(a, b) {
 				return a == fromPseudo(b)
 			}

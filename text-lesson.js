@@ -6,7 +6,7 @@ function textLesson(url) {
 	}).then(function(text) {
 		const words = text.trim().split(/\s+/)
 		exercise = new TypeJig.Exercise(words, 0, false, 'ordered')
-		setExercise(name, exercise, hints, speed)
+		setExercise(name, exercise, hints, fields)
 	}).catch(function(error) {
 		changeName(error)
 	})
@@ -27,6 +27,5 @@ another.parentNode.remove()
 
 const fields = parseQueryString(document.location.search)
 const hints = initializeHints(fields.hints, fields.floating_hints)
-const speed = fields
 let exercise, jig
 textLesson(fields.url)
