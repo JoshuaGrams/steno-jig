@@ -1,18 +1,17 @@
 
 
 function movingAvg(array, countBefore, countAfter) {
-  if (countAfter == undefined) countAfter = 0;
-  const result = [];
-  for (let i = 0; i < array.length; i++) {
-    const subArr = array.slice(
-      Math.max(i - countBefore, 0),
-      Math.min(i + countAfter + 1, array.length)
-    );
-    const avg =
-      subArr.reduce((a, b) => a + (isNaN(b) ? 0 : b), 0) / subArr.length;
-    result.push(avg);
-  }
-  return result;
+	if (countAfter == undefined) countAfter = 0
+	const result = []
+	for (let i=0; i<array.length; ++i) {
+		const subArr = array.slice(
+			Math.max(i - countBefore, 0),
+			Math.min(i + countAfter + 1, array.length)
+		)
+		const avg = subArr.reduce((a, b) => a + (isNaN(b) ? 0 : b), 0) / subArr.length
+		result.push(avg)
+	}
+	return result
 }
 
 /* -----------------------------------------------------------------------
@@ -601,10 +600,7 @@ TypeJig.prototype.renderChart = function(series) {
 		series[i] = rollingAverage / (i+1)
 	}
 
-	series = movingAvg(series, 4,4);
-
-	//Apply a rolling average of 5 to the data
-	
+	series = movingAvg(series, 4,4)
 
 	const aw = this.actualWords
 	const unit = aw && aw.u ? aw.u : 'WPM'
