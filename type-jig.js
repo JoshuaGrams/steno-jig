@@ -260,7 +260,7 @@ TypeJig.prototype.answerChanged = function() {
 
 	this.lastAnswered = range.endContainer
 
-	if(match) ex = nextWord(exercise, range);
+	if(match) ex = nextWord(exercise);
 	var r = range.getBoundingClientRect();
 
 	if(this.hint && this.hint.update) {
