@@ -253,8 +253,9 @@ TypeJig.prototype.answerChanged = function() {
 
 	// End the exercise if the last word was answered correctly,
 	// or if we're off the end.
-	var last = (!this.exercise && exercise.tokens.length - i)
-	if(last < match) window.setTimeout(this.clock.stop.bind(this.clock))
+	if(exercise.tokens.length-i < match) {
+		window.setTimeout(this.clock.stop.bind(this.clock))
+	}
 
 	this.lastAnswered = range.endContainer
 
