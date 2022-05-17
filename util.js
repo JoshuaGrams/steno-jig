@@ -129,10 +129,8 @@ function loadExercisePage(initialize) {
 	}
 
 	const pg = initialize(fields)
+	pg.options = {...fields, ...pg.options}
 	pg.options.hints = initializeHints(fields.hints, fields.floatingHints)
-	pg.options.wpm = fields.wpm
-	pg.options.cpm = fields.cpm
-	pg.options.alternate = fields.alternate
 	const jig = generateExercise(pg.generate, pg.options)
 
 	another.addEventListener('click', function(evt) {
@@ -326,4 +324,3 @@ function hiddenField(form, name, value) {
 	if(form.elements[name]) form.elements[name].value = value
 	else N(form, N('input', {type: 'hidden', name: name, value: value}))
 }
-
