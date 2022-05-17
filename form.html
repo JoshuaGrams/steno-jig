@@ -305,11 +305,6 @@ function runCustom(evt) {
 	for(let i=0; i<n; ++i) TypeJig.WordSets.custom.push(...drill);
 	fields.drill = 'custom';
 	var jig = runExercise(fields);
-	var again = document.getElementById('again');
-	again.addEventListener('click', function(evt){
-		evt.preventDefault();
-		jig.reset();
-	});
 }
 
 window.onload = function() {

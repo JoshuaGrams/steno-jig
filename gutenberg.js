@@ -32,40 +32,12 @@ function generateExercise(word_count, top_n, rng) {
     return new TypeJig.Exercise(words, 0, false, 'ordered');
 }
 
-window.onload = function () {
-    var fields = parseQueryString(document.location.search)
+window.addEventListener('load', () => loadExercisePage(args => {
+	const topN = clamp_top_n(args.top==null ? 100 : parseInt(args.top))
+	const nWords = args.word_count==null ? 100 : parseInt(args.word_count)
 
-    var rng = new_rng(fields.seed)
-
-    var top_n = fields.top == null ? 100 : parseInt(fields.top)
-    top_n = clamp_top_n(top_n)
-    var word_count = fields.word_count == null ? 100 : parseInt(fields.word_count)
-
-    var from_n = top_n - 99, to_n = top_n
-    var name = "Project Gutenberg sentences for words " + from_n + " to " + to_n + ".";
-    var hints = initializeHints(fields.hints, fields.floating_hints);
-    var exercise = generateExercise(word_count, top_n, rng);
-
-    var jig = setExercise(name, exercise, hints, fields);
-
-    var back = document.getElementById('back');
-    var again = document.getElementById('again');
-    var another = document.getElementById('new');
-    var nextSeed = prepareNextSeed(another);
-    back.href = back.href.replace('gutenberg', 'form');
-    again.addEventListener('click', function (evt) {
-        evt.preventDefault();
-        jig.reset();
-    })
-    another.addEventListener('click', function (evt) {
-        evt.preventDefault();
-        window.history.replaceState('', '', updateURLParameter(window.location.href, 'seed', nextSeed));
-        let rng = new_rng(nextSeed);
-        let exercise = generateExercise(word_count, top_n, rng);
-        jig.exercise = exercise;
-        jig.reset();
-        nextSeed = prepareNextSeed(another);
-    })
-}
-
-setTheme()
+	return {
+		generate: (rnd, opt) => generateExercise(nWords, topN, rnd),
+		options: { name: "Project Gutenberg sentences for words "+(topN-99)+" to "+topN+"." }
+	}
+}))

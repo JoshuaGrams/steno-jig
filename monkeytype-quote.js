@@ -59,11 +59,6 @@ window.addEventListener('load', function() {
 	go()
 	window.history.replaceState(null, '', replaceID(document.location.href, exercise.quote.id))
 
-	let again = document.getElementById('again')
-	again.addEventListener('click', function(evt) {
-		evt.preventDefault()
-		jig.reset()
-	})
 	let another = document.getElementById('new')
 	another.href = replaceID(document.location.href)
 })

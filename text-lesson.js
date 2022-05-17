@@ -14,14 +14,7 @@ function textLesson(url) {
 
 loadSettings()
 
-const back = document.getElementById('back')
-const again = document.getElementById('again')
 const another = document.getElementById('new')
-back.href = back.href.replace('text-lesson', 'form')
-again.addEventListener('click', function(evt) {
-	evt.preventDefault()
-	jig.reset()
-})
 // Exercise isn't randomized, so there's no sense asking for another.
 another.parentNode.remove()
 

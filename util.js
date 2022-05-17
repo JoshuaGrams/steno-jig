@@ -78,21 +78,71 @@ function setExercise(name, exercise, hints, options, jig) {
 	h.textContent = name;
 	document.title = name + ' - Steno Jig';
 
-	var back = document.getElementById('back');
-	back.href = document.location.href.replace(/\?.*$/, '').replace(/\/[^\/]*$/,'') + '/' + (options.menu || 'form') + '.html';
-	var again = document.getElementById('again');
-	again.href = document.location.href;
+	if(jig == null) {
+		jig = new TypeJig(exercise, 'exercise', 'results', 'input', 'clock', hints, options);
 
-	if(jig != null) jig.exercise = exercise;
-	else jig = new TypeJig(exercise, 'exercise', 'results', 'input', 'clock', hints, options);
+		var back = document.getElementById('back');
+		back.href = document.location.href.replace(/\?.*$/, '').replace(/\/[^\/]*$/,'') + '/' + (options.menu || 'form') + '.html';
+		var again = document.getElementById('again');
+		again.href = document.location.href;
+		again.addEventListener('click', function(evt) {
+			evt.preventDefault();
+			jig.reset();
+		})
+	} else jig.exercise = exercise;
 	window.setTimeout(function(){jig.reset()}, 0)
 	return jig
 }
 
-function prepareNextSeed(another) {
-    let anotherSeed = Math.random().toString();
-    another.href = document.location.href.toString().replace(/seed=([^&#]*)/, 'seed=' + anotherSeed);
-    return anotherSeed;
+function setExercise2(exercise, options, jig) {
+	return setExercise(options.name, exercise, options.hints, options, jig)
+}
+
+function URLSetSeed(seed, url) {
+	return updateURLParameter(url || window.location.href, 'seed', seed)
+}
+
+function URLGetSeed(url) {
+	let fields = parseQueryString(url || window.location.search)
+	return fields.seed
+}
+
+function prepareNextSeed(link, rnd) {
+    let seed = (rnd ? rnd() : Math.random()).toString()
+	if(link) link.href = URLSetSeed(seed)
+    return seed;
+}
+
+function loadExercisePage(initialize) {
+	setTheme()
+	const fields = parseQueryString(window.location.search)
+	if(fields.seed == null) {
+		fields.seed = prepareNextSeed()
+		window.history.replaceState(null, '', URLSetSeed(fields.seed))
+	}
+
+	const another = document.getElementById('new')
+	function generateExercise(generate, options, jig) {
+		const rnd = new_rng(URLGetSeed())
+		prepareNextSeed(another, rnd)
+		return setExercise2(generate(rnd, options), options, jig)
+	}
+
+	const pg = initialize(fields)
+	pg.options.hints = initializeHints(fields.hints, fields.floatingHints)
+	pg.options.wpm = fields.wpm
+	pg.options.cpm = fields.cpm
+	pg.options.alternate = fields.alternate
+	const jig = generateExercise(pg.generate, pg.options)
+
+	another.addEventListener('click', function(evt) {
+		evt.preventDefault()
+		window.history.pushState(null, '', evt.target.href)
+		generateExercise(pg.generate, pg.options, jig)
+	})
+	window.addEventListener('popstate', function(evt) {
+		generateExercise(pg.generate, pg.options, jig)
+	})
 }
 
 function storageAvailable(type) {

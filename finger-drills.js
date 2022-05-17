@@ -68,16 +68,9 @@ window.onload = function() {
 
 	var jig = setExercise(exercise.name, exercise, null, fields);
 
-	var back = document.getElementById('back');
-	var again = document.getElementById('again');
 	var next = document.getElementById('new');
 	if(fields.strokes || fields.book) next.parentNode.removeChild(next);
 	else linkNextDrill(next, fields);
-	back.href = back.href.replace('finger-drills', 'form');
-	again.addEventListener('click', function(evt) {
-		evt.preventDefault();
-		jig.reset();
-	})
 }
 
 setTheme()
