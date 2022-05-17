@@ -22,7 +22,6 @@ function TypeJig(exercise, display, results, input, clock, hint, options) {
 	this.live_wpm = options.live_wpm;
 	this.live_cpm = options.live_cpm;
 	this.hint_on_fail = options.hints == "fail";
-	this.hint_on_fail = true;
 	this.showing_hint_on_word = "";
 
 	this.errorCount = 0;

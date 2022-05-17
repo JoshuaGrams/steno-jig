@@ -95,7 +95,7 @@ function setExercise(name, exercise, hints, options, jig) {
 }
 
 function setExercise2(exercise, options, jig) {
-	return setExercise(options.name, exercise, options.hints, options, jig)
+	return setExercise(options.name, exercise, options.hintObj, options, jig)
 }
 
 function URLSetSeed(seed, url) {
@@ -130,7 +130,7 @@ function loadExercisePage(initialize) {
 
 	const pg = initialize(fields)
 	pg.options = {...fields, ...pg.options}
-	pg.options.hints = initializeHints(fields.hints, fields.floatingHints)
+	pg.options.hintObj = initializeHints(fields.hints, fields.floatingHints)
 	const jig = generateExercise(pg.generate, pg.options)
 
 	another.addEventListener('click', function(evt) {
