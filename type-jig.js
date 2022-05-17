@@ -66,6 +66,10 @@ function TypeJig(exercise, display, results, input, clock, hint, options) {
 
 TypeJig.prototype.reset = function() {
 	this.liveWPM.reset();
+	if(this.wpmChart) {
+		this.wpmChart.destroy()
+		delete this.wpmChart
+	}
 
 	this.enter_count = 0;
 	this.resultsDisplay.textContent = '';
