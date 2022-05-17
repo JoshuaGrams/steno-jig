@@ -324,3 +324,33 @@ function hiddenField(form, name, value) {
 	if(form.elements[name]) form.elements[name].value = value
 	else N(form, N('input', {type: 'hidden', name: name, value: value}))
 }
+
+function tokenize(string, parsed) {
+	if(parsed == null) {
+		parsed = { string: string, spaceBefore: '', tokens: [] }
+	} else {
+		if(parsed.spaceBefore === '' && parsed.string != '' && !/^(\s|$)/.test(string)) {
+			parsed.spaceBefore = ' '
+		}
+		parsed.string += parsed.spaceBefore + string
+	}
+
+	const addToken = t => {
+		parsed.tokens.push({text: t, spaceBefore: parsed.spaceBefore})
+		parsed.spaceBefore = ''
+	}
+
+	const isWhite = /^\s+$/
+	const wsWords = /\S+|\s+/g
+	const pWords = /(\p{Punctuation}|(?:\P{Punctuation}|')+)/gu
+	const words = string.match(wsWords) || []
+	for(const word of words) {
+		if(isWhite.test(word)) parsed.spaceBefore += word
+		else if(tokenize.keepWhole.has(word)) addToken(word)
+		else word.match(pWords).forEach(addToken)
+	}
+
+	return parsed
+}
+
+tokenize.keepWhole = new Set(["Mr.", "Mrs.", "Dr."])

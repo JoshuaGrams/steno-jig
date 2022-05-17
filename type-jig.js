@@ -193,8 +193,8 @@ TypeJig.prototype.answerChanged = function() {
 
 	// Get the exercise and the user's answer as arrays of
 	// words interspersed with whitespace.
-	var answer = TypeJig.wordsAndSpaces(this.input.value.replace(/^\s+/, ''));
-	var exercise = this.getWords(Math.ceil(answer.length/2));
+	var answer = tokenize(this.input.value.trimStart())
+	var exercise = this.getWords(Math.ceil(answer.tokens.length))
 
 	// Get the first word of the exercise, and create a range
 	// which we can use to measure where it is.
@@ -209,15 +209,12 @@ TypeJig.prototype.answerChanged = function() {
 	var output = document.createElement('div');
 	output.id = oldOutput.id;
 	this.errorCount = 0;
-	for(let i=0; i<answer.length; ++i) {
-		var endOfAnswer = (i === answer.length-1);
-		var ans = answer[i];
-		if(/^\s+$/.test(ans)) {  // whitespace
-			output.appendChild(document.createTextNode(ans));
-			continue;
-		}
-
-		ex = nextWord(exercise);
+	let i
+	for(i=0; i<answer.tokens.length; ++i) {
+		var endOfAnswer = (i === answer.tokens.length-1)
+		const A = answer.tokens[i], E = exercise.tokens[i] || {text:''}
+		if(A.spaceBefore != '') N(output, ' ')
+		var ans = A.text, ex = E.text
 		match = this.match == null? (ans == ex) : this.match(ans, ex)
 
 		var r = range.getBoundingClientRect();
@@ -246,21 +243,23 @@ TypeJig.prototype.answerChanged = function() {
 			span.className = match ? 'correct' : 'incorrect';
 			output.appendChild(span);
 
-			if (!match && this.hint && i == answer.length - 1) {
+			if (!match && this.hint && i == answer.tokens.length - 1) {
 				this.hint.show();
 				this.showing_hint_on_word = ex;
 			}
 		}
-
-		// End the exercise if the last word was answered correctly.
-		var last = (exercise.length === 0 && !this.exercise);
-		if(last && match) window.setTimeout(this.clock.stop.bind(this.clock));
 	}
+	N(output, answer.spaceBefore)
 	this.updateCursor(output);
+
+	// End the exercise if the last word was answered correctly,
+	// or if we're off the end.
+	var last = (!this.exercise && exercise.tokens.length - i)
+	if(last < match) window.setTimeout(this.clock.stop.bind(this.clock))
 
 	this.lastAnswered = range.endContainer
 
-	if(match) ex = nextWord(exercise);
+	if(match) ex = (exercise.tokens[i++] || {text:''}).text
 	var r = range.getBoundingClientRect();
 
 	if(this.hint && this.hint.update) {
@@ -306,16 +305,17 @@ TypeJig.prototype.keyDown = function (e) {
 
 TypeJig.prototype.getWords = function(n) {
 	// Split the exercise text into words (keeping the whitespace).
-	var exercise = TypeJig.wordsAndSpaces(this.display.textContent);
+	var exercise = tokenize(this.display.textContent)
+	const newTokens = exercise.tokens.length
 
 	// Add more text until we have enough (or there is no more).
 	if(this.exercise && typeof n === 'number') {
-		n = 2*(n + this.lookahead) + 1;
+		n = n + this.lookahead
 	}
-	while(this.exercise && (!n || exercise.length < n)) {
-		var text = this.exercise.getText();
+	while(this.exercise && (!n || exercise.tokens.length < n)) {
+		var text = this.exercise.getText()
 		if(text) {
-			var pieces = TypeJig.wordsAndSpaces(text);
+			var pieces = TypeJig.wordsAndSpaces(text)
 			if(this.alternateWith) {
 				let alt = this.alternateWith
 				var words = []
@@ -329,16 +329,19 @@ TypeJig.prototype.getWords = function(n) {
 				}
 				pieces = words
 			}
-			for(let i=0; i<pieces.length; ++i) {
-				var span = document.createElement('span');
-				span.appendChild(document.createTextNode(pieces[i]));
-				if(this.speed) span.className = 'notYet';
-				this.display.appendChild(span);
-			}
-			exercise.push.apply(exercise, pieces);
+			tokenize(pieces.join(''), exercise)
 		} else delete(this.exercise);
 	}
-	return exercise;
+
+	// Generate new HTML
+	for(let i=newTokens; i<exercise.tokens.length; ++i) {
+		const t = exercise.tokens[i]
+		if(t.spaceBefore) N(this.display, t.spaceBefore)
+		N(this.display,
+			N('span', this.speed ? {class: 'notYet'} : {}, t.text))
+	}
+
+	return exercise
 };
 
 TypeJig.prototype.currentSpeed = function(seconds, prev) {
