@@ -247,9 +247,9 @@ TypeJig.prototype.answerChanged = function() {
 			output.appendChild(span);
 
 			if (!match && this.hint && i == answer.length - 1) {
-        this.hint.show();
-        this.showing_hint_on_word = ex;
-      }
+				this.hint.show();
+				this.showing_hint_on_word = ex;
+			}
 		}
 
 		// End the exercise if the last word was answered correctly.
