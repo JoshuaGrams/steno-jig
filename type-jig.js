@@ -22,7 +22,6 @@ function TypeJig(exercise, display, results, input, clock, hint, options) {
 	this.live_wpm = options.live_wpm;
 	this.live_cpm = options.live_cpm;
 	this.hint_on_fail = options.hints == "fail";
-	this.showing_hint_on_word = "";
 
 	this.errorCount = 0;
 	this.enterCount = 0;
@@ -208,7 +207,7 @@ TypeJig.prototype.answerChanged = function() {
 	var output = document.createElement('div');
 	output.id = oldOutput.id;
 	this.errorCount = 0;
-	let i
+	let i, partial
 	for(i=0; i<answer.tokens.length; ++i) {
 		var endOfAnswer = (i === answer.tokens.length-1)
 		const A = answer.tokens[i], E = exercise.tokens[i] || {text:''}
@@ -230,7 +229,7 @@ TypeJig.prototype.answerChanged = function() {
 
 		nextItem(range)
 
-		var partial = endOfAnswer && ans.length < ex.length && ans === ex.slice(0, ans.length);
+		partial = endOfAnswer && ans.length < ex.length && ans === ex.slice(0, ans.length)
 		if(partial) {
 			// Don't yet know whether it matched, so add it as raw text.
 			output.appendChild(document.createTextNode(ans));
@@ -241,11 +240,6 @@ TypeJig.prototype.answerChanged = function() {
 			span.appendChild(document.createTextNode(match ? ex : ans));
 			span.className = match ? 'correct' : 'incorrect';
 			output.appendChild(span);
-
-			if (!match && this.hint && i == answer.tokens.length - 1) {
-				this.hint.show();
-				this.showing_hint_on_word = ex;
-			}
 		}
 	}
 	N(output, answer.spaceBefore)
@@ -258,16 +252,13 @@ TypeJig.prototype.answerChanged = function() {
 
 	this.lastAnswered = range.endContainer
 
-	if(match) ex = (exercise.tokens[i++] || {text:''}).text
 	var r = range.getBoundingClientRect();
 
+	const next = (exercise.tokens[i] || {text:''}).text
 	if(this.hint && this.hint.update) {
-		this.hint.update(ex, r.left, r.top);
-	}
-
-	if(ex !== this.showing_hint_on_word && this.hint_on_fail && match && this.hint){
-		this.showing_hint_on_word = "";
-		this.hint.hide();
+		this.hint.update(match ? next : ex, r.left, r.top)
+		if((match || partial) && this.hint_on_fail) this.hint.hide()
+		else this.hint.show()
 	}
 
 	this.display.parentNode.replaceChild(output, oldOutput);
