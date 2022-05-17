@@ -22,6 +22,7 @@ function TypeJig(exercise, display, results, input, clock, hint, options) {
 	this.live_wpm = options.live_wpm;
 	this.live_cpm = options.live_cpm;
 	this.hint_on_fail = options.hints == "fail";
+	this.lastMismatch = -1;
 
 	this.errorCount = 0;
 	this.enterCount = 0;
@@ -207,13 +208,16 @@ TypeJig.prototype.answerChanged = function() {
 	var output = document.createElement('div');
 	output.id = oldOutput.id;
 	this.errorCount = 0;
-	let i, partial
+	let i, partial, lastMismatch = -1
 	for(i=0; i<answer.tokens.length; ++i) {
 		var endOfAnswer = (i === answer.tokens.length-1)
 		const A = answer.tokens[i], E = exercise.tokens[i] || {text:''}
 		if(A.spaceBefore != '') N(output, ' ')
 		var ans = A.text, ex = E.text
 		match = this.match == null? (ans == ex) : this.match(ans, ex)
+		partial = endOfAnswer && ans.length < ex.length && ans === ex.slice(0, ans.length)
+		if(!(match || partial)) lastMismatch = i
+		if(match && i === this.lastMismatch) this.lastMismatch = -1
 
 		var r = range.getBoundingClientRect();
 		if(r.bottom > y + 0.001) {
@@ -229,7 +233,6 @@ TypeJig.prototype.answerChanged = function() {
 
 		nextItem(range)
 
-		partial = endOfAnswer && ans.length < ex.length && ans === ex.slice(0, ans.length)
 		if(partial) {
 			// Don't yet know whether it matched, so add it as raw text.
 			output.appendChild(document.createTextNode(ans));
@@ -242,6 +245,9 @@ TypeJig.prototype.answerChanged = function() {
 			output.appendChild(span);
 		}
 	}
+	if(this.lastMismatch >= answer.tokens.length) this.lastMismatch = -1
+	this.lastMismatch = Math.max(this.lastMismatch, lastMismatch)
+
 	N(output, answer.spaceBefore)
 	this.updateCursor(output);
 
@@ -257,7 +263,8 @@ TypeJig.prototype.answerChanged = function() {
 	const next = (exercise.tokens[i] || {text:''}).text
 	if(this.hint && this.hint.update) {
 		this.hint.update(match ? next : ex, r.left, r.top)
-		if((match || partial) && this.hint_on_fail) this.hint.hide()
+		const ok = (match || partial) && i-1 !== this.lastMismatch
+		if(this.hint_on_fail && ok) this.hint.hide()
 		else this.hint.show()
 	}
 
