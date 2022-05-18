@@ -6,6 +6,7 @@
  */
 
 function TypeJig(exercise, display, results, input, clock, hint, options) {
+	if(options == null) options = {}
 	this.exercise = exercise;
 	this.display = documentElement(display);
 	this.input = documentElement(input);
