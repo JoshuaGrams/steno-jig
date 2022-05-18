@@ -13,6 +13,7 @@ html, body {
 	--form-shadow: #eee;
 	--answer-text: #888;
 	--correct-text-bg: #cfc;
+	--corrected-text-bg: rgb(255, 237, 204);
 	--incorrect-text-bg: #fcc;
 }
 
@@ -24,6 +25,7 @@ html, body {
 	--form-shadow: #332;
 	--answer-text: #aaa;
 	--correct-text-bg: #030;
+	--corrected-text-bg: rgb(51, 39, 0);
 	--incorrect-text-bg: #300;
 }
 
@@ -115,11 +117,13 @@ a, a:visited {
 
 #drill-content {
 	margin: 0 auto;
+	position: relative;
 }
 
 #exercise, #answer, #results {
 	margin-top: -0.8em;
 	line-height: 3;
+	
 }
 #results {
 	line-height: 1;
@@ -129,6 +133,7 @@ a, a:visited {
 	position: relative;
 	white-space: pre-wrap;
 }
+
 #answer {
 	position: absolute;
 	padding-top: 2em;
@@ -137,6 +142,8 @@ a, a:visited {
 	user-select: none;
 	-moz-user-select: none;
 	-webkit-user-select: none;
+	width: 100%;
+	float: left;
 }
 #exercise p:not(:last-child)::after {
 	content: "¶";
@@ -145,6 +152,14 @@ a, a:visited {
 
 .notYet { color: var(--answer-text); }
 .correct { background: var(--correct-text-bg); }
+.corrected { background: var(--corrected-text-bg); }
+.blankWord {
+	background: var(--incorrect-text-bg);
+	border-bottom-color: var(--answer-text);
+	border-bottom-style: solid;
+	border-bottom-width: 2px;
+}
+
 .incorrect { background: var(--incorrect-text-bg); text-decoration: line-through; }
 .cursor { border-right: 2px solid var(--main-fg); }
 
