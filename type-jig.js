@@ -204,8 +204,9 @@ TypeJig.prototype.answerChanged = function() {
 	var range = document.createRange();
 	range.setStart(this.display.firstElementChild, 0);
 	range.setEnd(this.display.firstElementChild, 1);
-	var ex, y, match;
-	y = range.getBoundingClientRect().bottom;
+	var ex, r, y, match
+	r = range.getBoundingClientRect()
+	y = r.bottom
 
 	// Display the user's answer, marking it for correctness.
 	var oldOutput = this.display.previousElementSibling;
@@ -216,42 +217,40 @@ TypeJig.prototype.answerChanged = function() {
 	for(i=0; i<answer.tokens.length; ++i) {
 		var endOfAnswer = (i === answer.tokens.length-1)
 		const A = answer.tokens[i], E = exercise.tokens[i] || {text:''}
-		if(A.spaceBefore != '') N(output, ' ')
 		var ans = A.text, ex = E.text
 		match = this.match == null? (ans == ex) : this.match(ans, ex)
 		partial = endOfAnswer && ans.length < ex.length && ans === ex.slice(0, ans.length)
 		if(!(match || partial)) lastMismatch = i
 		if(match && i === this.lastMismatch) this.lastMismatch = -1
 
-		var r = range.getBoundingClientRect();
+		// Display any appropriate whitespace
+		if(A.spaceBefore != '') N(output, ' ')
 		if(r.bottom > y + 0.001) {
-			output.appendChild(document.createTextNode('\n'));
+			N(output, '\n')
 			if(endOfAnswer) {
 				var limit = 0.66 * window.innerHeight;
 				var end = this.display.getBoundingClientRect().bottom;
-				var r = range.getBoundingClientRect();
 				if(end > window.innerHeight && r.bottom > limit) window.scrollBy(0, r.bottom - limit);
 			}
 		}
-		y = r.bottom;
-
+		y = r.bottom
 		nextItem(range)
+		r = range.getBoundingClientRect();
 
+		// Display the token
 		if(partial) {
-			// Don't yet know whether it matched, so add it as raw text.
-			output.appendChild(document.createTextNode(ans));
+			N(output, ans)
 		} else {
 			this.errorCount += !match;
-			// Add it as a span marked as correct or incorrect.
-			var span = document.createElement('span');
-			span.appendChild(document.createTextNode(match ? ex : ans));
-			span.className = match ? 'correct' : 'incorrect';
-			output.appendChild(span);
+			const token = match ? ex : ans
+			const ok = match ? 'correct': 'incorrect'
+			N(output, N('span', token, {class: ok}))
 		}
 	}
 	if(this.lastMismatch >= answer.tokens.length) this.lastMismatch = -1
 	this.lastMismatch = Math.max(this.lastMismatch, lastMismatch)
 
+	// Display final whitespace, if any, and show the "cursor".
 	N(output, answer.spaceBefore)
 	this.updateCursor(output);
 
