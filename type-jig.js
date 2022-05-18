@@ -188,10 +188,10 @@ function nextWord(words) {
 }
 
 TypeJig.prototype.answerChanged = function() {
-	delete this.pendingChange;
+	delete this.pendingChange
 	if(this.resultsDisplay.textContent !== '') return
 	if(!this.running && !!this.input.value.trim()) {
-		this.start();
+		this.start()
 	}
 
 	// Get the exercise and the user's answer as arrays of
@@ -201,18 +201,18 @@ TypeJig.prototype.answerChanged = function() {
 
 	// Get the first word of the exercise, and create a range
 	// which we can use to measure where it is.
-	var range = document.createRange();
-	range.setStart(this.display.firstElementChild, 0);
-	range.setEnd(this.display.firstElementChild, 1);
+	var range = document.createRange()
+	range.setStart(this.display.firstElementChild, 0)
+	range.setEnd(this.display.firstElementChild, 1)
 	var ex, r, y, match
 	r = range.getBoundingClientRect()
 	y = r.bottom
 
 	// Display the user's answer, marking it for correctness.
-	var oldOutput = this.display.previousElementSibling;
-	var output = document.createElement('div');
-	output.id = oldOutput.id;
-	this.errorCount = 0;
+	var oldOutput = this.display.previousElementSibling
+	var output = document.createElement('div')
+	output.id = oldOutput.id
+	this.errorCount = 0
 	let a, partial, lastMismatch = -1
 	for(a=0; a<actual.tokens.length; ++a) {
 		var endOfAnswer = (a === actual.tokens.length-1)
@@ -228,20 +228,20 @@ TypeJig.prototype.answerChanged = function() {
 		if(r.bottom > y + 0.001) {
 			N(output, '\n')
 			if(endOfAnswer) {
-				var limit = 0.66 * window.innerHeight;
-				var end = this.display.getBoundingClientRect().bottom;
-				if(end > window.innerHeight && r.bottom > limit) window.scrollBy(0, r.bottom - limit);
+				var limit = 0.66 * window.innerHeight
+				var end = this.display.getBoundingClientRect().bottom
+				if(end > window.innerHeight && r.bottom > limit) window.scrollBy(0, r.bottom - limit)
 			}
 		}
 		y = r.bottom
 		nextItem(range)
-		r = range.getBoundingClientRect();
+		r = range.getBoundingClientRect()
 
 		// Display the token
 		if(partial) {
 			N(output, ac)
 		} else {
-			this.errorCount += !match;
+			this.errorCount += !match
 			const token = match ? ex : ac
 			const ok = match ? 'correct': 'incorrect'
 			N(output, N('span', token, {class: ok}))
@@ -252,7 +252,7 @@ TypeJig.prototype.answerChanged = function() {
 
 	// Display final whitespace, if any, and show the "cursor".
 	N(output, actual.spaceBefore)
-	this.updateCursor(output);
+	this.updateCursor(output)
 
 	// End the exercise if the last word was answered correctly,
 	// or if we're off the end.
@@ -262,7 +262,7 @@ TypeJig.prototype.answerChanged = function() {
 
 	this.lastAnswered = range.endContainer
 
-	var r = range.getBoundingClientRect();
+	var r = range.getBoundingClientRect()
 
 	const next = (expected.tokens[a] || {text:''}).text
 	if(this.hint && this.hint.update) {
@@ -272,7 +272,7 @@ TypeJig.prototype.answerChanged = function() {
 		else this.hint.show()
 	}
 
-	this.display.parentNode.replaceChild(output, oldOutput);
+	this.display.parentNode.replaceChild(output, oldOutput)
 }
 
 TypeJig.prototype.keyDown = function (e) {
