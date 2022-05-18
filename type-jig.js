@@ -616,14 +616,6 @@ TypeJig.prototype.renderChart = function(series) {
 		delete this.wpmChart
 	}
 
-	series[0] = 0
-	var rollingAverage = 0
-	for(var i=5; i>0; --i) {
-		rollingAverage = 0
-		for(var j=0; j<i+1; ++j) rollingAverage += series[j]
-		series[i] = rollingAverage / (i+1)
-	}
-
 	series = movingAvg(series, 4,4)
 
 	const unit = this.token.u
