@@ -634,7 +634,7 @@ TypeJig.prototype.renderChart = function(series) {
 			label: unit,
 			data: series,
 			fill: false,
-			borderColor: "rgb(75, 192, 192)",
+			borderColor: "#167ee8",
 			pointRadius: 0,
 			tension: 0.4,
 		}],
