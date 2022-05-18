@@ -325,7 +325,7 @@ function hiddenField(form, name, value) {
 	else N(form, N('input', {type: 'hidden', name: name, value: value}))
 }
 
-function tokenize(string, parsed) {
+function tokenize(string, parsed, wsOnly) {
 	if(parsed == null) {
 		parsed = { string: string, spaceBefore: '', tokens: [] }
 	} else {
@@ -334,6 +334,7 @@ function tokenize(string, parsed) {
 		}
 		parsed.string += parsed.spaceBefore + string
 	}
+	parsed.wsOnly = !!wsOnly
 
 	const addToken = t => {
 		parsed.tokens.push({text: t, spaceBefore: parsed.spaceBefore})
@@ -346,7 +347,7 @@ function tokenize(string, parsed) {
 	const words = string.match(wsWords) || []
 	for(const word of words) {
 		if(isWhite.test(word)) parsed.spaceBefore += word
-		else if(tokenize.keepWhole.has(word)) addToken(word)
+		else if(parsed.wsOnly || tokenize.keepWhole.has(word)) addToken(word)
 		else word.match(pWords).forEach(addToken)
 	}
 

@@ -40,7 +40,10 @@ function TypeJig(exercise, display, results, input, clock, hint, options) {
 			this.alternateWith = TypeJig.wordsAndSpaces(options.alternate)
 			this.alternateWith.push(' ')
 		}
-		this.actualWords = options.actualWords
+		this.actualWords = !!options.actualWords
+		this.token = options.actualWords || {
+			units: 'words per minute', u: 'WPM'
+		}
 	}
 
 	var self = this;  // close over `this` for event handlers.
@@ -193,7 +196,7 @@ TypeJig.prototype.answerChanged = function() {
 
 	// Get the exercise and the user's answer as arrays of
 	// words interspersed with whitespace.
-	var answer = tokenize(this.input.value.trimStart())
+	var answer = tokenize(this.input.value.trimStart(), null, this.actualWords)
 	var exercise = this.getWords(Math.ceil(answer.tokens.length))
 
 	// Get the first word of the exercise, and create a range
@@ -303,8 +306,9 @@ TypeJig.prototype.keyDown = function (e) {
 };
 
 TypeJig.prototype.getWords = function(n) {
+	const aw = this.actualWords
 	// Split the exercise text into words (keeping the whitespace).
-	var exercise = tokenize(this.display.textContent)
+	var exercise = tokenize(this.display.textContent, null, aw)
 	const newTokens = exercise.tokens.length
 
 	// Add more text until we have enough (or there is no more).
@@ -328,7 +332,7 @@ TypeJig.prototype.getWords = function(n) {
 				}
 				pieces = words
 			}
-			tokenize(pieces.join(''), exercise)
+			tokenize(pieces.join(''), exercise, aw)
 		} else delete(this.exercise);
 	}
 
@@ -383,8 +387,7 @@ TypeJig.prototype.endExercise = function(seconds) {
 	const stats = this.currentSpeed(seconds);
 	var results = 'Time: ' + stats.time + ' - ' + Math.floor(stats.WPM);
 	if(this.actualWords) {
-		if(this.actualWords.unit) results += ' ' + this.actualWords.unit;
-		else results += ' ' + this.actualWords;
+		results += ' ' + this.token.unit;
 	} else {
 		var plural = this.errorCount===1 ? '' : 's';
 		results += ' WPM (chars per minute/5)';
@@ -572,8 +575,7 @@ TypeJig.LiveWPM = function(elt, typeJig, visible) {
 TypeJig.LiveWPM.prototype.show = function(visible) {
 	if(!visible) { this.elt.innerText = ''; return }
 
-	const aw = this.typeJig.actualWords
-	const unit = aw && aw.u ? aw.u : 'WPM'
+	const unit = this.typeJig.token.u
 	// Show the average of the last (up to) 5 samples
 	let WPM = 0
 	const n = this.WPMHistory.length, i0 = Math.max(0, n-1 - 5)
@@ -624,8 +626,7 @@ TypeJig.prototype.renderChart = function(series) {
 
 	series = movingAvg(series, 4,4)
 
-	const aw = this.actualWords
-	const unit = aw && aw.u ? aw.u : 'WPM'
+	const unit = this.token.u
 	const labels = [...Array(series.length).keys()]
 	const data = {
 		labels: labels,
