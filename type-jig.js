@@ -18,7 +18,7 @@ function TypeJig(exercise, display, results, input, clock, hint, options) {
 	const updateWPM = this.liveWPM.update.bind(this.liveWPM);
 	this.clock = new TypeJig.Timer(clockElt, exercise.seconds, updateWPM);
 	this.hint = hint;
-	if(!options.show_timer) this.clock.hide();
+	if(options.show_timer === "no") this.clock.hide();
 
 	this.live_wpm = options.live_wpm;
 	this.live_cpm = options.live_cpm;

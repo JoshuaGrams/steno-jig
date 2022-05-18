@@ -276,7 +276,7 @@ function getSettings(evt) {
 	if(live_wpm.checked) hiddenField(this, 'live_wpm', live_wpm.value)
 
 	var show_timer = document.getElementById('show_timer')
-	if(show_timer.checked) hiddenField(this, 'show_timer', show_timer.value)
+	hiddenField(this, 'show_timer', show_timer.checked ? show_timer.value : 'no')
 	var wpm = document.getElementById('wpm')
 	var cpm = document.getElementById('cpm')
 	if(cpm.checked) hiddenField(this, 'cpm', 5*wpm.value)
