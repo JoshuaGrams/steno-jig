@@ -196,7 +196,7 @@ TypeJig.prototype.answerChanged = function() {
 
 	// Get the exercise and the user's answer as arrays of
 	// words interspersed with whitespace.
-	var actual = tokenize(this.input.value.trimStart(), null, this.actualWords)
+	var actual = tokenize(this.input.value.trimStart(), {wsOnly: !!this.actualWords})
 	var expected = this.getWords(Math.ceil(actual.tokens.length))
 
 	// Get the first word of the exercise, and create a range
@@ -307,7 +307,7 @@ TypeJig.prototype.keyDown = function (e) {
 TypeJig.prototype.getWords = function(n) {
 	const aw = this.actualWords
 	// Split the exercise text into words (keeping the whitespace).
-	var exercise = tokenize(this.display.textContent, null, aw)
+	var exercise = tokenize(this.display.textContent, {wsOnly: !!aw})
 	const newTokens = exercise.tokens.length
 
 	// Add more text until we have enough (or there is no more).
@@ -331,7 +331,7 @@ TypeJig.prototype.getWords = function(n) {
 				}
 				pieces = words
 			}
-			tokenize(pieces.join(''), exercise, aw)
+			tokenize(pieces.join(''), exercise)
 		} else delete(this.exercise);
 	}
 

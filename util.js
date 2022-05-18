@@ -325,16 +325,14 @@ function hiddenField(form, name, value) {
 	else N(form, N('input', {type: 'hidden', name: name, value: value}))
 }
 
-function tokenize(string, parsed, wsOnly) {
-	if(parsed == null) {
-		parsed = { string: string, spaceBefore: '', tokens: [] }
-	} else {
-		if(parsed.spaceBefore === '' && parsed.string != '' && !/^(\s|$)/.test(string)) {
-			parsed.spaceBefore = ' '
-		}
-		parsed.string += parsed.spaceBefore + string
+function tokenize(string, parsed) {
+	parsed ||= {}
+	parsed.tokens ||= []
+	parsed.spaceBefore ||= ''
+	if(parsed.spaceBefore === '' && parsed.string != '' && !/^(\s|$)/.test(string)) {
+		parsed.spaceBefore = ' '
 	}
-	parsed.wsOnly = !!wsOnly
+	parsed.string += parsed.spaceBefore + string
 
 	const addToken = t => {
 		parsed.tokens.push({text: t, spaceBefore: parsed.spaceBefore})
