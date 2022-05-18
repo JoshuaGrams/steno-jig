@@ -196,8 +196,8 @@ TypeJig.prototype.answerChanged = function() {
 
 	// Get the exercise and the user's answer as arrays of
 	// words interspersed with whitespace.
-	var answer = tokenize(this.input.value.trimStart(), null, this.actualWords)
-	var exercise = this.getWords(Math.ceil(answer.tokens.length))
+	var actual = tokenize(this.input.value.trimStart(), null, this.actualWords)
+	var expected = this.getWords(Math.ceil(actual.tokens.length))
 
 	// Get the first word of the exercise, and create a range
 	// which we can use to measure where it is.
@@ -213,15 +213,15 @@ TypeJig.prototype.answerChanged = function() {
 	var output = document.createElement('div');
 	output.id = oldOutput.id;
 	this.errorCount = 0;
-	let i, partial, lastMismatch = -1
-	for(i=0; i<answer.tokens.length; ++i) {
-		var endOfAnswer = (i === answer.tokens.length-1)
-		const A = answer.tokens[i], E = exercise.tokens[i] || {text:''}
-		var ans = A.text, ex = E.text
-		match = this.match == null? (ans == ex) : this.match(ans, ex)
-		partial = endOfAnswer && ans.length < ex.length && ans === ex.slice(0, ans.length)
-		if(!(match || partial)) lastMismatch = i
-		if(match && i === this.lastMismatch) this.lastMismatch = -1
+	let a, partial, lastMismatch = -1
+	for(a=0; a<actual.tokens.length; ++a) {
+		var endOfAnswer = (a === actual.tokens.length-1)
+		const A = actual.tokens[a], E = expected.tokens[a] || {text:''}
+		var ac = A.text, ex = E.text
+		match = this.match == null? (ac == ex) : this.match(ac, ex)
+		partial = endOfAnswer && ac.length < ex.length && ac === ex.slice(0, ac.length)
+		if(!(match || partial)) lastMismatch = a
+		if(match && a === this.lastMismatch) this.lastMismatch = -1
 
 		// Display any appropriate whitespace
 		if(A.spaceBefore != '') N(output, ' ')
@@ -239,24 +239,24 @@ TypeJig.prototype.answerChanged = function() {
 
 		// Display the token
 		if(partial) {
-			N(output, ans)
+			N(output, ac)
 		} else {
 			this.errorCount += !match;
-			const token = match ? ex : ans
+			const token = match ? ex : ac
 			const ok = match ? 'correct': 'incorrect'
 			N(output, N('span', token, {class: ok}))
 		}
 	}
-	if(this.lastMismatch >= answer.tokens.length) this.lastMismatch = -1
+	if(this.lastMismatch >= actual.tokens.length) this.lastMismatch = -1
 	this.lastMismatch = Math.max(this.lastMismatch, lastMismatch)
 
 	// Display final whitespace, if any, and show the "cursor".
-	N(output, answer.spaceBefore)
+	N(output, actual.spaceBefore)
 	this.updateCursor(output);
 
 	// End the exercise if the last word was answered correctly,
 	// or if we're off the end.
-	if(exercise.tokens.length-i < match) {
+	if(expected.tokens.length-a < match) {
 		window.setTimeout(this.clock.stop.bind(this.clock))
 	}
 
@@ -264,10 +264,10 @@ TypeJig.prototype.answerChanged = function() {
 
 	var r = range.getBoundingClientRect();
 
-	const next = (exercise.tokens[i] || {text:''}).text
+	const next = (expected.tokens[a] || {text:''}).text
 	if(this.hint && this.hint.update) {
 		this.hint.update(match ? next : ex, r.left, r.top)
-		const ok = (match || partial) && i-1 !== this.lastMismatch
+		const ok = (match || partial) && a-1 !== this.lastMismatch
 		if(this.hint_on_fail && ok) this.hint.hide()
 		else this.hint.show()
 	}
