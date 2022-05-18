@@ -1262,7 +1262,7 @@ TypeJig.prototype.renderChart = function (series) {
                 showLine: true,
             },
             {
-                label: "Total",
+                label: "Total WPM",
                 labels: labels,
                 data: totalDataDataset,
                 fill: false,
