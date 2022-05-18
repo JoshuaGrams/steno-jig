@@ -160,6 +160,12 @@ a, a:visited {
 	border-bottom-width: 2px;
 }
 
+.complex-word-container {
+	display: inline-block;
+	line-height :1;
+	position: relative ;
+}
+
 .incorrect { background: var(--incorrect-text-bg); text-decoration: line-through; }
 .cursor { border-right: 2px solid var(--main-fg); }
 

@@ -5,14 +5,18 @@
  * `output`, and `clock` are elements (or element ID strings).
  */
 
-function TypeJig(exercise, display, results, input, clock, hint, options) {
+function TypeJig(exercise, hint, options) {
     this.exercise = exercise;
-    this.display = documentElement(display);
-    this.input = documentElement(input);
-    this.resultsDisplay = documentElement(results);
 
+    this.display = documentElement("exercise");
+    this.answerDisplay = documentElement("answer");
+    console.log(this.display, this.display.parentNode);
+    console.log(this.answerDisplay, this.answerDisplay.parentNode);
+    this.input = documentElement("input");
+    this.resultsDisplay = documentElement("results");
     const liveWPM = documentElement("live-wpm-display");
-    const clockElt = documentElement(clock);
+    const clockElt = documentElement("clock");
+
     this.liveWPM = new TypeJig.LiveWPM(liveWPM, this, options.live_wpm);
     const updateWPM = this.liveWPM.update.bind(this.liveWPM);
     this.clock = new TypeJig.Timer(clockElt, exercise.seconds, updateWPM);
@@ -35,7 +39,7 @@ function TypeJig(exercise, display, results, input, clock, hint, options) {
 
     this.enterPoints = [];
 
-    this.wordTimestamps = [];
+    this.persistentWordData = [];
 
     this.partialTypedWord = "";
 
@@ -84,7 +88,7 @@ function TypeJig(exercise, display, results, input, clock, hint, options) {
 TypeJig.prototype.reset = function () {
     this.liveWPM.reset();
     this.display.style.width = "200%";
-
+    this.typedWords = [];
     this.enter_count = 0;
     this.resultsDisplay.textContent = "";
     if (this.exercise && !this.exercise.started) {
@@ -114,8 +118,9 @@ TypeJig.prototype.reset = function () {
 
     this.running = false;
     this.clock.reset();
-    this.updateWords(this.exercise.words);
-
+    console.log("Reseeting");
+    this.updateWords(this.exercise.words, true);
+    this.displayTypedWords([]);
     window.scroll(0, scrollOffset(this.display));
 };
 
@@ -169,18 +174,19 @@ TypeJig.prototype.start = function () {
 };
 
 TypeJig.prototype.tick = function () {
+    console.log("ticking");
     var s = this.speed;
     if (!(this.running && s && s.current)) return;
     var fn = this.tick.bind(this);
     var ms = (1000 * 60) / s.value;
-    if (s.type === "cpm") ms *= s.current.textContent.length;
-    else
-        while (/^(\s*|\p{Punctuation})$/u.test(s.current.textContent)) {
-            s.current.className = "";
-            s.current = s.current.nextElementSibling;
-        }
-    s.current.className = "";
-    s.current = s.current.nextElementSibling;
+
+    this.exercise.numOfExpectedWords++;
+
+    var thisWord = this.exercise.words[this.exercise.numOfExpectedWords];
+
+    this.updateWords(this.exercise.words);
+    if (s.type === "cpm") ms *= thisWord.length;
+
     if (s.current) setTimeout(fn, ms);
 };
 
@@ -320,8 +326,6 @@ TypeJig.prototype.gradeTypeVsResult = function (typedWords, expectedWords) {
             break;
         }
 
-        //if theres any kind of error
-
         //Check if we are on an erranious word and further on we type a correct word
         let addedWordsOffset = 0;
         for (let offset = 1; offset < 5; offset++) {
@@ -364,7 +368,16 @@ TypeJig.prototype.gradeTypeVsResult = function (typedWords, expectedWords) {
         //Chose the lower of the two that are not zero
 
         //If they are both zero assume it was just a misspelling
+
         if (addedWordsOffset == 0 && droppedWordOffset == 0) {
+            if (typed.length > 0) {
+                console.log("failed index:" + typedIndex, typed, expected);
+                this.persistentWordData[typedIndex] = {
+                    ...this.persistentWordData[typedIndex],
+                    failed: true,
+                };
+            }
+
             wordList.push({
                 correct: false,
                 expected: expected,
@@ -374,6 +387,7 @@ TypeJig.prototype.gradeTypeVsResult = function (typedWords, expectedWords) {
             typedIndex++;
             continue;
         }
+
         if (addedWordsOffset == 0) addedWordsOffset = Infinity;
         if (droppedWordOffset == 0) droppedWordOffset = Infinity;
 
@@ -424,8 +438,12 @@ TypeJig.prototype.gradeTypeVsResult = function (typedWords, expectedWords) {
     }
 
     //Timestamp the last word
-    this.wordTimestamps[wordList.length - 1] = this.clock.getTime();
+    var LastWord = this.persistentWordData[wordList.length - 1];
 
+    this.persistentWordData[wordList.length - 1] = {
+        ...LastWord,
+        timeStamp: this.clock.getTime(),
+    };
     // console.log("wordList", wordList);
     return wordList;
 };
@@ -434,16 +452,11 @@ TypeJig.prototype.displayTypedWords = function (typedWords) {
     // console.log("displayTypedWords", typedWords);
     delete this.pendingChange;
 
-    var range = document.createRange();
-    range.setStart(this.display.firstElementChild, 0);
-    range.setEnd(this.display.firstElementChild, 1);
-    var ex, y, match;
-    y = range.getBoundingClientRect().bottom;
+    var ex, match;
 
     // Display the user's answer, marking it for correctness.
-    var oldOutput = this.display.previousElementSibling;
+
     var output = document.createElement("div");
-    output.id = oldOutput.id;
     this.errorCount = 0;
 
     var countedWords = 0;
@@ -489,7 +502,7 @@ TypeJig.prototype.displayTypedWords = function (typedWords) {
             var typedSpan = document.createElement("span");
             typedSpan.appendChild(document.createTextNode(ans));
             if (match != null)
-                typedSpan.className = word.corrected
+                typedSpan.className = this.persistentWordData[i].failed
                     ? "corrected"
                     : match
                     ? "correct"
@@ -499,7 +512,9 @@ TypeJig.prototype.displayTypedWords = function (typedWords) {
         } else if (match) {
             var typedSpan = document.createElement("span");
             typedSpan.appendChild(document.createTextNode(ans));
-            typedSpan.className = word.corrected ? "corrected" : "correct";
+            typedSpan.className = this.persistentWordData[i].failed
+                ? "corrected"
+                : "correct";
             output.appendChild(typedSpan);
 
             continue;
@@ -550,13 +565,10 @@ TypeJig.prototype.displayTypedWords = function (typedWords) {
 
     this.updateCursor(output);
 
-    this.lastAnswered = range.endContainer;
-
     // if (match) ex = nextWord(exercise, range);
-    var r = range.getBoundingClientRect();
 
     if (this.hint && this.hint.update) {
-        this.hint.update(ex, r.left, r.top);
+        this.hint.update(ex);
     }
 
     if (
@@ -568,7 +580,11 @@ TypeJig.prototype.displayTypedWords = function (typedWords) {
         this.showing_hint_on_word = "";
         this.hint.hide();
     }
-    this.display.parentNode.replaceChild(output, oldOutput);
+    console.log(this.answerDisplay);
+    //  var oldOutput = this.answerDisplay;
+    output.id = this.answerDisplay.id;
+    this.answerDisplay.parentNode.replaceChild(output, this.answerDisplay);
+    this.answerDisplay = output;
     return null;
 };
 
@@ -591,139 +607,6 @@ TypeJig.prototype.answerChanged = function () {
     if (!this.running && !!this.input.value.trim()) {
         this.start();
     }
-    // console.log("answerChanged", this.input.value);
-
-    // var range = document.createRange();
-    // range.setStart(this.display.firstElementChild, 0);
-    // range.setEnd(this.display.firstElementChild, 1);
-    // var ex, y, match;
-    // y = range.getBoundingClientRect().bottom;
-
-    // // Display the user's answer, marking it for correctness.
-    // var oldOutput = this.display.previousElementSibling;
-    // var output = document.createElement("div");
-    // output.id = oldOutput.id;
-    // this.errorCount = 0;
-
-    // var countedWords = 0;
-    // var expectedWords = this.exercise.words;
-
-    // var expectedWordIndex = 0;
-
-    // for (let i = 0; i < typedWords.length; ++i) {
-    //     var currentWord = typedWords[i];
-    //     var expectedWord = expectedWords[expectedWordIndex];
-
-    //     var endOfAnswer = i === typedWords.length - 1;
-    //     matchResult = checkMatch(currentWord, expectedWord);
-
-    //     // if(i === typedWords.length - 2) {
-    //     // 	if(typedWords[i+1] === "") {
-    //     // 		if(this.typedWords[expectedWordIndex] && this.typedWords[expectedWordIndex].current) {
-    //     // 			this.onWord({
-    //     // 				expected: expectedWord,
-    //     // 				typed: currentWord,
-    //     // 				correct: matchResult,
-    //     // 				timestamp: this.clock.getTime(),
-    //     // 			},expectedWordIndex);
-    //     // 		}
-    //     // 	}
-    //     // }
-
-    //     var foundAlternativeID = 0;
-    //     if (matexpectedWords;expectedWords; (
-    //             let alternativeID = expectedWordIndex + 1;
-    //             alternativeID < expectedWordIndex + 6;
-    //             alternativeID++
-    //         ) {
-    //             if (alternativeID >= expectedWords.length) break;
-    //             console.log("looking at alternative", alternativeID);
-    //             var result = checkMatch(
-    //                 currentWord,
-    //                 expectedWords[alternativeID]
-    //             );
-    //             if (result != false) {
-    //                 foundAlternativeID = alternativeID;
-    //                 break;
-    //             }
-    //         }
-    //     }
-
-    //     if (foundAlternativeID) {
-    //         console.log(
-    //             "found alternative jumping ID to",
-    //             foundAlternativeID,
-    //             expectedWords[foundAlternativeID]
-    //         );
-
-    //         expectedWordIndex = foundAlternativeID;
-    //         i--;
-    //         continue;
-    //     }
-
-    //     if (endOfAnswer && expectedWord) {
-    //         this.onWord(
-    //             {
-    //                 expected: expectedWord,
-    //                 typed: currentWord,
-    //                 correct: matchResult,
-    //                 timestamp: this.clock.getTime(),
-    //             },
-    //             expectedWordIndex
-    //         );
-    //     }
-    //     var last = exercise.length === 0 && !this.exercise;
-    //     if (last && match) window.setTimeout(this.clock.stop.bind(this.clock));
-
-    //     expectedWordIndex += 1;
-    //     // var r = range.getBoundingClientRect();
-    //     // if(r.bottom > y + 0.001) {
-    //     // 	output.appendChild(document.createTextNode('\n'));
-    //     // 	if(endOfAnswer) {
-    //     // 		var limit = 0.66 * window.innerHeight;
-    //     // 		var end = this.display.getBoundingClientRect().bottom;
-    //     // 		var r = range.getBoundingClientRect();
-    //     // 		if(end > window.innerHeight && r.bottom > limit) window.scrollBy(0, r.bottom - limit);
-    //     // 	}
-    //     // }
-    //     // y = r.bottom;
-
-    //     // nextItem(range)
-
-    //     // if(partial) {
-    //     // 	// Don't yet know whether it matched, so add it as raw text.
-    //     // 	output.appendChild(document.createTextNode(ans));
-    //     // } else {
-    //     // 	this.errorCount += !match;
-    //     // 	// Add it as a span marked as correct or incorrect.
-    //     // 	var span = document.createElement('span');
-    //     // 	span.appendChild(document.createTextNode(match ? ex : ans));
-    //     // 	span.className = match ? 'correct' : 'incorrect';
-    //     // 	output.appendChild(span);
-
-    //     // 	if(i == answer.length - 1) {
-    //     // 		this.onWord({
-    //     // 			expected: ex,
-    //     // 			typed: ans,
-    //     // 			correct: ex == ans,
-    //     // 			timestamp: this.clock.getTime(),
-    //     // 			id: countedWords,
-    //     // 		});
-
-    //     // 		if(!match){
-    //     // 			if(this.hint){
-    //     // 				//To be refactored/redone
-    //     // 				this.hint.show();
-    //     // 				this.showing_hint_on_word = ex;
-    //     // 			}
-    //     // 		}
-    //     // 	}
-    //     // }
-
-    //     // End the exercise if the last word was answered correctly.
-    //     var last = expectedWordIndex >= expectedWords.length;
-    //     if (last && match) w
-    // }
     this.typedWords = this.gradeTypeVsResult(typedWords, this.exercise.words);
 
     console.log(
@@ -737,7 +620,7 @@ TypeJig.prototype.answerChanged = function () {
     ) {
         window.setTimeout(this.clock.stop.bind(this.clock));
     }
-    this.updateCursor(this.display);
+    this.updateCursor(this.answerDisplay);
 
     // var r = range.getBoundingClientRect();
 
@@ -752,6 +635,7 @@ TypeJig.prototype.answerChanged = function () {
 
     // this.display.parentNode.replaceChild(output, oldOutput);
     this.displayTypedWords(this.typedWords);
+
     this.updateWords(this.exercise.words);
 };
 
@@ -785,46 +669,56 @@ TypeJig.prototype.keyDown = function (e) {
     }
 };
 
-TypeJig.prototype.updateWords = function (words) {
+TypeJig.prototype.updateWords = function (words, hardReset) {
+    console.profile();
     var display = this.display;
 
-    while (display.firstChild) {
-        display.removeChild(display.firstChild);
+    if (hardReset) {
+        display = document.createElement("div");
+        display.id = this.display.id;
+        display.style.width = "200%";
     }
+
     for (let i = 0; i < words.length; ++i) {
         var word = words[i];
 
         var typedWentOver =
             this.typedWords[i] && this.typedWords[i].typed.length > word.length;
-
-        if (this.exercise && this.exercise.enterPoints.includes(i)) {
-            display.appendChild(document.createTextNode("\n"));
+        if (hardReset) {
+            if (this.exercise && this.exercise.enterPoints.includes(i)) {
+                display.appendChild(document.createTextNode("\n"));
+            }
         }
+
+        //See if the state of the word has changed
+        if (hardReset) {
+        } else if (this.typedWords.length - i > 10) {
+            if (this.exercise.numOfExpectedWords == i + 1) {
+            } else {
+                continue;
+            }
+        }
+
+        var finalObject = document.createElement("span");
 
         //See if the typed word has any erroneous words and account for them
         var erroneousWords =
             this.typedWords[i] && this.typedWords[i].addedWords;
         if (erroneousWords) {
+            finalObject.classList.add("complex-word-container");
             for (let j = 0; j < erroneousWords.length; j++) {
                 var erroneousWord = erroneousWords[j];
                 var div = document.createElement("span");
-
-                div.style.display = "inline-block";
-                div.style.lineHeight = "1";
-                div.style.position = "relative";
                 div.style.opacity = 0;
 
                 div.appendChild(document.createTextNode(erroneousWord + " "));
 
-                display.appendChild(div);
+                finalObject.appendChild(div);
             }
         }
 
         if (typedWentOver) {
-            var div = document.createElement("span");
-            div.style.display = "inline-block";
-            div.style.lineHeight = "1";
-            div.style.position = "relative";
+            finalObject.classList.add("complex-word-container");
             // div.style.float = "left"
 
             var typedSpan = document.createElement("span");
@@ -838,19 +732,38 @@ TypeJig.prototype.updateWords = function (words) {
             expectedSpan.appendChild(
                 document.createTextNode(this.typedWords[i].typed + " ")
             );
-            div.appendChild(typedSpan);
-            div.appendChild(expectedSpan);
-
-            display.appendChild(div);
+            finalObject.appendChild(typedSpan);
+            finalObject.appendChild(expectedSpan);
         } else {
-            var span = document.createElement("div");
-            span.style.display = "inline-block";
+            finalObject.style.display = "inline-block";
 
-            span.appendChild(document.createTextNode(word + " "));
-            display.appendChild(span);
+            finalObject.appendChild(document.createTextNode(word + " "));
+        }
+
+        if (this.exercise.numOfExpectedWords <= i) {
+            finalObject.classList.add("notYet");
+        }
+        finalObject.id = "word" + i;
+        var existingObject = display.querySelector("#word" + i);
+        if (existingObject) {
+            display.replaceChild(finalObject, existingObject);
+        } else {
+            display.appendChild(finalObject);
         }
     }
+    if (hardReset) {
+        console.log(display);
+        this.display.parentNode.replaceChild(display, this.display);
+    }
+    function focusInput(evt) {
+        self.input.focus();
+        evt.preventDefault();
+    }
+    unbindEvent(this.display, "click", focusInput); 
     this.display = display;
+    bindEvent(this.display, "click", focusInput);
+
+    console.profileEnd();
 };
 
 // TypeJig.prototype.getWords = function(n) {
@@ -945,7 +858,7 @@ TypeJig.prototype.endExercise = function (seconds) {
     var start = this.resultsDisplay.textContent.length;
     var end = start + results.length;
     this.resultsDisplay.textContent += results;
-
+    this.updateWords(this.exercise.words, true);
     this.renderChart(this.liveWPM.WPMHistory);
 
     this.resultsDisplay.scrollIntoView(true);
@@ -953,7 +866,7 @@ TypeJig.prototype.endExercise = function (seconds) {
 };
 
 TypeJig.prototype.addCursor = function (output) {
-    if (!output) output = this.display.previousElementSibling;
+    if (!output) output = this.answerDisplay;
     var cursor = output.querySelector(".cursor");
     if (cursor) return;
     var cursor = document.createElement("span");
@@ -1138,18 +1051,42 @@ TypeJig.LiveWPM.prototype.update = function (seconds) {
     // Show the average of the last (up to) 5 samples
 
     //Get the average distance between the last 5 samples
-    
-    distance =
-        this.typeJig.wordTimestamps[this.typeJig.wordTimestamps.length - 1] -
-        this.typeJig.wordTimestamps[this.typeJig.wordTimestamps.length - 11];
-    
+    let persistantData = this.typeJig.persistentWordData;
 
-    // const n = this.WPMHistory.length,
-    //     i0 = Math.max(0, n - 1 - 5);
-    // for (let i = i0; i < n; ++i) WPM += this.WPMHistory[i];
-    // WPM = WPM / (n - i0);
-    if (this.showLiveWPM)
-        this.elt.innerHTML = Math.floor((10 / distance) * 60) + " " + unit;
+    if (persistantData.length >= 11) {
+        if (!persistantData[persistantData.length - 1]) {
+            this.elt.innerHTML = "~ First Unknown";
+            return;
+        }
+        if (!persistantData[persistantData.length - 11]) {
+            this.elt.innerHTML = "~ Second Unknown";
+            return;
+        }
+        distance =
+            persistantData[persistantData.length - 1].timeStamp -
+            persistantData[persistantData.length - 11].timeStamp;
+
+        // const n = this.WPMHistory.length,
+        //     i0 = Math.max(0, n - 1 - 5);
+        // for (let i = i0; i < n; ++i) WPM += this.WPMHistory[i];
+        // WPM = WPM / (n - i0);
+        if (this.showLiveWPM)
+            this.elt.innerHTML =
+                "~" + Math.floor((10 / distance) * 60) + " " + unit;
+    } else {
+        distance = persistantData[persistantData.length - 1].timeStamp;
+
+        // const n = this.WPMHistory.length,
+        //     i0 = Math.max(0, n - 1 - 5);
+        // for (let i = i0; i < n; ++i) WPM += this.WPMHistory[i];
+        // WPM = WPM / (n - i0);
+        if (this.showLiveWPM)
+            this.elt.innerHTML =
+                "~" +
+                Math.floor((persistantData.length / distance) * 60) +
+                " " +
+                unit;
+    }
 };
 
 TypeJig.LiveWPM.prototype.reset = function () {
@@ -1192,31 +1129,41 @@ TypeJig.prototype.renderChart = function (series) {
         },
     ];
 
-
-
-    this.wordTimestamps.sort((a, b) => a - b);
-    //Remove all non numbers from wordTimestamps
-    var newTimestamps = []
-    var labels = []
-
-    for (let index = 0; index < this.wordTimestamps.length; index++) {
-        const element = this.wordTimestamps[index];
-        if (!isNaN(element)) {
-            newTimestamps.push(element);
-            labels.push(this.exercise.words[index]);
-        }
-    }
-    
-    this.wordTimestamps = newTimestamps;
-    
-    for (let i = 0; i < this.wordTimestamps.length; i++) {
-        distance = this.wordTimestamps[i] - this.wordTimestamps[i - 10];
-        averageDatasetData.push({
-            x: this.wordTimestamps[i],
-            y: (10 / distance) * 60,
-            expected: this.exercise.words[i].wpm,
+    //zip the persistant word data and the typedWord data
+    var combinedData = [];
+    for (var i = 0; i < this.typedWords.length; i++) {
+        combinedData.push({
+            ...this.typedWords[i],
+            ...this.persistentWordData[i],
         });
     }
+
+    combinedData.sort((a, b) => a.timeStamp - b.timeStamp);
+    console.log(combinedData);
+
+    for (let i = 0; i < combinedData.length; i++) {
+        var pastValue = combinedData[i].timeStamp ?? 0;
+
+        var currentValues = 0;
+
+        for (let j = i; j > 0; j--) {
+            console.log("1230 ", i, j, combinedData[i], combinedData[j]);
+            if (currentValues >= 10) break;
+            if (combinedData[j].correct == false) {
+                continue;
+            }
+            currentValues++;
+            pastValue = combinedData[j];
+        }
+
+        distance = combinedData[i].timeStamp - pastValue;
+        averageDatasetData.push({
+            x: combinedData[i].timeStamp,
+            y: (currentValues / distance) * 60,
+            ...combinedData[i],
+        });
+    }
+
     console.log(averageDatasetData);
 
     totalDataDataset = [
@@ -1226,12 +1173,20 @@ TypeJig.prototype.renderChart = function (series) {
         },
     ];
 
-    for (let i = 10; i < this.wordTimestamps.length; i++) {
-        totalDataDataset.push({
-            x: this.wordTimestamps[i],
-            y: (i / this.wordTimestamps[i]) * 60,
-            expected: this.exercise.words[i].wpm,
-        });
+    for (let i = 0; i < combinedData.length; i++) {
+        if (i < 10) {
+            totalDataDataset.push({
+                x: combinedData[i].timeStamp,
+                y: (i / combinedData[i].timeStamp) * 60 * (i / (i + 1)),
+                ...combinedData[i],
+            });
+        } else {
+            totalDataDataset.push({
+                x: combinedData[i].timeStamp,
+                y: (i / combinedData[i].timeStamp) * 60,
+                ...combinedData[i],
+            });
+        }
     }
 
     //Sort both the totalDataDataset and the averageDatasetData by x
@@ -1246,33 +1201,74 @@ TypeJig.prototype.renderChart = function (series) {
 
     //Apply a rolling average of 5 to the data
 
-    const aw = this.actualWords;
+    const aw = this.actualW10ords;
     const unit = aw && aw.u ? aw.u : "WPM";
+
     const data = {
-        labels: labels,
         datasets: [
             {
                 label: unit,
-                labels: labels,
                 data: averageDatasetData,
                 fill: false,
                 borderColor: "rgb(75, 192, 192)",
-                // pointRadius: 0,
+                pointRadius: 5,
+                pointBackgroundColor: function (context) {
+                    var index = context.dataIndex;
+                    var value = context.dataset.data[index];
+                    return value.correct == false
+                        ? "red" // draw negative values in red
+                        : value.correct && value.failed
+                        ? "yellow" // else, alternate values in blue and green
+                        : "green";
+                },
                 tension: 0.2,
                 showLine: true,
             },
             {
                 label: "Total WPM",
-                labels: labels,
                 data: totalDataDataset,
+                pointBackgroundColor: function (context) {
+                    var index = context.dataIndex;
+                    var value = context.dataset.data[index];
+                    return value.correct == false
+                        ? "red" // draw negative values in red
+                        : value.correct && value.failed
+                        ? "yellow" // else, alternate values in blue and green
+                        : "green";
+                },
                 fill: false,
                 borderColor: "rgb(255, 99, 132)",
-                // pointRadius: 0,
+                pointRadius: 5,
                 tension: 0.2,
                 showLine: true,
             },
         ],
     };
+
+    // const scatterDataLables = {
+    //     id:"scatterDataLables",
+    //     afterDatasetsDraw(chart, args, options){
+    //         console.log("PLUGIN")
+    //         const {ctx} = chart;
+    //         ctx.save()
+    //         ctx.font = "12px sans-serif";
+    //         for (let x = 0; x < chart.config.data.datasets.length; x++) {
+    //             const dataSet = chart.config.data.datasets[x];
+    //             for (let i = 0; i < dataSet.data.length; i++) {
+    //                 const dataPoint = dataSet.data[i];
+
+    //                 let textWidth = ctx.measureText(dataPoint.expected).width;
+
+    //                 ctx.fillText(
+    //                     dataPoint.expected,
+    //                     chart.getDatasetMeta(x).data[i].x - textWidth / 2,
+    //                     chart.getDatasetMeta(x).data[i].y - 10
+    //                 );
+    //             }
+    //         }
+    //         ctx.restore()
+    //     }
+    // }
 
     const config = {
         type: "scatter",
@@ -1282,22 +1278,28 @@ TypeJig.prototype.renderChart = function (series) {
             responsive: true,
             maintainAspectRatio: false,
             plugins: {
-                tooltips: {
+                tooltip: {
+                    displayColors: false,
                     callbacks: {
-                        label: function (ctx) {
-                            let label = ctx.dataset.labels[ctx.dataIndex];
-                            return (
-                                label +
-                                ": (" +
-                                ctx.parsed.x +
-                                ", " +
-                                ctx.parsed.y +
-                                ")"
-                            );
+                        title: function (context) {
+                            console.log(context);
+                            return context[0].raw.expected;
+                            return [
+                                all.datasets[tooltipItem[0].datasetIndex].data[
+                                    tooltipItem[0].index
+                                ].expected,
+                            ];
+                        },
+                        label: function (context) {
+                            console.log("context", context);
+                            return [
+                                "WPM :" + context.raw.y.toFixed(),
+                                context.raw.x.toFixed(2) + "s",
+                            ];
                         },
                     },
                 },
-            }
+            },
         },
     };
 
@@ -1410,6 +1412,7 @@ TypeJig.Exercise = function (words, seconds, shuffle, select, speed) {
     this.shuffle = shuffle;
     this.select =
         TypeJig.Exercise.select[select] || TypeJig.Exercise.select.random;
+    this.numOfExpectedWords = -1;
 
     if (shuffle) randomize(this.words);
 };

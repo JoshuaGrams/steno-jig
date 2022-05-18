@@ -9,8 +9,8 @@
 	<script src="steno-display.js"></script>
 	<script src="word-sets.js"></script>
 	<script src="plover-translations.js"></script>
-	<script src="chart.js"></script>
-	<link rel="stylesheet" type="text/css" href="font-roboto.css">
+<script src="chart.js"></script>
+<script src="chartjs-plugin-datalabels.js"></script>	<link rel="stylesheet" type="text/css" href="font-roboto.css">
 </head>
 <body>
 
@@ -62,7 +62,7 @@
 		var hints = new StenoDisplay(strokes, translations, true);
 		if(query.hints === '') hints = null;
 		var exercise = new TypeJig.Exercise(words);
-		var jig = new TypeJig(exercise, 'exercise', 'results', 'input', 'clock', hints);
+		var jig = new TypeJig(exercise, hints);
 
 		var back = document.getElementById('back');
 		back.href = 'form.html';
