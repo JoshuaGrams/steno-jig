@@ -377,6 +377,8 @@ TypeJig.prototype.endExercise = function(seconds) {
 		while(elt.nextSibling) elt.parentNode.removeChild(elt.nextSibling)
 	}
 
+	this.liveWPM.show(false)
+
 	const stats = this.currentSpeed(seconds);
 	var results = 'Time: ' + stats.time + ' - ' + Math.floor(stats.WPM);
 	if(this.actualWords) {
@@ -557,31 +559,38 @@ TypeJig.wordCombos = function(combos) {
 
 // -----------------------------------------------------------------------
 
-TypeJig.LiveWPM = function(elt, typeJig, showLiveWPM) {
+TypeJig.LiveWPM = function(elt, typeJig, visible) {
 	this.elt = elt
 	elt.innerHTML = ""
 	this.typeJig = typeJig
 	this.prevSpeed = null
 	this.WPMHistory = []
-	this.showLiveWPM = showLiveWPM
+	this.visible = visible
 }
 
-TypeJig.LiveWPM.prototype.update = function(seconds) {
+TypeJig.LiveWPM.prototype.show = function(visible) {
+	if(!visible) { this.elt.innerText = ''; return }
+
 	const aw = this.typeJig.actualWords
 	const unit = aw && aw.u ? aw.u : 'WPM'
-	const stats = this.typeJig.currentSpeed(seconds, this.prevSpeed)
-	this.prevSpeed = stats
-	this.WPMHistory.push(stats.correctedWPM)
 	// Show the average of the last (up to) 5 samples
 	let WPM = 0
 	const n = this.WPMHistory.length, i0 = Math.max(0, n-1 - 5)
 	for(let i=i0; i<n; ++i) WPM += this.WPMHistory[i]
 	WPM = WPM / (n - i0)
-	if (this.showLiveWPM) this.elt.innerHTML = Math.floor(WPM) + ' ' + unit
+	this.elt.innerText = Math.floor(WPM) + ' ' + unit
+}
+
+TypeJig.LiveWPM.prototype.update = function(seconds) {
+	const stats = this.typeJig.currentSpeed(seconds, this.prevSpeed)
+	this.prevSpeed = stats
+	this.WPMHistory.push(stats.correctedWPM)
+	this.show(this.visible)
 }
 
 TypeJig.LiveWPM.prototype.reset = function() {
 	this.WPMHistory = []
+	this.show(false)
 }
 
 function movingAvg(array, countBefore, countAfter) {
