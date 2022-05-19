@@ -238,6 +238,7 @@
 
 		<p class="center"><a id="back" title="LeftArrow">&larr; Back to Menu <span class="shortcutkey">(LeftArrow)</span></a></p>
 		<p class="center"><a id="again" title="Enter">&#8634; Restart <span class="shortcutkey">(Enter 3x)</span></a></p>
+		<p class="center"><a id="end" title="Enter">&Cross; End <span class="shortcutkey">(Tab 3x)</span></a></p>
 	</div>
 
 	<textarea id="input"></textarea>
@@ -305,8 +306,9 @@ function runCustom(evt) {
 	TypeJig.WordSets.custom = [];
 	for(let i=0; i<n; ++i) TypeJig.WordSets.custom.push(...drill);
 	fields.drill = 'custom';
-	var jig = runExercise(fields,);
-	var again = document.getElementById('again');
+	var jig = runExercise(fields);
+	var again = document.getElementById('again')
+	var end = document.getElementById('end');
 	again.addEventListener('click', function(evt){
 		evt.preventDefault();
 		jig.reset();

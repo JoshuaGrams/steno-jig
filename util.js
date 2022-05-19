@@ -83,7 +83,7 @@ function changeName(name) {
 }
 
 function setExercise(name, exercise, hints, options, jig) {
-    console.log("Setting exercise", name, exercise, hints, options);
+    console.trace("Setting exercise", name, exercise, hints, options);
     var h = document.getElementById("lesson-name");
     h.textContent = name;
     document.title = name + " - Steno Jig";
@@ -96,6 +96,9 @@ function setExercise(name, exercise, hints, options, jig) {
         ".html";
     var again = document.getElementById("again");
     again.href = document.location.href;
+
+    var end = document.getElementById("end");
+    end.href = document.location.href;
 
     if (jig != null) jig.exercise = exercise;
     else jig = new TypeJig(exercise, options);

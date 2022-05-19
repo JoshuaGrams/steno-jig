@@ -6,6 +6,7 @@
  */
 
 function TypeJig(exercise, options) {
+    console.log("TypeJig", exercise);
     this.exercise = exercise;
 
     this.display = documentElement("exercise");
@@ -17,32 +18,26 @@ function TypeJig(exercise, options) {
 
     this.liveWPM = new TypeJig.LiveWPM(liveWPM, this, options.live_wpm);
     const updateWPM = this.liveWPM.update.bind(this.liveWPM);
-    this.clock = new TypeJig.Timer(clockElt, exercise.seconds, updateWPM);
+    this.clock = new TypeJig.Timer(
+        clockElt,
+        exercise.seconds * 1000,
+        updateWPM
+    );
 
     this.hint = initializeHints(options.hints);
-    this.hint.show();
+    if (this.hint) this.hint.show();
 
     if (!options.show_timer) this.clock.hide();
 
     this.live_wpm = options.live_wpm;
     this.live_cpm = options.live_cpm;
     this.hint_on_fail = options.hints == "fail";
-    this.hint_on_fail = true;
+
     this.showing_hint_on_word = "";
 
-    this.errorCount = 0;
-    this.enterCount = 0;
-
-    this.lookahead = 1000;
-
     this.typedWords = [];
-    this.expectedWords = [];
-
-    this.enterPoints = [];
 
     this.persistentWordData = [];
-
-    this.partialTypedWord = "";
 
     this.lastTypedWordID = -1;
 
@@ -55,11 +50,6 @@ function TypeJig(exercise, options) {
         ) {
             this.speed = { type: "cpm", value: options.cpm };
         }
-        if (typeof options.alternate === "string" && options.alternate !== "") {
-            this.alternateWith = TypeJig.wordsAndSpaces(options.alternate);
-            this.alternateWith.push(" ");
-        }
-        this.actualWords = options.actualWords;
     }
 
     var self = this; // close over `this` for event handlers.
@@ -81,12 +71,13 @@ function TypeJig(exercise, options) {
     }
     bindEvent(this.display, "click", focusInput);
 
-    exercise.calculateBreakPoints(this.display);
-
     this.reset();
 }
 
 TypeJig.prototype.reset = function () {
+    this.display.style.width = "100%";
+    this.exercise.calculateBreakPoints(this.display);
+
     this.liveWPM.reset();
     this.display.style.width = "200%";
     this.typedWords = [];
@@ -103,8 +94,6 @@ TypeJig.prototype.reset = function () {
 
     if (this.hint && this.hint.update) {
         //Get a string containing the next 10 words. if its at the end of the list get as much as you can.
-     
-
 
         var word = this.exercise.words[0];
         var rect = this.display.getBoundingClientRect();
@@ -140,7 +129,7 @@ TypeJig.Translations = {};
 
 TypeJig.processTranslations = function (t, fn) {
     var out = {};
-    
+
     //Flip around the keys and values. treating duplicates as a list.
     for (var key in t) {
         var value = t[key];
@@ -164,19 +153,16 @@ TypeJig.shortestTranslations = function (t) {
     //Get the custom dictionarys from localstorage
     customDictionariesString = localStorage.getItem("customDictionaries");
     console.log(customDictionariesString);
-    var customDictionaries = []
-    if(customDictionariesString){
-        
+    var customDictionaries = [];
+    if (customDictionariesString) {
         JSON.parse(customDictionariesString).forEach((dictionary) => {
             customDictionaries.push(TypeJig.processTranslations(dictionary));
         });
     }
-    
+
     customDictionaries.push(TypeJig.processTranslations(t));
 
-    console.log("Custom dic",customDictionaries);
-
-
+    console.log("Custom dic", customDictionaries);
 
     return customDictionaries;
 };
@@ -291,17 +277,10 @@ TypeJig.prototype.onWord = function (word, id) {
 };
 
 TypeJig.prototype.gradeTypeVsResult = function (typedWords, expectedWords) {
-    var range = document.createRange();
-    range.setStart(this.display.firstElementChild, 0);
-    range.setEnd(this.display.firstElementChild, 1);
-    var ex, y, match;
-    y = range.getBoundingClientRect().bottom;
-
     // Display the user's answer, marking it for correctness.
     var oldOutput = this.display.previousElementSibling;
     var output = document.createElement("div");
     output.id = oldOutput.id;
-    this.errorCount = 0;
 
     var expectedWords = this.exercise.words;
 
@@ -309,10 +288,14 @@ TypeJig.prototype.gradeTypeVsResult = function (typedWords, expectedWords) {
     var expectedIndex = 0;
 
     var wordList = [];
+
+    var errorCount = 0;
+    var correctCount = 0;
     //If the last element in the typed Words list is blank remove it
     // if (typedWords[typedWords.length - 1] == "") {
     //     typedWords.pop();
     // }
+
     for (let i = 0; i < typedWords.length; ++i) {
         if (typedIndex >= typedWords.length) break;
         var typed = typedWords[typedIndex];
@@ -321,6 +304,8 @@ TypeJig.prototype.gradeTypeVsResult = function (typedWords, expectedWords) {
         var lastTypedWord = typedIndex === typedWords.length - 1;
 
         if (matchResult) {
+            correctCount++;
+
             wordList.push({
                 correct: true,
                 expected: expected,
@@ -371,7 +356,6 @@ TypeJig.prototype.gradeTypeVsResult = function (typedWords, expectedWords) {
         //Chose the lower of the two that are not zero
 
         //If they are both zero assume it was just a misspelling
-
         if (addedWordsOffset == 0 && droppedWordOffset == 0) {
             if (typed.length > 0) {
                 this.persistentWordData[typedIndex] = {
@@ -387,6 +371,7 @@ TypeJig.prototype.gradeTypeVsResult = function (typedWords, expectedWords) {
             });
             expectedIndex++;
             typedIndex++;
+            errorCount++;
             continue;
         }
 
@@ -411,6 +396,7 @@ TypeJig.prototype.gradeTypeVsResult = function (typedWords, expectedWords) {
             typedIndex += addedWordsOffset;
             typedIndex++;
             expectedIndex++;
+            errorCount += addedWordsOffset;
             continue;
         }
 
@@ -434,6 +420,7 @@ TypeJig.prototype.gradeTypeVsResult = function (typedWords, expectedWords) {
             expectedIndex += droppedWordOffset;
             expectedIndex++;
             typedIndex++;
+            errorCount += droppedWordOffset;
             continue;
         }
     }
@@ -445,7 +432,12 @@ TypeJig.prototype.gradeTypeVsResult = function (typedWords, expectedWords) {
         ...LastWord,
         timeStamp: this.clock.getTime(),
     };
-    return wordList;
+    return {
+        words: wordList,
+        correctCount: correctCount,
+        errorCount: errorCount,
+        totalCount: expectedWords.length,
+    };
 };
 
 TypeJig.prototype.displayTypedWords = function (typedWords) {
@@ -456,9 +448,7 @@ TypeJig.prototype.displayTypedWords = function (typedWords) {
     // Display the user's answer, marking it for correctness.
 
     var output = document.createElement("div");
-    this.errorCount = 0;
 
-    var countedWords = 0;
 
     for (let i = 0; i < typedWords.length; i++) {
         var word = typedWords[i];
@@ -475,7 +465,6 @@ TypeJig.prototype.displayTypedWords = function (typedWords) {
         var ans = word.typed;
         match = word.correct;
         ex = word.expected;
-        this.errorCount += match == false;
 
         if (this.exercise && this.exercise.enterPoints.includes(i)) {
             output.appendChild(document.createTextNode("\n"));
@@ -494,22 +483,25 @@ TypeJig.prototype.displayTypedWords = function (typedWords) {
             }
         }
 
+        var persistentData = this.persistentWordData[i];
         //If its the last element
         if (i === typedWords.length - 1) {
             var typedSpan = document.createElement("span");
             typedSpan.appendChild(document.createTextNode(ans));
             if (match != null)
-                typedSpan.className = this.persistentWordData[i].failed
+                typedSpan.className = 
+                    !match
+                    ? "incorrect"
+                    :
+                    persistentData?.failed
                     ? "corrected"
-                    : match
-                    ? "correct"
-                    : "incorrect";
+                    : "correct"
             output.appendChild(typedSpan);
             continue;
         } else if (match) {
             var typedSpan = document.createElement("span");
             typedSpan.appendChild(document.createTextNode(ans));
-            typedSpan.className = this.persistentWordData[i].failed
+            typedSpan.className = persistentData?.failed
                 ? "corrected"
                 : "correct";
             output.appendChild(typedSpan);
@@ -600,14 +592,13 @@ TypeJig.prototype.answerChanged = function () {
     typedWords = this.input.value.replaceAll(/^\s+/g, "").split(/\s+/);
 
     //replace all leading spaces if they exist
-    
 
-     
     if (this.resultsDisplay.textContent !== "") return;
     if (!this.running && !!this.input.value.trim()) {
         this.start();
     }
-    this.typedWords = this.gradeTypeVsResult(typedWords, this.exercise.words);
+    let gradeResults = this.gradeTypeVsResult(typedWords, this.exercise.words);
+    this.typedWords = gradeResults.words;
 
     if (
         this.typedWords.length >= this.exercise.words.length &&
@@ -628,19 +619,20 @@ TypeJig.prototype.answerChanged = function () {
             thisTypedWord &&
             (thisTypedWord.correct == null || thisTypedWord.typed == "")
         ) {
-             
-            var nextWords = this.exercise.words.slice(
-                this.typedWords.length - 1,
-                Math.min(
-                    this.typedWords.length + 10,
-                    this.exercise.words.length
+            var nextWords = this.exercise.words
+                .slice(
+                    this.typedWords.length - 1,
+                    Math.min(
+                        this.typedWords.length + 10,
+                        this.exercise.words.length
+                    )
                 )
-            ).join(" ");
+                .join(" ");
             this.hint.update(nextWords, r.left, r.top);
         } else {
             var nextWords = this.exercise.words
                 .slice(
-                    this.typedWords.length ,
+                    this.typedWords.length,
                     Math.min(
                         this.typedWords.length + 10,
                         this.exercise.words.length
@@ -669,7 +661,9 @@ TypeJig.prototype.keyDown = function (e) {
         return;
     }
     if (e.key === "Enter") ++this.enter_count;
-    else this.enter_count = 0;
+
+    if (e.key === "Tab") ++this.tab_count;
+    else this.tab_count = 0;
     switch (e.key) {
         case "Enter":
             if (this.enter_count >= 3) {
@@ -677,6 +671,14 @@ TypeJig.prototype.keyDown = function (e) {
                 this.enter_count = 0;
             }
             break;
+
+        case "Tab":
+            if (this.tab_count >= 3) {
+                id = "end";
+                this.tab_count = 0;
+            }
+            e.preventDefault();
+            break;  
         case "ArrowLeft":
             id = "back";
             break;
@@ -707,7 +709,7 @@ TypeJig.prototype.updateWords = function (words, hardReset) {
         var typedWentOver =
             this.typedWords[i] && this.typedWords[i].typed.length > word.length;
         if (hardReset) {
-            if (this.exercise && this.exercise.enterPoints.includes(i)) {
+            if (this.exercise?.enterPoints?.includes(i)) {
                 display.appendChild(document.createTextNode("\n"));
             }
         }
@@ -817,27 +819,27 @@ TypeJig.prototype.updateWords = function (words, hardReset) {
 // };
 
 TypeJig.prototype.currentSpeed = function (seconds, prev) {
-    var minutes = seconds / 60; // KEEP fractional part for WPM calculation!
-    seconds = Math.floor((seconds % 60) * 10) / 10;
-    var time = Math.floor(minutes) + ":" + seconds;
+    // var minutes = seconds / 60; // KEEP fractional part for WPM calculation!
+    // seconds = Math.floor((seconds % 60) * 10) / 10;
+    // var time = Math.floor(minutes) + ":" + seconds;
 
-    var wordsFromSpaces = this.input.value.split(/\s+/).length;
-    var wordsFromChars = this.input.value.length / 5;
-    var words = this.actualWords ? wordsFromSpaces : wordsFromChars;
-    var WPM = words / minutes;
-    if (prev) WPM = (words - prev.words) / (minutes - prev.minutes);
-    var correctedWPM = WPM - this.errorCount / minutes;
-    var accuracy = 1 - this.errorCount / wordsFromSpaces;
-    return {
-        minutes: minutes,
-        time: time,
-        wordsFromSpaces: wordsFromSpaces,
-        wordsFromChars: wordsFromChars,
-        words: words,
-        WPM: WPM,
-        correctedWPM: correctedWPM,
-        accuracy: accuracy,
-    };
+    // var wordsFromSpaces = this.input.value.split(/\s+/).length;
+    // var wordsFromChars = this.input.value.length / 5;
+    // var words = this.actualWords ? wordsFromSpaces : wordsFromChars;
+    // var WPM = words / minutes;
+    // if (prev) WPM = (words - prev.words) / (minutes - prev.minutes);
+    // var correctedWPM = WPM - this.errorCount / minutes;
+    // var accuracy = 1 - this.errorCount / wordsFromSpaces;
+    // return {
+    //     minutes: minutes,
+    //     time: time,
+    //     wordsFromSpaces: wordsFromSpaces,
+    //     wordsFromChars: wordsFromChars,
+    //     words: words,
+    //     WPM: WPM,
+    //     correctedWPM: correctedWPM,
+    //     accuracy: accuracy,
+    // };
 };
 
 TypeJig.prototype.endExercise = function (seconds) {
@@ -851,31 +853,57 @@ TypeJig.prototype.endExercise = function (seconds) {
         let elt = this.lastAnswered;
         while (elt.nextSibling) elt.parentNode.removeChild(elt.nextSibling);
     }
+    this.showResults();
+};
 
-    const stats = this.currentSpeed(seconds);
-    var results = "Time: " + stats.time + " - " + Math.floor(stats.WPM);
-    if (this.actualWords) {
-        if (this.actualWords.unit) results += " " + this.actualWords.unit;
-        else results += " " + this.actualWords;
-    } else {
-        var plural = this.errorCount === 1 ? "" : "s";
-        results += " WPM (chars per minute/5)";
-        if (this.errorCount === 0) results += " with no uncorrected errors!";
-        else
-            results +=
-                ", adjusting for " +
-                this.errorCount +
-                " incorrect word" +
-                plural +
-                " (" +
-                Math.floor(100 * stats.accuracy) +
-                "%) gives " +
-                Math.floor(stats.correctedWPM) +
-                " WPM.";
-    }
+TypeJig.prototype.showResults = function () {
+    typedWords = this.input.value.replaceAll(/^\s+/g, "").split(/\s+/);
+    var seconds = this.clock.getTime(true);
+    var gradingResults = this.gradeTypeVsResult(
+        typedWords,
+        this.exercise.words
+    );
+    var errorCount = gradingResults.errorCount;
+    var totalWordCount = gradingResults.totalCount;
+
+    var minutes = seconds / 60; // KEEP fractional part for WPM calculation!
+    seconds = Math.floor((seconds % 60) * 10) / 10;
+    var time = Math.floor(minutes) + ":" + seconds;
+
+    // var wordsFromChars = this.input.value.length / 5;
+    var words = totalWordCount;
+    var WPM = words / minutes;
+    // if (prev) WPM = (words - prev.words) / (minutes - prev.minutes);
+
+    var correctWPM = gradingResults.correctCount / minutes;
+
+    var accuracy = 1 - errorCount / gradingResults.totalCount;
+
+    var results = "Time: " + time + " - " + Math.floor(WPM);
+    // if (this.actualWords) {
+    //     if (this.actualWords.unit) results += " " + this.actualWords.unit;
+    //     else results += " " + this.actualWords;
+    // } else {
+    var plural = errorCount === 1 ? "" : "s";
+    results += " WPM (chars per minute/5)";
+    if (errorCount === 0) results += " with no uncorrected errors!";
+    else
+        results +=
+            ", adjusting for " +
+            errorCount +
+            " incorrect word" +
+            plural +
+            " (" +
+            Math.floor(100 * accuracy) +
+            "%) gives " +
+            Math.floor(correctWPM) +
+            " WPM.";
+    // }
+
     results = "\n\n" + results;
     var start = this.resultsDisplay.textContent.length;
     var end = start + results.length;
+
     this.resultsDisplay.textContent += results;
     this.updateWords(this.exercise.words, true);
     this.renderChart(this.liveWPM.WPMHistory);
@@ -1057,7 +1085,6 @@ TypeJig.LiveWPM = function (elt, typeJig, showLiveWPM) {
     elt.innerHTML = "";
     this.typeJig = typeJig;
     this.prevSpeed = null;
-    this.WPMHistory = [];
     this.showLiveWPM = showLiveWPM;
 };
 
@@ -1066,7 +1093,6 @@ TypeJig.LiveWPM.prototype.update = function (seconds) {
     const unit = aw && aw.u ? aw.u : "WPM";
     const stats = this.typeJig.currentSpeed(seconds, this.prevSpeed);
     this.prevSpeed = stats;
-    this.WPMHistory.push(stats.correctedWPM);
     // Show the average of the last (up to) 5 samples
 
     //Get the average distance between the last 5 samples
@@ -1085,20 +1111,12 @@ TypeJig.LiveWPM.prototype.update = function (seconds) {
             persistantData[persistantData.length - 1].timeStamp -
             persistantData[persistantData.length - 11].timeStamp;
 
-        // const n = this.WPMHistory.length,
-        //     i0 = Math.max(0, n - 1 - 5);
-        // for (let i = i0; i < n; ++i) WPM += this.WPMHistory[i];
-        // WPM = WPM / (n - i0);
         if (this.showLiveWPM)
             this.elt.innerHTML =
                 "~" + Math.floor((10 / distance) * 60) + " " + unit;
     } else {
         distance = persistantData[persistantData.length - 1].timeStamp;
 
-        // const n = this.WPMHistory.length,
-        //     i0 = Math.max(0, n - 1 - 5);
-        // for (let i = i0; i < n; ++i) WPM += this.WPMHistory[i];
-        // WPM = WPM / (n - i0);
         if (this.showLiveWPM)
             this.elt.innerHTML =
                 "~" +
@@ -1127,19 +1145,12 @@ function movingAvg(array, countBefore, countAfter) {
     return result;
 }
 
-TypeJig.prototype.renderChart = function (series) {
+TypeJig.prototype.renderChart = function () {
     if (this.wpmChart) {
         this.wpmChart.destroy();
         delete this.wpmChart;
     }
 
-    series[0] = 0;
-    var rollingAverage = 0;
-    for (var i = 5; i > 0; --i) {
-        rollingAverage = 0;
-        for (var j = 0; j < i + 1; ++j) rollingAverage += series[j];
-        series[i] = rollingAverage / (i + 1);
-    }
 
     averageDatasetData = [
         {
@@ -1211,8 +1222,6 @@ TypeJig.prototype.renderChart = function (series) {
     averageDatasetData.sort(function (a, b) {
         return a.x - b.x;
     });
-
-    series = movingAvg(series, 4, 4);
 
     //Apply a rolling average of 5 to the data
 
@@ -1316,6 +1325,7 @@ TypeJig.Timer = function (elt, countdownMs, onUpdate) {
     this.showTime();
     this.onUpdate = onUpdate || function () {};
     this.running = false;
+    console.log("Timer", this);
 };
 
 /**

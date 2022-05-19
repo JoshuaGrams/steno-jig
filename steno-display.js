@@ -9,7 +9,7 @@
 // in `style.css`.
 
 function StenoDisplay(container, translations, showEmpty) {
-	console.log("Creating StenoDisplay", container, translations, showEmpty)
+    console.log("Creating StenoDisplay", container, translations, showEmpty);
     if (typeof container === "string") {
         container = document.getElementById(container);
     }
@@ -29,14 +29,13 @@ StenoDisplay.prototype.update = function (text, x, y) {
     text = text || "";
     if (text !== this.lastText) {
         //The input text is 10 words long. see if 10 words matches. if not try 9 words. ect
-        
+
         var words = text.split(" ");
 
-        for (var i = words.length;i > 0; i--) {
-            var subString = words.slice(0,i).join(" ");
+        for (var i = words.length; i > 0; i--) {
+            var subString = words.slice(0, i).join(" ");
 
             var strokes = this.lookup(subString);
-            console.log("strokes", strokes)
             if (!strokes) {
                 // this.errorLog.innerHTML += "No strokes for: " + text + "<br>";
                 continue;
@@ -52,62 +51,85 @@ StenoDisplay.prototype.update = function (text, x, y) {
             break;
         }
 
-
-                
-        
-
-
-
-
-
-
         this.lastText = text;
-        
     }
 };
 
 StenoDisplay.prototype.lookup = function (text) {
-    console.log("Looking up", text)
-    var strokes = this.lookupEntry(text);
-    if (!strokes) {
-		text = text.toLowerCase();
-        strokes = this.lookupEntry(text);
-    }
+    for (let index = 0; index < this.pseudoStenoFor.length; index++) {
+        const dictionary = this.pseudoStenoFor[index];
 
-    if (!strokes) {
-        var match = preOrPostChars.exec(text);
-        if (match) {
-            preStrokes = this.lookupEntry(match[1]);
-            textStrokes = this.lookupEntry(match[2]);
-            postStrokes = this.lookupEntry(match[3]);
-            if (preStrokes || textStrokes || postStrokes) {
-                strokes = [];
-                strokes.multi = true;
-                if (match[1]) strokes.push(preStrokes);
-                if (match[2]) strokes.push(textStrokes);
-                if (match[3]) strokes.push(postStrokes);
+        console.log("Looking up", text, index);
+
+        var strokes = this.lookupEntry(text, dictionary);
+        if (!strokes) {
+            text = text.toLowerCase();
+            strokes = this.lookupEntry(text, dictionary);
+        }
+
+        if (!strokes) {
+            //Get the last letter and see if its punctuation
+            var lastLetter = text.slice(-1);
+            if (lastLetter.match(/[.?,!]/)) {
+                text = text.slice(0, -1);
+                strokes = this.lookupEntry(text, dictionary);
+                if (strokes) {
+                    console.log("Found punctuation", text, strokes, lastLetter);
+                    switch (lastLetter) {
+                        case ".":
+                            strokes = strokes.map((stroke) => {
+                                return (stroke += "/TP-PL");
+                            });
+                            break;
+                        case ",":
+                            strokes = strokes.map((stroke) => {
+                                return (stroke += "/KW-BG");
+                            });
+                            break;
+                        case "?":
+                            strokes = strokes.map((stroke) => {
+                                return (stroke += "/KW-PL");
+                            });
+                            break;
+                        case "!":
+                            strokes = strokes.map((stroke) => {
+                                return (stroke += "/TP-BG");
+                            });
+                            break;
+                    }
+                    console.log("Resulting punctuation", strokes);
+                }
             }
         }
+
+        console.log("Found", strokes);
+        if (!strokes) {
+            continue;
+        }
+        strokes.sort(function (a, b) {
+            var aSlashes = a.split("/").length;
+            var bSlashes = b.split("/").length;
+            return aSlashes - bSlashes;
+        });
+
+        return strokes;
     }
-    return strokes;
+    return "";
 };
 
-StenoDisplay.prototype.lookupEntry = function (text) {
-    console.log("Looking up entry", text)
+StenoDisplay.prototype.lookupEntry = function (text, dictionary) {
     for (let index = 0; index < this.pseudoStenoFor.length; index++) {
         const dictionary = this.pseudoStenoFor[index];
         var strokes = dictionary[text] || "";
         if (!strokes && /^[0-9]+$/.test(text)) {
             strokes = this.numberStrokes(text);
         }
-        console.log("inner strokes", strokes)
-        if(strokes == "") {
+        if (strokes == "") {
             continue;
         }
         return strokes;
     }
-    return ""
-
+    return "";
 };
 
 var stenoNumKeyOrder = "#123450I6789D";
@@ -159,7 +181,7 @@ StenoDisplay.prototype.numberStrokes = function (text) {
 };
 
 StenoDisplay.prototype.set = function (pseudoSteno, showEmpty) {
-	console.log("Setting", pseudoSteno, showEmpty)
+    console.log("Setting", pseudoSteno, showEmpty);
     for (i = 0; i < this.strokes.length; ++i) this.strokes[i].hide();
 
     if (pseudoSteno !== "" || showEmpty) {
@@ -199,12 +221,12 @@ StenoDisplay.prototype.showTranslation = function (pseudoSteno, i0, separator) {
 };
 
 StenoDisplay.prototype.hide = function () {
-	console.log("Hiding");
-	console.trace()
+    console.log("Hiding");
+    console.trace();
     this.container.style.display = "none";
 };
 StenoDisplay.prototype.show = function () {
-	console.log("Showing")
+    console.log("Showing");
     this.container.style.display = "block";
 };
 
