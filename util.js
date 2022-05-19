@@ -62,7 +62,7 @@ function new_rng(seed_txt) {
 }
 
 function initializeHints(hints, floating_hints) {
-    if (!hints) return null;
+    // if (!hints) return null;
 
     var strokes = document.getElementById("strokes");
     if (floating_hints) {

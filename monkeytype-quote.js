@@ -63,6 +63,26 @@ window.addEventListener('load', function() {
 		evt.preventDefault()
 		jig.reset()
 	})
+
+	let end = document.getElementById('end')
+	end.addEventListener('click', function(evt) {
+		evt.preventDefault()
+		jig.endExercise()
+	})
+	
+
+	let showHint = document.getElementById('show-hint')
+	showHint.addEventListener('click', function(evt) {
+		evt.preventDefault()
+		jig.hint.show()
+	})
+
+	let hideHint = document.getElementById('hide-hint')
+	hideHint.addEventListener('click', function(evt) {
+		evt.preventDefault()
+		jig.hint.hide()
+	})
+
 	let another = document.getElementById('new')
 	another.href = replaceID(document.location.href)
 })

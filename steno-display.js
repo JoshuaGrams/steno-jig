@@ -226,7 +226,7 @@ StenoDisplay.prototype.hide = function () {
     this.container.style.display = "none";
 };
 StenoDisplay.prototype.show = function () {
-    console.log("Showing");
+    console.trace("Showing");
     this.container.style.display = "block";
 };
 

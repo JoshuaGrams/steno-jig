@@ -25,7 +25,8 @@ function TypeJig(exercise, options) {
     );
 
     this.hint = initializeHints(options.hints);
-    if (this.hint) this.hint.show();
+    if (options.hints) this.hint.show();
+    else this.hint.hide();
 
     if (!options.show_timer) this.clock.hide();
 
@@ -75,13 +76,22 @@ function TypeJig(exercise, options) {
 }
 
 TypeJig.prototype.reset = function () {
+    this.enter_count = 0;
+
+    this.showing_hint_on_word = "";
+
+
+    this.persistentWordData = [];
+
+    this.lastTypedWordID = -1;
+
     this.display.style.width = "100%";
     this.exercise.calculateBreakPoints(this.display);
 
     this.liveWPM.reset();
     this.display.style.width = "200%";
     this.typedWords = [];
-    this.enter_count = 0;
+
     this.resultsDisplay.textContent = "";
     if (this.exercise && !this.exercise.started) {
         this.display.textContent = "";
@@ -361,6 +371,7 @@ TypeJig.prototype.gradeTypeVsResult = function (typedWords, expectedWords) {
                 this.persistentWordData[typedIndex] = {
                     ...this.persistentWordData[typedIndex],
                     failed: true,
+                    typed: this.persistentWordData[typedIndex]?.typed ? this.persistentWordData[typedIndex].typed : typed,
                 };
             }
 
@@ -449,7 +460,6 @@ TypeJig.prototype.displayTypedWords = function (typedWords) {
 
     var output = document.createElement("div");
 
-
     for (let i = 0; i < typedWords.length; i++) {
         var word = typedWords[i];
         //insert space if not the first word
@@ -489,13 +499,11 @@ TypeJig.prototype.displayTypedWords = function (typedWords) {
             var typedSpan = document.createElement("span");
             typedSpan.appendChild(document.createTextNode(ans));
             if (match != null)
-                typedSpan.className = 
-                    !match
+                typedSpan.className = !match
                     ? "incorrect"
-                    :
-                    persistentData?.failed
+                    : persistentData?.failed
                     ? "corrected"
-                    : "correct"
+                    : "correct";
             output.appendChild(typedSpan);
             continue;
         } else if (match) {
@@ -678,12 +686,18 @@ TypeJig.prototype.keyDown = function (e) {
                 this.tab_count = 0;
             }
             e.preventDefault();
-            break;  
+            break;
         case "ArrowLeft":
             id = "back";
             break;
         case "ArrowRight":
             id = "new";
+            break;
+        case "ArrowUp":
+            id = "show-hint";
+            break;
+        case "ArrowDown":
+            id = "hide-hint";
             break;
     }
     if (id) {
@@ -822,7 +836,6 @@ TypeJig.prototype.currentSpeed = function (seconds, prev) {
     // var minutes = seconds / 60; // KEEP fractional part for WPM calculation!
     // seconds = Math.floor((seconds % 60) * 10) / 10;
     // var time = Math.floor(minutes) + ":" + seconds;
-
     // var wordsFromSpaces = this.input.value.split(/\s+/).length;
     // var wordsFromChars = this.input.value.length / 5;
     // var words = this.actualWords ? wordsFromSpaces : wordsFromChars;
@@ -854,7 +867,40 @@ TypeJig.prototype.endExercise = function (seconds) {
         while (elt.nextSibling) elt.parentNode.removeChild(elt.nextSibling);
     }
     this.showResults();
+    this.saveErrorsInLocalStorage();
 };
+
+
+TypeJig.prototype.saveErrorsInLocalStorage = function () {
+    var errors = JSON.parse(localStorage.getItem("errors"));
+    if (!errors) errors = [];
+
+    //Get each occurance of an error in the TypedWords and save the word before and after
+    for (let i = 0; i < this.typedWords.length; i++) {
+        var typedWord = this.typedWords[i];
+        var persistantData = this.persistentWordData?.[i];
+        if (typedWord.correct == false) {
+            var error = [
+                this.typedWords[i - 1] ? this.typedWords[i - 1].typed : "",
+                typedWord.typed,
+                typedWord.expected,
+            ];
+            errors.push(error);
+        }
+        else if(persistantData?.failed){
+            errors.push([
+                this.typedWords[i - 1] ? this.typedWords[i - 1].typed : "",
+                persistantData?.typed,
+                typedWord.expected,
+            ]);
+        }
+    }
+    localStorage.setItem("errors", JSON.stringify(errors));
+};
+
+
+
+
 
 TypeJig.prototype.showResults = function () {
     typedWords = this.input.value.replaceAll(/^\s+/g, "").split(/\s+/);
@@ -1150,7 +1196,6 @@ TypeJig.prototype.renderChart = function () {
         this.wpmChart.destroy();
         delete this.wpmChart;
     }
-
 
     averageDatasetData = [
         {
