@@ -60,12 +60,16 @@ body {
 	top: 0;
 }
 
+
 .form-section {
 	padding: 0.8em 1em;
 	margin: 0.5em 0;
 	border: 1px solid var(--form-border);
 	border-radius: 0.2em;
 	box-shadow: 0.1em 0.2em 0.4em var(--form-shadow);
+}
+.selected-form-section {
+	border-color: red
 }
 
 /*

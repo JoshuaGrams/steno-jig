@@ -11,6 +11,7 @@
 	<script src="steno-display.js"></script>
 	<script src="word-sets.js"></script>
 	<script src="plover-translations.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="chart.js"></script>
 <script src="chartjs-plugin-datalabels.js"></script>	<link rel="stylesheet" type="text/css" href="font-roboto.css">
 </head>
@@ -333,11 +334,94 @@ window.onload = function() {
 	}
 }
 
+
+//
+
+
 loadSettings()
 if(storageAvailable('localStorage') && localStorage.custom != null) {
 	let custom = document.getElementById('custom')
 	custom.elements.drill.value = localStorage.custom
 }
+
+$(document).ready(function () {
+	// Get keyboard input from entire page
+	$('body').keydown(function (e) {
+		console.log(e)
+		//prevent deafault
+		// e.preventDefault();
+
+
+		//If key is down find the div with the class "selected-form-section". If there is no div with the class "selected-form-section" then select the first div.
+		//Then set the div below it to be the div with the class "selected-form-section".
+
+		
+
+
+
+
+
+
+		var key = e.which;
+		if (key == 13) {
+			// Enter key
+			var selected = $('.selected-form-section');
+			//Find the button inside of the selected div and click it. recurse
+			console.log(selected)
+			selected.find('button').click();
+		} else if (key == 32) {
+			// Space
+			$('#show-hint').click();
+		} else if (key == 37) {
+			// Left arrow
+			$('#back').click();
+		} else if (key == 39) {
+			// Right arrow
+			$('#again').click();
+		} else if (key == 40) {
+			// Down arrow
+			var selectedDiv = $('.selected-form-section');
+			if (selectedDiv.length == 0) {
+				$('.form-section').first().addClass('selected-form-section');
+			} else {
+				selectedDiv.removeClass('selected-form-section');
+				selectedDiv.next().addClass('selected-form-section');
+			}
+			//scroll to the selected div keeping it centered. but handle fast repeated keystrokes. wait for a second before scrolling.
+			
+			//Wait for a momnet
+			setTimeout(function () {
+							$('.selected-form-section')[0].scrollIntoView({ block: "center" });
+
+			}, 10);
+				
+		} else if (key == 38) {
+			// Up arrow
+			var selectedDiv = $('.selected-form-section');
+			if (selectedDiv.length == 0) {
+				$('.form-section').last().addClass('selected-form-section');
+			} else {
+				selectedDiv.removeClass('selected-form-section');
+				selectedDiv.prev().addClass('selected-form-section');
+			}
+			//scroll to the selected div keeping it centered. but handle fast repeated keystrokes
+			setTimeout(function () {
+				$('.selected-form-section')[0].scrollIntoView({ block: "center" });
+			}, 10);
+		} 
+
+
+
+
+
+
+
+	});
+
+	// jQuery methods go here...
+
+});
+
 </script>
 
 </body>
