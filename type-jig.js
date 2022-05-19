@@ -597,8 +597,12 @@ function checkMatch(typed, expected) {
 
 TypeJig.prototype.answerChanged = function () {
     delete this.pendingChange;
-    typedWords = this.input.value.replaceAll("^\\s+", "").split(/\s+/);
+    typedWords = this.input.value.replaceAll(/^\s+/g, "").split(/\s+/);
 
+    //replace all leading spaces if they exist
+    
+
+     
     if (this.resultsDisplay.textContent !== "") return;
     if (!this.running && !!this.input.value.trim()) {
         this.start();
