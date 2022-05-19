@@ -71,6 +71,7 @@ function initializeHints(hints, floating_hints) {
     var translations = TypeJig.shortestTranslations(
         TypeJig.Translations.Plover
     );
+    console.log("Making stenoDisplay");
     return new StenoDisplay(strokes, translations, true);
 }
 
@@ -82,6 +83,7 @@ function changeName(name) {
 }
 
 function setExercise(name, exercise, hints, options, jig) {
+    console.log("Setting exercise", name, exercise, hints, options);
     var h = document.getElementById("lesson-name");
     h.textContent = name;
     document.title = name + " - Steno Jig";
@@ -96,10 +98,7 @@ function setExercise(name, exercise, hints, options, jig) {
     again.href = document.location.href;
 
     if (jig != null) jig.exercise = exercise;
-    else jig = new TypeJig(exercise, hints, options);
-    window.setTimeout(function () {
-        jig.reset();
-    }, 0);
+    else jig = new TypeJig(exercise, options);
     return jig;
 }
 

@@ -1,0 +1,81 @@
+<!-- A webpage that allows the upload of a custom json file. Then you can give that file a name click save and then it gets saved under local storage -->
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Custom Dictionary Upload</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css">
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+</head>
+<body>
+<section class="section">
+    <div class="container">
+        <h1 class="title">
+            Custom Dictionary Upload
+        </h1>
+        <h2 class="subtitle">
+            Upload a custom dictionary file and give it a name.
+        </h2>
+        <form action="custom-dictionary-upload.php" method="post" enctype="multipart/form-data">
+            <div class="field">
+                <label class="label">Files (Priority top to bottom)</label>
+                <!-- Allow unload of many files and have drag and drop encouraged-->
+                <div class="control">
+                    <input class="input" type="file" name="fileToUpload[]" id="fileToUpload1" >
+                </div>
+                <div class="control">
+                    <input class="input" type="file" name="fileToUpload[]" id="fileToUpload2">
+                </div>
+                <div class="control">
+                    <input class="input" type="file" name="fileToUpload[]" id="fileToUpload3">
+                </div>
+                <div class="control">
+                    <input class="input" type="file" name="fileToUpload[]" id="fileToUpload4">
+                </div>
+            </div>
+            <div class="field">
+                <div class="control">
+                    <button class="button is-primary" id="submit" type="submit" name="submit">Save</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</body>
+<script>
+
+    //When the user clicks Save the dictionary is saved to local storage
+    document.getElementById("submit").addEventListener("click", function (event) {
+        console.log("clicked");
+        event.preventDefault();
+        var filesToUpload = document.getElementById("fileToUpload1").files[0];
+        var filesToUpload2 = document.getElementById("fileToUpload2").files[0];
+        var filesToUpload3 = document.getElementById("fileToUpload3").files[0];
+        var filesToUpload4 = document.getElementById("fileToUpload4").files[0];
+        
+        var texts = []
+        if (filesToUpload) texts.push(filesToUpload.text());
+        if (filesToUpload2) texts.push(filesToUpload2.text());
+        if (filesToUpload3) texts.push(filesToUpload3.text());
+        if (filesToUpload4) texts.push(filesToUpload4.text());
+
+
+        Promise.all(texts).then(function (values) {
+            customDictionaries = [];
+            values.forEach(value => {
+                console.log(value)
+                console.log(JSON.parse(value));
+                customDictionaries.push(JSON.parse(value));
+            });
+            
+            localStorage.setItem("customDictionaries", JSON.stringify(customDictionaries));
+
+            //redirect the user back up one level
+
+            window.history.back();
+        });
+        
+        
+
+    });
+</script>
+</html>

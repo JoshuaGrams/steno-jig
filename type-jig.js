@@ -5,13 +5,11 @@
  * `output`, and `clock` are elements (or element ID strings).
  */
 
-function TypeJig(exercise, hint, options) {
+function TypeJig(exercise, options) {
     this.exercise = exercise;
 
     this.display = documentElement("exercise");
     this.answerDisplay = documentElement("answer");
-    console.log(this.display, this.display.parentNode);
-    console.log(this.answerDisplay, this.answerDisplay.parentNode);
     this.input = documentElement("input");
     this.resultsDisplay = documentElement("results");
     const liveWPM = documentElement("live-wpm-display");
@@ -20,7 +18,10 @@ function TypeJig(exercise, hint, options) {
     this.liveWPM = new TypeJig.LiveWPM(liveWPM, this, options.live_wpm);
     const updateWPM = this.liveWPM.update.bind(this.liveWPM);
     this.clock = new TypeJig.Timer(clockElt, exercise.seconds, updateWPM);
-    this.hint = hint;
+
+    this.hint = initializeHints(options.hints);
+    this.hint.show();
+
     if (!options.show_timer) this.clock.hide();
 
     this.live_wpm = options.live_wpm;
@@ -101,12 +102,17 @@ TypeJig.prototype.reset = function () {
         }
 
     if (this.hint && this.hint.update) {
-        var word = (this.display.textContent.match(/^\S+/) || [""])[0];
+        //Get a string containing the next 10 words. if its at the end of the list get as much as you can.
+     
+
+
+        var word = this.exercise.words[0];
         var rect = this.display.getBoundingClientRect();
+
         this.hint.update(word, rect.left, rect.top);
     }
 
-    if (this.hint && this.hint_on_fail) this.hint.hide();
+    if (this.hint && this.hint_on_fail) this.hint.show();
 
     // this.display.previousElementSibling.textContent = '';
 
@@ -118,7 +124,6 @@ TypeJig.prototype.reset = function () {
 
     this.running = false;
     this.clock.reset();
-    console.log("Reseeting");
     this.updateWords(this.exercise.words, true);
     this.displayTypedWords([]);
     window.scroll(0, scrollOffset(this.display));
@@ -135,11 +140,17 @@ TypeJig.Translations = {};
 
 TypeJig.processTranslations = function (t, fn) {
     var out = {};
-    var has = Object.prototype.hasOwnProperty;
-    for (var text in t)
-        if (has.call(t, text)) {
-            out[text] = fn(t[text], text);
+    
+    //Flip around the keys and values. treating duplicates as a list.
+    for (var key in t) {
+        var value = t[key];
+        //If the value is already in the output as a list
+        if (out[value] instanceof Array) {
+            out[value].push(key);
+        } else {
+            out[value] = [key];
         }
+    }
     return out;
 };
 
@@ -150,9 +161,24 @@ TypeJig.longestTranslations = function (t) {
 };
 
 TypeJig.shortestTranslations = function (t) {
-    return TypeJig.processTranslations(t, function (steno, text) {
-        return steno instanceof Array ? steno[steno.length - 1] : steno;
-    });
+    //Get the custom dictionarys from localstorage
+    customDictionariesString = localStorage.getItem("customDictionaries");
+    console.log(customDictionariesString);
+    var customDictionaries = []
+    if(customDictionariesString){
+        
+        JSON.parse(customDictionariesString).forEach((dictionary) => {
+            customDictionaries.push(TypeJig.processTranslations(dictionary));
+        });
+    }
+    
+    customDictionaries.push(TypeJig.processTranslations(t));
+
+    console.log("Custom dic",customDictionaries);
+
+
+
+    return customDictionaries;
 };
 
 // Arrays of strings (or of arrays of strings).
@@ -174,7 +200,6 @@ TypeJig.prototype.start = function () {
 };
 
 TypeJig.prototype.tick = function () {
-    console.log("ticking");
     var s = this.speed;
     if (!(this.running && s && s.current)) return;
     var fn = this.tick.bind(this);
@@ -214,7 +239,6 @@ TypeJig.prototype.setWord = function (word, id) {
 };
 
 TypeJig.prototype.onWord = function (word, id) {
-    // console.log("onWord", word);
     this.typedWords.forEach((element) => {
         element.current = false;
     });
@@ -267,8 +291,6 @@ TypeJig.prototype.onWord = function (word, id) {
 };
 
 TypeJig.prototype.gradeTypeVsResult = function (typedWords, expectedWords) {
-    // console.log("answerChanged", this.input.value);
-
     var range = document.createRange();
     range.setStart(this.display.firstElementChild, 0);
     range.setEnd(this.display.firstElementChild, 1);
@@ -298,14 +320,6 @@ TypeJig.prototype.gradeTypeVsResult = function (typedWords, expectedWords) {
         matchResult = checkMatch(typed, expected);
         var lastTypedWord = typedIndex === typedWords.length - 1;
 
-        // console.log(
-        //     "matchResult",
-        //     matchResult,
-        //     typedIndex,
-        //     expectedIndex,
-        //     typed,
-        //     expected
-        // );
         if (matchResult) {
             wordList.push({
                 correct: true,
@@ -329,18 +343,10 @@ TypeJig.prototype.gradeTypeVsResult = function (typedWords, expectedWords) {
         //Check if we are on an erranious word and further on we type a correct word
         let addedWordsOffset = 0;
         for (let offset = 1; offset < 5; offset++) {
-            // console.log("offset", offset, typedIndex, typedWords.length);
             if (typedIndex + offset >= typedWords.length) break;
             const offsetTypedWord = typedWords[typedIndex + offset];
             offsetMatch = checkMatch(offsetTypedWord, expected);
-            // console.log(
-            //     "-offset Test (" + offset + "): ",
-            //     offsetMatch,
-            //     typedIndex + offset,
-            //     expectedIndex,
-            //     offsetTypedWord,
-            //     expected
-            // );
+
             if (offsetMatch != false) {
                 addedWordsOffset = offset;
                 break;
@@ -361,9 +367,6 @@ TypeJig.prototype.gradeTypeVsResult = function (typedWords, expectedWords) {
                 break;
             }
         }
-        // console.log("-Possible Correction");
-        // console.log("   -Added Word " + addedWordsOffset);
-        // console.log("   -Dropped Word " + droppedWordOffset);
 
         //Chose the lower of the two that are not zero
 
@@ -371,7 +374,6 @@ TypeJig.prototype.gradeTypeVsResult = function (typedWords, expectedWords) {
 
         if (addedWordsOffset == 0 && droppedWordOffset == 0) {
             if (typed.length > 0) {
-                console.log("failed index:" + typedIndex, typed, expected);
                 this.persistentWordData[typedIndex] = {
                     ...this.persistentWordData[typedIndex],
                     failed: true,
@@ -393,7 +395,6 @@ TypeJig.prototype.gradeTypeVsResult = function (typedWords, expectedWords) {
 
         //If one of them are a solution
         if (addedWordsOffset <= droppedWordOffset) {
-            // console.log("-Correcting added word", addedWordsOffset);
             addedWords = [];
             for (let i = 0; i < addedWordsOffset; i++) {
                 addedWords.push(typedWords[typedIndex + i]);
@@ -444,12 +445,10 @@ TypeJig.prototype.gradeTypeVsResult = function (typedWords, expectedWords) {
         ...LastWord,
         timeStamp: this.clock.getTime(),
     };
-    // console.log("wordList", wordList);
     return wordList;
 };
 
 TypeJig.prototype.displayTypedWords = function (typedWords) {
-    // console.log("displayTypedWords", typedWords);
     delete this.pendingChange;
 
     var ex, match;
@@ -466,12 +465,10 @@ TypeJig.prototype.displayTypedWords = function (typedWords) {
         //insert space if not the first word
 
         if (word.typed == "" && word.expected == "") {
-            // console.log("Skipping blank word");
             continue;
         }
 
         if (i != 0) {
-            // console.log("Adding space");
             output.appendChild(document.createTextNode(" "));
         }
 
@@ -567,9 +564,10 @@ TypeJig.prototype.displayTypedWords = function (typedWords) {
 
     // if (match) ex = nextWord(exercise, range);
 
-    if (this.hint && this.hint.update) {
-        this.hint.update(ex);
-    }
+    // if (this.hint && this.hint.update) {
+    //     var rect = output.getBoundingClientRect();
+    //     this.hint.update(word, rect.left, rect.top);
+    // }
 
     if (
         ex !== this.showing_hint_on_word &&
@@ -578,10 +576,8 @@ TypeJig.prototype.displayTypedWords = function (typedWords) {
         this.hint
     ) {
         this.showing_hint_on_word = "";
-        this.hint.hide();
+        // this.hint.show();
     }
-    console.log(this.answerDisplay);
-    //  var oldOutput = this.answerDisplay;
     output.id = this.answerDisplay.id;
     this.answerDisplay.parentNode.replaceChild(output, this.answerDisplay);
     this.answerDisplay = output;
@@ -609,11 +605,6 @@ TypeJig.prototype.answerChanged = function () {
     }
     this.typedWords = this.gradeTypeVsResult(typedWords, this.exercise.words);
 
-    console.log(
-        this.typedWords.length,
-        this.exercise.words.length,
-        this.typedWords[this.typedWords.length - 1].correct
-    );
     if (
         this.typedWords.length >= this.exercise.words.length &&
         this.typedWords[this.typedWords.length - 1].correct
@@ -622,11 +613,39 @@ TypeJig.prototype.answerChanged = function () {
     }
     this.updateCursor(this.answerDisplay);
 
-    // var r = range.getBoundingClientRect();
+    //Get the expected value of the next word
 
-    // if(this.hint && this.hint.update) {
-    // 	this.hint.update(ex, r.left, r.top);
-    // }
+    var r = this.answerDisplay.getBoundingClientRect();
+    var nextWord = this.exercise.words[this.typedWords.length];
+    var thisTypedWord = this.typedWords[this.typedWords.length - 1];
+
+    if (this.hint && this.hint.update) {
+        if (
+            thisTypedWord &&
+            (thisTypedWord.correct == null || thisTypedWord.typed == "")
+        ) {
+             
+            var nextWords = this.exercise.words.slice(
+                this.typedWords.length - 1,
+                Math.min(
+                    this.typedWords.length + 10,
+                    this.exercise.words.length
+                )
+            ).join(" ");
+            this.hint.update(nextWords, r.left, r.top);
+        } else {
+            var nextWords = this.exercise.words
+                .slice(
+                    this.typedWords.length ,
+                    Math.min(
+                        this.typedWords.length + 10,
+                        this.exercise.words.length
+                    )
+                )
+                .join(" ");
+            this.hint.update(nextWords, r.left, r.top);
+        }
+    }
 
     // if(ex !== this.showing_hint_on_word && this.hint_on_fail && match && this.hint){
     // 	this.showing_hint_on_word = "";
@@ -670,7 +689,6 @@ TypeJig.prototype.keyDown = function (e) {
 };
 
 TypeJig.prototype.updateWords = function (words, hardReset) {
-    console.profile();
     var display = this.display;
 
     if (hardReset) {
@@ -752,18 +770,15 @@ TypeJig.prototype.updateWords = function (words, hardReset) {
         }
     }
     if (hardReset) {
-        console.log(display);
         this.display.parentNode.replaceChild(display, this.display);
     }
     function focusInput(evt) {
         self.input.focus();
         evt.preventDefault();
     }
-    unbindEvent(this.display, "click", focusInput); 
+    unbindEvent(this.display, "click", focusInput);
     this.display = display;
     bindEvent(this.display, "click", focusInput);
-
-    console.profileEnd();
 };
 
 // TypeJig.prototype.getWords = function(n) {
@@ -1139,7 +1154,6 @@ TypeJig.prototype.renderChart = function (series) {
     }
 
     combinedData.sort((a, b) => a.timeStamp - b.timeStamp);
-    console.log(combinedData);
 
     for (let i = 0; i < combinedData.length; i++) {
         var pastValue = combinedData[i].timeStamp ?? 0;
@@ -1147,7 +1161,6 @@ TypeJig.prototype.renderChart = function (series) {
         var currentValues = 0;
 
         for (let j = i; j > 0; j--) {
-            console.log("1230 ", i, j, combinedData[i], combinedData[j]);
             if (currentValues >= 10) break;
             if (combinedData[j].correct == false) {
                 continue;
@@ -1163,8 +1176,6 @@ TypeJig.prototype.renderChart = function (series) {
             ...combinedData[i],
         });
     }
-
-    console.log(averageDatasetData);
 
     totalDataDataset = [
         {
@@ -1245,31 +1256,6 @@ TypeJig.prototype.renderChart = function (series) {
         ],
     };
 
-    // const scatterDataLables = {
-    //     id:"scatterDataLables",
-    //     afterDatasetsDraw(chart, args, options){
-    //         console.log("PLUGIN")
-    //         const {ctx} = chart;
-    //         ctx.save()
-    //         ctx.font = "12px sans-serif";
-    //         for (let x = 0; x < chart.config.data.datasets.length; x++) {
-    //             const dataSet = chart.config.data.datasets[x];
-    //             for (let i = 0; i < dataSet.data.length; i++) {
-    //                 const dataPoint = dataSet.data[i];
-
-    //                 let textWidth = ctx.measureText(dataPoint.expected).width;
-
-    //                 ctx.fillText(
-    //                     dataPoint.expected,
-    //                     chart.getDatasetMeta(x).data[i].x - textWidth / 2,
-    //                     chart.getDatasetMeta(x).data[i].y - 10
-    //                 );
-    //             }
-    //         }
-    //         ctx.restore()
-    //     }
-    // }
-
     const config = {
         type: "scatter",
         data: data,
@@ -1282,7 +1268,6 @@ TypeJig.prototype.renderChart = function (series) {
                     displayColors: false,
                     callbacks: {
                         title: function (context) {
-                            console.log(context);
                             return context[0].raw.expected;
                             return [
                                 all.datasets[tooltipItem[0].datasetIndex].data[
@@ -1291,7 +1276,6 @@ TypeJig.prototype.renderChart = function (series) {
                             ];
                         },
                         label: function (context) {
-                            console.log("context", context);
                             return [
                                 "WPM :" + context.raw.y.toFixed(),
                                 context.raw.x.toFixed(2) + "s",
@@ -1359,7 +1343,6 @@ TypeJig.Timer.prototype.start = function (alarm) {
 };
 
 TypeJig.Timer.prototype.stop = function () {
-    // console.log("STOP");
     var elapsed = (new Date().getTime() - this.startTime) / 1000;
     if (this.onFinished) this.onFinished(elapsed);
     delete this.startTime;
@@ -1405,7 +1388,6 @@ TypeJig.Timer.prototype.hide = function () {
 // -----------------------------------------------------------------------
 
 TypeJig.Exercise = function (words, seconds, shuffle, select, speed) {
-    console.log("New Exersize", words, seconds, shuffle, select, speed);
     this.started = false;
     this.words = words;
     this.seconds = seconds;
@@ -1473,6 +1455,5 @@ TypeJig.Exercise.prototype.calculateBreakPoints = function (display) {
         // 		window.scrollBy(0, r.bottom - limit);
         // }
     }
-    // console.log("Enter points", this.enterPoints);
     return display;
 };

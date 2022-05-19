@@ -46,11 +46,10 @@ window.onload = function() {
 	var word_count = fields.word_count == null ? 100 : parseInt(fields.word_count)
 
 	var name = "Markov-chain generated sentences";
-	var hints = initializeHints(fields.hints, fields.floating_hints);
 	const ngrams = compute_ngrams(sentences, 3);
 	var exercise = generateMarkovExercise(ngrams, word_count, rng);
 
-	var jig = setExercise(name, exercise, hints, fields);
+	var jig = setExercise(name, exercise, null, fields);
 
 	var back = document.getElementById('back');
 	var again = document.getElementById('again');

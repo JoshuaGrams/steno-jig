@@ -26,6 +26,6 @@ again.addEventListener('click', function(evt) {
 another.parentNode.remove()
 
 const fields = parseQueryString(document.location.search)
-const hints = initializeHints(fields.hints, fields.floating_hints)
+
 let exercise, jig
 textLesson(fields.url)

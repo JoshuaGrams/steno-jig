@@ -30,11 +30,10 @@ window.onload = function() {
 	var wordCount = fields.word_count == null ? 100 : parseInt(fields.word_count)
 
 	var name = "Short Sentences"
-	var hints = initializeHints(fields.hints, fields.floating_hints)
 
 	var exercise = generateExercise(wordCount, rng)
 
-	var jig = setExercise(name, exercise, hints, fields)
+	var jig = setExercise(name, exercise, null, fields)
 
 	var back = document.getElementById('back')
 	var again = document.getElementById('again')

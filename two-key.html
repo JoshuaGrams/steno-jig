@@ -62,7 +62,7 @@
 		var hints = new StenoDisplay(strokes, translations, true);
 		if(query.hints === '') hints = null;
 		var exercise = new TypeJig.Exercise(words);
-		var jig = new TypeJig(exercise, hints);
+		var jig = new TypeJig(exercise);
 
 		var back = document.getElementById('back');
 		back.href = 'form.html';

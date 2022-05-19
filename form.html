@@ -258,6 +258,7 @@ function runExercise(fields) {
 		}
 		var options = fields;
 
+		options.hints = 1
 		displayOnly('lesson');
 		return setExercise(exercise.name, exercise, hints, options);
 	}
@@ -304,7 +305,7 @@ function runCustom(evt) {
 	TypeJig.WordSets.custom = [];
 	for(let i=0; i<n; ++i) TypeJig.WordSets.custom.push(...drill);
 	fields.drill = 'custom';
-	var jig = runExercise(fields);
+	var jig = runExercise(fields,);
 	var again = document.getElementById('again');
 	again.addEventListener('click', function(evt){
 		evt.preventDefault();

@@ -38,7 +38,6 @@ let jig, exercise, fields
 
 function go(ex) {
 	fields = parseQueryString(document.location.search)
-	let hints = initializeHints(fields.hints, fields.floating_hints)
 	if(ex == null) {
 		switch(fields.length) {
 			case 'short': fields.lo = 0; fields.hi = 100; break
@@ -52,7 +51,7 @@ function go(ex) {
 		exercise = generateExercise(fields.id, fields.lo, fields.hi)
 	} else exercise = ex
 
-	jig = setExercise(exercise.name, exercise, hints, fields, jig)
+	jig = setExercise(exercise.name, exercise, null, fields, jig)
 }
 
 window.addEventListener('load', function() {
