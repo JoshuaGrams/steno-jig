@@ -329,6 +329,7 @@ function tokenize(string, parsed) {
 	parsed ||= {}
 	parsed.tokens ||= []
 	parsed.spaceBefore ||= ''
+	parsed.string ||= ''
 	if(parsed.spaceBefore === '' && parsed.string != '' && !/^(\s|$)/.test(string)) {
 		parsed.spaceBefore = ' '
 	}
