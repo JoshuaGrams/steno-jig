@@ -48,6 +48,15 @@ StenoDisplay.prototype.update = function (text, x, y) {
                 this.container.style.left = x + "px";
                 this.container.style.top = y + "px";
             }
+
+            //Find the item with id "stroke-hint" and set its text to the text
+            //that was entered
+            var hint = document.getElementById("stroke-hint");
+            if(i > 1) {
+                hint.innerHTML = "There is a "+i+" word stroke available."
+            } else {
+                hint.innerHTML = ""
+            }
             break;
         }
 
@@ -112,7 +121,7 @@ StenoDisplay.prototype.lookup = function (text) {
             return aSlashes - bSlashes;
         });
 
-        return strokes;
+        return strokes
     }
     return "";
 };
@@ -127,6 +136,10 @@ StenoDisplay.prototype.lookupEntry = function (text, dictionary) {
         if (strokes == "") {
             continue;
         }
+        //remoce the strokes that have numbers in it
+        strokes = strokes.filter((stroke) => {
+            return !stroke.match(/[0-9]/);
+        });
         return strokes;
     }
     return "";
