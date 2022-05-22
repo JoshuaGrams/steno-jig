@@ -24,6 +24,9 @@ function TypeJig(exercise, display, results, input, clock, hint, options) {
 	this.live_cpm = options.live_cpm;
 	this.hint_on_fail = options.hints == "fail";
 	this.lastMismatch = -1;
+	if(typeof options.match === 'function') this.match = options.match
+	else if(options.actualWords) this.match = TypeJig.matchExact
+	else this.match = TypeJig.matchOtherSpellings
 
 	this.errorCount = 0;
 	this.enterCount = 0;
@@ -137,6 +140,65 @@ TypeJig.shortestTranslations = function(t) {
 	});
 }
 
+TypeJig.changeSpelling = {
+	advertise: "advertize", advertises: "advertizes", advertised: "advertized", advertising: "advertizing",
+	analyse: "analyze", analyses: "analyzes", analysed: "analyzed", analysing: "analyzing",
+	apologise: "apologize", apologises: "apologizes", apologised: "apologized", apologising: "apologizing",
+	cancelled: "canceled", cancelling: "canceling",
+	catalogue: "catalog", catalogues: "catalogs", catalogued: "cataloged", cataloguing: "cataloging",
+	centre: "center", centres: "centers", centred: "centered",
+	channelled: "chaneled", channelling: "channeling",
+	characterise: "characterize", characterises: "characterizes", characterised: "characterized", characterising: "characterizing",
+	colour: "color", colours: "colors", coloured: "colored", colouring: "coloring",
+	counselled: "counseled", counselling: "counseling",
+	criticise: "criticize", criticises: "criticizes", criticised: "criticized", criticising: "criticizing",
+	dialogue: "dialog", dialogues: "dialogs", dialogued: "dialoged", dialoguing: "dialoging",
+	draught: "draft", draughts: "drafts",
+	emphasise: "emphasize", emphasises: "emphasizes", emphasised: "emphasized", emphasising: "emphasizing",
+	equalled: "equaled", equalling: "equaling",
+	favour: "favor", favours: "favors", favoured: "favored", favouring: "favoring",
+	focusses: "focuses", focussed: "focused", focussing: "focusing",
+	fulfill: "fulfil", fulfills: "fulfils",
+	grey: "gray", grays: "grays", greying: "graying", greyer: "grayer", greyest: "grayest",
+	harbour: "harbor", harbours: "harbors", harboured: "harbored", harbouring: "harboring",
+	honour: "honor", honours: "honors", honoured: "honored", honouring: "honoring",
+	humour: "humor", humours: "humors", humoured: "humored", humouring: "humoring",
+	initialled: "intialed", initialling: "initialing",
+	labelled: "labeled", labelling: "labeling",
+	labour: "labor", labours: "labors", laboured: "labored", labouring: "laboring",
+	levelled: "leveled", levelling: "leveling",
+	license: "licence", licenses: "licences", licensed: "licenced", licensing: "licencing",
+	metre: "meter", metres: "meters",
+	modelled: "modeled", modelling: "modeling",
+	neighbour: "neighbor", neighbours: "neighbors", neighboured: "neighbored", neighbouring: "neighboring",
+	organise: "organize", organises: "organizes", organised: "organized", organising: "organizing",
+	panelled: "paneled", panelling: "paneling",
+	// practise: "practice", practises: "practices", practised: "practiced", practising: "practicing",
+	preferred: "prefered", preferring: "prefering",
+	programme: "program", programmes: "programs",
+	realise: "realize", realises: "realizes", realised: "realized", realising: "realizing",
+	recognise: "recognize", recognises: "recognizes", recognised: "recognized", recognising: "recognizing",
+	referred: "refered", referring: "refering",
+	revealled: "revealed", revealling: "revealing",
+	rivalled: "rivaled", rivalling: "rivaling",
+	signalled: "signaled", signalling: "signaling",
+	specialise: "specialize", specialises: "specializes", specialised: "specialized", specialising: "specializing",
+	summarise: "summarize", summarises: "summarizes", summarised: "summarized", summarising: "summarizing",
+	totalled: "totaled", totalling: "totaling",
+	traffick: "traffic", trafficks: "traffics",
+	travelled: "traveled", travelling: "traveling",
+	trialled: "trialed", trialling: "trialing",
+}
+
+TypeJig.matchExact = (a,b) => a === b
+
+TypeJig.matchOtherSpellings = (a,b) => {
+	const spelling = TypeJig.changeSpelling
+	a = spelling[a] || a
+	b = spelling[b] || b
+	return a === b
+}
+
 // Arrays of strings (or of arrays of strings).
 TypeJig.WordSets = {};
 TypeJig.flattenWordSet = function(a) {
@@ -218,7 +280,7 @@ TypeJig.prototype.answerChanged = function() {
 		var endOfAnswer = (a === actual.tokens.length-1)
 		const A = actual.tokens[a], E = expected.tokens[a] || {text:''}
 		var ac = A.text, ex = E.text
-		match = this.match == null? (ac == ex) : this.match(ac, ex)
+		match = this.match(ac, ex)
 		partial = endOfAnswer && ac.length < ex.length && ac === ex.slice(0, ac.length)
 		if(!(match || partial)) lastMismatch = a
 		if(match && a === this.lastMismatch) this.lastMismatch = -1
