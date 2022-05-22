@@ -684,26 +684,35 @@ TypeJig.prototype.renderChart = function(series) {
 		delete this.wpmChart
 	}
 
-	series = movingAvg(series, 4,4)
+	smoothed = movingAvg(series, 4,4)
 
 	const unit = this.token.u
 	const labels = [...Array(series.length).keys()]
 	const data = {
 		labels: labels,
-		datasets: [{
-			label: unit,
-			data: series,
-			fill: false,
-			borderColor: "#167ee8",
-			pointRadius: 0,
-			tension: 0.4,
-		}],
+		datasets: [
+			{
+				data: smoothed,
+				fill: false,
+				borderColor: "#000",
+				pointRadius: 0,
+				tension: 0.4,
+			},
+			{
+				data: series,
+				fill: true,
+				backgroundColor: "#accae8",
+				borderColor: "transparent",
+				pointRadius: 0,
+			}],
 	}
 
 	const config = {
 		type: "line",
 		data: data,
 		options: {
+			animation: {duration: 0},
+			plugins: {legend: {display: false}},
 			scales: {y: {beginAtZero: true }},
 			responsive: true,
 			maintainAspectRatio: false,
