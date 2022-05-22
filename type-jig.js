@@ -702,7 +702,7 @@ TypeJig.prototype.renderChart = function(series) {
 				data: series,
 				fill: true,
 				backgroundColor: "#accae8",
-				borderColor: "transparent",
+				borderWidth: 0,
 				pointRadius: 0,
 			}],
 	}
