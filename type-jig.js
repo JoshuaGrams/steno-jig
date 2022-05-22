@@ -140,7 +140,7 @@ TypeJig.shortestTranslations = function(t) {
 	});
 }
 
-TypeJig.changeSpelling = {
+TypeJig.alternateSpelling = {
 	advertise: "advertize", advertises: "advertizes", advertised: "advertized", advertising: "advertizing",
 	analyse: "analyze", analyses: "analyzes", analysed: "analyzed", analysing: "analyzing",
 	apologise: "apologize", apologises: "apologizes", apologised: "apologized", apologising: "apologizing",
@@ -173,7 +173,7 @@ TypeJig.changeSpelling = {
 	neighbour: "neighbor", neighbours: "neighbors", neighboured: "neighbored", neighbouring: "neighboring",
 	organise: "organize", organises: "organizes", organised: "organized", organising: "organizing",
 	panelled: "paneled", panelling: "paneling",
-	// practise: "practice", practises: "practices", practised: "practiced", practising: "practicing",
+	practise: "practice", practises: "practices", practised: "practiced", practising: "practicing",
 	preferred: "prefered", preferring: "prefering",
 	programme: "program", programmes: "programs",
 	realise: "realize", realises: "realizes", realised: "realized", realising: "realizing",
@@ -189,14 +189,21 @@ TypeJig.changeSpelling = {
 	travelled: "traveled", travelling: "traveling",
 	trialled: "trialed", trialling: "trialing",
 }
+for(const alternate in TypeJig.alternateSpelling) {
+	const primary = TypeJig.alternateSpelling[alternate]
+	if(alternate.substr(0, 2) !== primary.substr(0, 2)) {
+		throw new Error("first two characters of "+JSON.stringify(alternate)+" and "+JSON.stringify(primary)+" don't match: time to make TypeJig.matchOtherSpellings more robust.")
+	}
+}
 
 TypeJig.matchExact = (a,b) => a === b
 
-TypeJig.matchOtherSpellings = (a,b) => {
-	const spelling = TypeJig.changeSpelling
-	a = spelling[a] || a
-	b = spelling[b] || b
-	return a === b
+TypeJig.matchOtherSpellings = (A,B) => {
+	const a = A.toLowerCase(), b = B.toLowerCase()
+	const spelling = TypeJig.alternateSpelling
+	const spellingMatches = (spelling[a]||a) === (spelling[b]||b)
+	const caseMatches = A.substr(0,2) === B.substr(0,2)
+	return spellingMatches && caseMatches
 }
 
 // Arrays of strings (or of arrays of strings).
