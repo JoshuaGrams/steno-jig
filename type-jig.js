@@ -678,6 +678,12 @@ function movingAvg(array, countBefore, countAfter) {
 	return result
 }
 
+const secondsToString = s => {
+	const m = Math.floor(s/60)
+	s %= 60;  if(s < 10) s = '0' + s
+	return m+':'+s
+}
+
 TypeJig.prototype.renderChart = function(series) {
 	if(this.wpmChart) {
 		this.wpmChart.destroy()
@@ -699,7 +705,7 @@ TypeJig.prototype.renderChart = function(series) {
 				tension: 0.4,
 			},
 			{
-				data: series,
+				data: series.map(x => Math.max(0,x)),
 				fill: true,
 				backgroundColor: "#accae8",
 				borderWidth: 0,
@@ -713,7 +719,10 @@ TypeJig.prototype.renderChart = function(series) {
 		options: {
 			animation: {duration: 0},
 			plugins: {legend: {display: false}},
-			scales: {y: {beginAtZero: true }},
+			scales: {
+				y: {beginAtZero: true},
+				x: {ticks:{ callback: (s,i) => secondsToString(s) }}
+			},
 			responsive: true,
 			maintainAspectRatio: false,
 		}
@@ -782,10 +791,8 @@ TypeJig.Timer.prototype.update = function() {
 };
 
 TypeJig.Timer.prototype.showTime = function() {
-	if(!this.elt) return;
-	var m = Math.floor(this.seconds / 60);
-	var s = this.seconds % 60; if(s < 10) s = '0' + s;
-	this.elt.innerHTML = m + ':' + s;
+	if(!this.elt) return
+	this.elt.innerHTML = secondsToString(this.seconds)
 }
 
 TypeJig.Timer.prototype.hide = function() {
