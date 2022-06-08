@@ -33076,6 +33076,18 @@ monkeytype = {
 		"source": "You and Your Research",
 		"length": 704,
 		"id": 100010
+	},
+	{
+		"text": "I just wanted to have a look at you, and thank you for her fine dreams and good memories. She'll be traveling light when she goes, and everything she packs counts.",
+		"source": "Mindtouch",
+		"length": 163,
+		"id": 100011
+	},
+	{
+		"text": "Today seemed a fine day for something pale, since the last time he'd had gelato he'd had chocolate. He ordered coconut and a cup of espresso and brought it to one of the last remaining tables, where he ate slowly, savoring not just the delicacy of the flavor, but the contentment in the store, so palpable he could feel it like a mantle on his shoulders, one that could warm him.",
+		"source": "Mindtouch",
+		"length": 379,
+		"id": 100012
 	}
   ]
 }
