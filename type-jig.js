@@ -1,3 +1,15 @@
+
+const msToString = (ms, fractionalSeconds) => {
+	let m, s, frac = ''
+	if(fractionalSeconds) {
+		s = Math.floor(ms/1000)
+		frac = '.'+(''+Math.round(ms%1000)).padStart(3, '0')
+	} else s = Math.round(ms/1000)
+	m = Math.floor(s/60)
+	s = (''+s%60).padStart(2, '0')
+	return m+':'+s+frac
+}
+
 /* -----------------------------------------------------------------------
  * TypeJig - run a typing lesson.
  *
@@ -53,8 +65,9 @@ function TypeJig(exercise, display, results, input, clock, hint, options) {
 
 	this.changeHandler = this.answerChanged.bind(this);
 	bindEvent(document.body, 'keydown', this.keyDown.bind(this));
-	bindEvent(this.input, 'input', function() {
+	bindEvent(this.input, 'input', function(ev) {
 		if(!self.pendingChange) {
+			self.chordTime = Math.round(ev.timeStamp);
 			self.pendingChange = setTimeout(self.changeHandler, 5);
 		}
 	});
@@ -76,6 +89,9 @@ TypeJig.prototype.reset = function() {
 		this.wpmChart.destroy()
 		delete this.wpmChart
 	}
+
+	this.actual = []
+	this.changes = []
 
 	this.enter_count = 0;
 	this.resultsDisplay.textContent = '';
@@ -256,6 +272,83 @@ function nextWord(words) {
 	return word;
 }
 
+function change(when, a, b, minimize) {
+	const N = Math.min(a.length, b.length)
+	let i
+	for(i=0; i<N; ++i) if(a[i] !== b[i]) break
+	const remove = a.slice(i), add = b.slice(i)
+	if(minimize && remove.length > 0 && add.length > 0) {
+		const M = Math.min(remove[0].length, add[0].length)
+		for(i=0; i<M; ++i) if(remove[0][i] !== add[0][i]) break
+		remove[0] = remove[0].slice(i)
+		add[0] = add[0].slice(i)
+		if(remove[0] === '') remove.shift()
+		if(add[0] === '') add.shift()
+	}
+	return [when, remove, add]
+}
+
+function changeToString(ms, remove, add) {
+	const time = msToString(ms, true)
+	let change
+	if(add.length === 0) change = '-'+remove.join('')
+	else if(remove.length === 0) change = '+'+add.join('')
+	else change = remove.join('')+'=>'+add.join('')
+	return time+change
+}
+
+const strokeText = s => s[2].join('')
+
+function branchesToString(stroke, branches, prefix) {
+	for(let j=3; j<stroke.length; ++j) {
+		if(stroke[j][0].length > 3) {
+			branchesToString(stroke[j][0], branches, prefix)
+		}
+		const branch = prefix+stroke[j].map(strokeText).join('')
+		branches.push(branch)
+	}
+	return branches
+}
+
+function errorToString(tree, i) {
+	let prefix = ''
+	if(tree[i][1].length !== 0) {
+		prefix = strokeText(tree[i-1])
+	}
+	let b=i+(!!tree[i][3] && tree[i][3].length)
+	let result = '';
+	for(let j=i; j<b; ++j) result += strokeText(tree[j])
+
+	const stroke = tree[i]
+	const branches = branchesToString(stroke, [], prefix)
+	if(branches.length > 0) branches.push(result)
+	return branches.join('=>')
+}
+
+
+function treeify(strokes) {
+	const t = 0, del = 1, add = 2
+	const tree = []
+	let undone = []
+	for(let i=0; i<strokes.length; ++i) {
+		const S = strokes[i], T = tree[tree.length-1]
+
+		const onlyDeleted = S[del].length > 0 && S[add].length === 0
+		const addedDeletion = T && S[add].join('') === T[del].join('')
+		const deletedAddition = T && S[del].join('') === T[add].join('')
+		if(onlyDeleted || addedDeletion && deletedAddition) {
+			undone.unshift(tree.pop())
+		} else {  // add or extend token
+			tree.push([...S])
+			if(undone.length) {
+				tree[tree.length-1].push(undone)
+				undone = []
+			}
+		}
+	}
+	return tree
+}
+
 TypeJig.prototype.answerChanged = function() {
 	delete this.pendingChange
 	if(this.resultsDisplay.textContent !== '') return
@@ -267,6 +360,16 @@ TypeJig.prototype.answerChanged = function() {
 	// words interspersed with whitespace.
 	var actual = tokenize(this.input.value.trimStart(), {wsOnly: !!this.actualWords})
 	var expected = this.getWords(Math.ceil(actual.tokens.length))
+
+	if(this.actual) {
+		const C = this.changes
+		if(C.ms == null) C.ms = this.chordTime
+		const ms = this.chordTime - C.ms
+		// C.ms = this.chordTime
+		const stroke = change(ms, this.actual, actual.tokens.map(x => x.spaceBefore+x.text))
+		this.changes.push(stroke)
+	}
+	this.actual = actual.tokens.map(x => x.spaceBefore+x.text)
 
 	// Get the first word of the exercise, and create a range
 	// which we can use to measure where it is.
@@ -468,9 +571,17 @@ TypeJig.prototype.endExercise = function(seconds) {
 	var end = start + results.length;
 	this.resultsDisplay.textContent += results;
 
-	this.renderChart(this.liveWPM.WPMHistory);
+	this.renderChart(this.liveWPM.WPMHistory, this.changes);
 
 	this.resultsDisplay.scrollIntoView(true);
+
+	const tree = treeify(this.changes);
+	const errors = []
+	for(let i=0; i<tree.length; ++i) {
+		const x = errorToString(tree, i)
+		if(x) errors.push(x)
+	}
+	console.log(errors.join('\n'))
 }
 
 TypeJig.prototype.addCursor = function(output) {
@@ -664,33 +775,54 @@ TypeJig.LiveWPM.prototype.reset = function() {
 	this.show(false)
 }
 
-function movingAvg(array, countBefore, countAfter) {
-	if (countAfter == undefined) countAfter = 0
+function movingAvg(strokes) {
 	const result = []
-	for (let i=0; i<array.length; ++i) {
-		const subArr = array.slice(
-			Math.max(i - countBefore, 0),
-			Math.min(i + countAfter + 1, array.length)
-		)
-		const avg = subArr.reduce((a, b) => a + (isNaN(b) ? 0 : b), 0) / subArr.length
-		result.push(avg)
+	for(let i=0; i<strokes.length; ++i) {
+		const first = Math.max(i-4, 0)
+		const last = Math.min(i+4, strokes.length-1)
+		let ms = 0, chars = 0
+		for(let j=first; j<=last; ++j) {
+			const s = strokes[j]
+			ms += s.dt
+			chars += s[2].join('').length - s[1].join('').length
+		}
+		const minutes = ms / (1000*60)
+		const words = Math.max(chars,0) / 5
+		result.push({x: strokes[i][0]/1000, y: words/minutes})
 	}
 	return result
 }
 
-const secondsToString = s => {
-	const m = Math.floor(s/60)
-	s %= 60;  if(s < 10) s = '0' + s
-	return m+':'+s
-}
-
-TypeJig.prototype.renderChart = function(series) {
+TypeJig.prototype.renderChart = function(series, strokes) {
 	if(this.wpmChart) {
 		this.wpmChart.destroy()
 		delete this.wpmChart
 	}
 
-	smoothed = movingAvg(series, 4,4)
+	const msTotal = strokes[strokes.length-1][0]
+	const msStrokeAvg = strokes.length === 0 ? 250 : msTotal/(strokes.length-1)
+	strokes.forEach((x,i,a) =>
+		a[i].dt = a[i][0] - (a[i-1]||[-msStrokeAvg])[0])
+
+	smoothed = movingAvg(strokes)
+	const lo = smoothed.reduce((a,b) => Math.min(a,b.y), 0)
+	const hi = smoothed.reduce((a,b) => Math.max(a,b.y), 0)
+	const actualRange = hi - lo
+	const margin = 0.07 * actualRange
+	const minWPM = Math.round(lo - margin)
+	const maxWPM = Math.round(hi + margin)
+	let sd = 0
+	for(let i=1; i<strokes.length; ++i) {
+		const ms = strokes[i].dt
+		const dms = ms - msStrokeAvg
+		sd += dms*dms
+	}
+	sd = Math.sqrt(sd/strokes.length-1)
+	const fastest = 1000 / (msStrokeAvg - sd)
+	const slowest = 0
+	momentary = strokes.map(s => {
+		return { x: s[0]/1000, y: 1000/s.dt, delta: changeToString(...s) }
+	})
 
 	const unit = this.token.u
 	const labels = [...Array(series.length).keys()]
@@ -700,28 +832,61 @@ TypeJig.prototype.renderChart = function(series) {
 			{
 				data: smoothed,
 				fill: false,
+				showLine: true,
 				borderColor: "#000",
 				pointRadius: 0,
+				hoverRadius: 0,
 				tension: 0.4,
+				yAxisID: 'wpm',
 			},
 			{
-				data: series.map(x => Math.max(0,x)),
+				data: momentary,
 				fill: true,
 				backgroundColor: "#accae8",
 				borderWidth: 0,
 				pointRadius: 0,
-			}],
+				yAxisID: 'sps',
+			}
+		],
 	}
 
+	const round05 = x => (Math.round(x/0.05)*0.05).toFixed(2)
+
 	const config = {
-		type: "line",
+		type: "scatter",
 		data: data,
 		options: {
 			animation: {duration: 0},
-			plugins: {legend: {display: false}},
+			interaction: {
+				includeInvisible: true,
+				intersect: false,
+				axis: 'x',
+				mode: 'nearest',
+			},
+			plugins: {
+				legend: {display: false},
+				tooltip: {
+					filter: item => item.datasetIndex === 1,
+					callbacks: {
+						title: item => item[0] && item[0].raw.delta,
+						label: item => item.raw && round05(item.raw.y)+'strokes/second'
+					}
+				}
+			},
 			scales: {
-				y: {beginAtZero: true},
-				x: {ticks:{ callback: (s,i) => secondsToString(s) }}
+				x: {
+					min: 0, max: msTotal/1000,
+					ticks: { callback: (s,i,a) => msToString(s*1000) }
+				},
+				wpm: {
+					type: 'linear', position: 'left',
+					min: minWPM, max: maxWPM
+				},
+				sps: {
+					type: 'linear', position: 'right',
+					min: slowest, max: fastest,
+					drawOnChartArea: false
+				},
 			},
 			responsive: true,
 			maintainAspectRatio: false,
@@ -792,7 +957,7 @@ TypeJig.Timer.prototype.update = function() {
 
 TypeJig.Timer.prototype.showTime = function() {
 	if(!this.elt) return
-	this.elt.innerHTML = secondsToString(this.seconds)
+	this.elt.innerHTML = msToString(this.seconds*1000)
 }
 
 TypeJig.Timer.prototype.hide = function() {
