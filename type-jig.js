@@ -885,7 +885,7 @@ TypeJig.prototype.renderChart = function(series, strokes) {
 				sps: {
 					type: 'linear', position: 'right',
 					min: slowest, max: fastest,
-					drawOnChartArea: false
+					grid: {drawOnChartArea: false}
 				},
 			},
 			responsive: true,
