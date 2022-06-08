@@ -565,6 +565,9 @@ TypeJig.prototype.endExercise = function(seconds) {
 		if(this.errorCount === 0) results += ' with no uncorrected errors!';
 		else results += ', adjusting for ' + this.errorCount + ' incorrect word' + plural
 			+ ' (' + Math.floor(100*stats.accuracy) + '%) gives ' + Math.floor(stats.correctedWPM) + ' WPM.'
+		let sps = (this.changes.length-1)/(stats.minutes*60)
+		sps = (Math.round(sps/0.05)*0.05).toFixed(2)
+		results += " "+sps+" average strokes per second."
 	}
 	results = '\n\n' + results;
 	var start = this.resultsDisplay.textContent.length;
