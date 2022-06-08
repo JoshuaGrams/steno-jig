@@ -824,6 +824,16 @@ TypeJig.prototype.renderChart = function(series, strokes) {
 		return { x: s[0]/1000, y: 1000/s.dt, delta: changeToString(...s) }
 	})
 
+	const colors = document.body.getAttribute('data-theme') === 'dark' ? {
+		words: '#cc5',
+		strokes: '#242',
+		strokesHover: '#aa4'
+	} : {
+		words: '#000',
+		strokes: '#accae8',
+		strokesHover: '#000'
+	}
+
 	const unit = this.token.u
 	const labels = [...Array(series.length).keys()]
 	const data = {
@@ -833,18 +843,19 @@ TypeJig.prototype.renderChart = function(series, strokes) {
 				data: smoothed,
 				fill: false,
 				showLine: true,
-				borderColor: "#000",
+				borderColor: colors.words,
 				pointRadius: 0,
-				hoverRadius: 0,
+				pointHoverRadius: 0,
 				tension: 0.4,
 				yAxisID: 'wpm',
 			},
 			{
 				data: momentary,
 				fill: true,
-				backgroundColor: "#accae8",
+				backgroundColor: colors.strokes,
 				borderWidth: 0,
 				pointRadius: 0,
+				pointHoverBorderColor: colors.strokesHover,
 				yAxisID: 'sps',
 			}
 		],
