@@ -32,7 +32,8 @@ function generateExercise(word_count, top_n, rng) {
     return new TypeJig.Exercise(words, 0, false, 'ordered');
 }
 
-window.addEventListener('load', () => loadExercisePage(args => {
+let jig
+window.addEventListener('load', () => jig = loadExercisePage(args => {
 	const topN = clamp_top_n(args.top==null ? 100 : parseInt(args.top))
 	const nWords = args.word_count==null ? 100 : parseInt(args.word_count)
 

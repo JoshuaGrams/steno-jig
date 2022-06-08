@@ -141,6 +141,7 @@ function loadExercisePage(initialize) {
 	window.addEventListener('popstate', function(evt) {
 		generateExercise(pg.generate, pg.options, jig)
 	})
+	return jig
 }
 
 function storageAvailable(type) {

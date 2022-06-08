@@ -38,7 +38,8 @@ function generate_exercise(ngrams, word_count, rnd) {
 	return new TypeJig.Exercise(words, 0, false, 'ordered');
 }
 
-window.addEventListener('load', () => loadExercisePage(args => {
+let jig
+window.addEventListener('load', () => jig = loadExercisePage(args => {
 	const ngrams = compute_ngrams(sentences, 3)
 	const nwords = args.word_count==null ? 100 : parseInt(args.word_count)
 	return {

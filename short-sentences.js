@@ -18,7 +18,8 @@ function generateExercise(wordCount, rnd) {
 	return new TypeJig.Exercise(words, 0, false, 'ordered')
 }
 
-window.addEventListener('load', () => loadExercisePage(args => {
+let jig
+window.addEventListener('load', () => jig = loadExercisePage(args => {
 	const nWords = args.word_count==null ? 100 : parseInt(args.word_count)
 	return {
 		generate: (rng, options) => generateExercise(nWords, rng),
