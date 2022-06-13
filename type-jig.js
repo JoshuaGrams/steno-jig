@@ -555,6 +555,8 @@ TypeJig.prototype.endExercise = function(seconds) {
 
 	this.liveWPM.show(false)
 
+	if(localStorage && localStorage.show_stats === 'false') return
+
 	const stats = this.currentSpeed(seconds);
 	var results = 'Time: ' + stats.time + ' - ' + Math.floor(stats.WPM);
 	if(this.actualWords) {

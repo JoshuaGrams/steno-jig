@@ -211,6 +211,8 @@ function loadSettings() {
 
 	loadSetting("live_wpm","live_wpm");
 	loadSetting("show_timer", "show_timer");
+	loadSetting("show_stats", "show_stats")
+
 	// CPM
 	const cpm = document.getElementById('cpm')
 	if(cpm && cpm.nodeName === 'INPUT' && cpm.type === 'checkbox') {
