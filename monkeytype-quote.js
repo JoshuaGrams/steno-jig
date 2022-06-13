@@ -36,18 +36,31 @@ loadSettings()
 
 let jig, exercise, fields
 
+const lengths = {
+	short: [0, 100],
+	medium: [101, 300],
+	long: [301, 600],
+	thicc: [601, Infinity]
+}
+
 function go(ex) {
 	fields = parseQueryString(document.location.search)
 	let hints = initializeHints(fields.hints, fields.floating_hints)
 	if(ex == null) {
-		switch(fields.length) {
-			case 'short': fields.lo = 0; fields.hi = 100; break
-			case 'medium': fields.lo = 101; fields.hi = 300; break
-			case 'long': fields.lo = 301; fields.hi = 600; break
-			case 'thicc': fields.lo = 601; fields.hi = Infinity; break
-			case 'all':
-			default:
-				fields.lo = 0; fields.hi = Infinity; break
+		if(!fields.length) {
+			fields.lo = fields.lo || 0
+			fields.hi = fields.hi || Infinity
+		} else {
+			if(!Array.isArray(fields.length)) fields.length = [fields.length]
+			fields.lo = Infinity
+			fields.hi = 0
+			for(const L of fields.length) if(lengths[L]) {
+				const [lo, hi] = lengths[L]
+				fields.lo = Math.min(lo, fields.lo)
+				fields.hi = Math.max(hi, fields.hi)
+			}
+			if(fields.lo === Infinity) fields.lo = 0
+			if(fields.hi === 0) fields.hi = Infinity
 		}
 		exercise = generateExercise(fields.id, fields.lo, fields.hi)
 	} else exercise = ex
