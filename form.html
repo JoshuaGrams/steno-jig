@@ -81,17 +81,16 @@
 	<div class="form-section">
 		<div class="caption">Most used <strong>words</strong> (once, in random order)</div>
 
-		<form class="drill-options" action="form.html">
+		<form id="most-used" class="drill-options" action="form.html">
 			<input type="hidden" name="drill" value="NGSL_all_forms">
 			<input type="hidden" name="type" value="shuffled">
 
 			Drill
 			<input type="number" name="count" value="100" min="25" max="1000" step="25">
-			words starting at rank
+			words from the range
 			<input type="number" name="first" value="0" min="0" max="8400" step="25">
-			(randomly choosing
-			<input type="number" name="choose" value="1000" min="25" max="1000" step="25">
-			each time)
+			to
+			<input type="number" name="last" value="100" min="100" max="1000" step="25">
 			<br>
 
 			<button>Start Drill &rarr;</button>
@@ -250,7 +249,13 @@
 <script>
 function runExercise(fields) {
 	if(fields.drill === 'NumberSentences') exercise = numberSentences(fields);
-	else exercise = wordDrill(fields);
+	else {
+		if(fields.last) {
+			fields.choose = fields.count
+			fields.count = Math.max(+fields.choose, fields.last - fields.first)
+		}
+		exercise = wordDrill(fields);
+	}
 	if(exercise) {
 		if(fields.hints) {
 			var strokes = document.getElementById('strokes');
@@ -322,6 +327,17 @@ window.onload = function() {
 			if(form.id === 'custom') {
 				form.addEventListener('submit', runCustom);
 			} else {
+				if(form.elements.count && form.elements.last) {
+					const elts = form.elements
+					const setLast = function() {
+						const min = 1*elts.first.value + 1*elts.count.value
+						elts.last.value = Math.max(elts.last.value, min)
+						elts.last.min = min
+					}
+					elts.count.addEventListener('change', setLast)
+					elts.first.addEventListener('change', setLast)
+					elts.last.addEventListener('change', setLast)
+				}
 				form.addEventListener('submit', getSettings);
 			}
 		}
