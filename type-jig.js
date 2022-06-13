@@ -291,10 +291,10 @@ function change(when, a, b, minimize) {
 function changeToString(ms, remove, add) {
 	const time = msToString(ms, true)
 	let change
-	if(add.length === 0) change = '-'+remove.join('')
-	else if(remove.length === 0) change = '+'+add.join('')
+	if(add.length === 0) change = '--'+remove.join('')+'--'
+	else if(remove.length === 0) change = '++'+add.join('')+'++'
 	else change = remove.join('')+'=>'+add.join('')
-	return time+change
+	return time+' '+change
 }
 
 const strokeText = s => s[2].join('')
