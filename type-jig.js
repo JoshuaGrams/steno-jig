@@ -872,7 +872,8 @@ TypeJig.prototype.renderChart = function(series, strokes) {
 		type: "scatter",
 		data: data,
 		options: {
-			animation: {duration: 0},
+			animation: false,
+			responsive: false,
 			interaction: {
 				includeInvisible: true,
 				intersect: false,
@@ -892,7 +893,10 @@ TypeJig.prototype.renderChart = function(series, strokes) {
 			scales: {
 				x: {
 					min: 0, max: msTotal/1000,
-					ticks: { callback: (s,i,a) => msToString(s*1000) }
+					ticks: {
+						stepSize: 5,
+						callback: (s,i,a) => msToString(s*1000)
+					}
 				},
 				wpm: {
 					type: 'linear', position: 'left',
@@ -909,10 +913,20 @@ TypeJig.prototype.renderChart = function(series, strokes) {
 		}
 	}
 
-	this.wpmChart = new Chart(
-		document.getElementById("chartDiv").getContext("2d"),
-		config
-	)
+	const outer = document.getElementById('chart') || N('div', {
+		id: 'chart', style: {position: 'relative', overflow: 'auto'},
+	}, N('div', N('canvas'), {style: {position: 'absolute'}}))
+	if(outer.parentNode == null) {
+		N(document.getElementById('results').parentNode, outer)
+	}
+	const inner = outer.firstElementChild
+	const canvas = inner.firstElementChild
+	const containerWidth = outer.parentNode.clientWidth
+	outer.style.width = containerWidth+'px'
+	const width = Math.max(containerWidth, msTotal/75)
+	inner.style.width = width+'px'; inner.style.height = 300+'px'
+	outer.style.height = (width<containerWidth ? 300 : 325)+'px'
+	this.wpmChart = new Chart(canvas.getContext('2d'), config)
 }
 
 // -----------------------------------------------------------------------
