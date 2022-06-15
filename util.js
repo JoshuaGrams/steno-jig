@@ -344,12 +344,14 @@ function tokenize(string, parsed) {
 	}
 
 	const isWhite = /^\s+$/
+	const isSteno = /^S?T?K?P?W?H?R?(A?O?\*?E?U?|-)F?R?P?B?L?G?T?S?D?Z?$/
 	const wsWords = /\S+|\s+/g
 	const pWords = /(\p{Punctuation}|(?:\P{Punctuation}|')+)/gu
 	const words = string.match(wsWords) || []
 	for(const word of words) {
 		if(isWhite.test(word)) parsed.spaceBefore += word
 		else if(parsed.wsOnly || tokenize.keepWhole.has(word)) addToken(word)
+		else if(isSteno.test(word)) addToken(word)
 		else word.match(pWords).forEach(addToken)
 	}
 
