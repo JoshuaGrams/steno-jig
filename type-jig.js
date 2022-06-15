@@ -814,7 +814,7 @@ TypeJig.prototype.renderChart = function(series, strokes) {
 	const hi = smoothed.reduce((a,b) => Math.max(a,b.y), 0)
 	const actualRange = hi - lo
 	const margin = 0.07 * actualRange
-	const minWPM = Math.round(lo - margin)
+	const minWPM = Math.round(Math.max(0, lo - margin))
 	const maxWPM = Math.round(hi + margin)
 	let sd = 0
 	for(let i=1; i<strokes.length; ++i) {
