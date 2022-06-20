@@ -352,8 +352,9 @@ function treeify(strokes) {
 TypeJig.prototype.answerChanged = function() {
 	delete this.pendingChange
 	if(this.resultsDisplay.textContent !== '') return
-	if(!this.running && !!this.input.value.trim()) {
-		this.start()
+	if(!this.running) {
+		if(!!this.input.value.trim()) this.start()
+		else return
 	}
 
 	// Get the exercise and the user's answer as arrays of
