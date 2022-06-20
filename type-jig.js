@@ -817,15 +817,6 @@ TypeJig.prototype.renderChart = function(series, strokes) {
 	const margin = 0.07 * actualRange
 	const minWPM = Math.round(Math.max(0, lo - margin))
 	const maxWPM = Math.round(hi + margin)
-	let sd = 0
-	for(let i=1; i<strokes.length; ++i) {
-		const ms = strokes[i].dt
-		const dms = ms - msStrokeAvg
-		sd += dms*dms
-	}
-	sd = Math.sqrt(sd/strokes.length-1)
-	const fastest = 1000 / (msStrokeAvg - sd)
-	const slowest = 0
 	momentary = strokes.map(s => {
 		return { x: s[0]/1000, y: 1000/s.dt, delta: changeToString(...s) }
 	})
@@ -841,15 +832,14 @@ TypeJig.prototype.renderChart = function(series, strokes) {
 	}
 
 	const unit = this.token.u
-	const labels = [...Array(series.length).keys()]
 	const data = {
-		labels: labels,
 		datasets: [
 			{
 				data: smoothed,
 				fill: false,
 				showLine: true,
 				borderColor: colors.words,
+				backgroundColor: colors.words,
 				pointRadius: 0,
 				pointHoverRadius: 0,
 				tension: 0.4,
@@ -884,10 +874,12 @@ TypeJig.prototype.renderChart = function(series, strokes) {
 			plugins: {
 				legend: {display: false},
 				tooltip: {
-					filter: item => item.datasetIndex === 1,
+					// filter: item => item.datasetIndex === 1,
 					callbacks: {
-						title: item => item[0] && item[0].raw.delta,
-						label: item => item.raw && round05(item.raw.y)+'strokes/second'
+						title: item => item[1] && item[1].raw.delta,
+						label: item => item.datasetIndex === 1 ?
+							round05(item.raw.y)+' strokes/second' :
+							Math.round(item.raw.y)+' wpm'
 					}
 				}
 			},
@@ -905,7 +897,8 @@ TypeJig.prototype.renderChart = function(series, strokes) {
 				},
 				sps: {
 					type: 'linear', position: 'right',
-					min: slowest, max: fastest,
+					// average stroke in the middle of the graph
+					min: 0, max: 2 * 1000/msStrokeAvg,
 					grid: {drawOnChartArea: false}
 				},
 			},
