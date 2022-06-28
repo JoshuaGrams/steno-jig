@@ -88,6 +88,8 @@ TypeJig.prototype.reset = function() {
 	if(this.wpmChart) {
 		this.wpmChart.destroy()
 		delete this.wpmChart
+		const outer = document.getElementById('chart')
+		if(outer) outer.remove()
 	}
 
 	this.actual = []
