@@ -580,8 +580,8 @@ function strokeStats(strokes, minutes) {
 		accuracy+"%): you erased "+
 		undoStrokes+" of "+nStrokes+" strokes."
 	report += "\n"+sps+" average strokes per second"
-	if(accuracy !== 100) {
-		report += " (only "+psps+" per second were useful)"
+	if(accuracy !== '100.0') {
+		report += " ("+psps+" if you don't count erased ones)"
 	}
 	report += "."
 	return report
