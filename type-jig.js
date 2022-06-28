@@ -566,17 +566,24 @@ function accuracyGrade(percent) {
 function strokeStats(strokes, minutes) {
 	let report = ''
 	const nStrokes = strokes.length
-	let sps = (nStrokes-1)/(minutes*60)
-	sps = (Math.round(sps/0.05)*0.05).toFixed(2)
 	const undoStrokes = countUndoStrokes(strokes)
 	const errorStrokes = 2*undoStrokes  // the bad stroke plus the *
 	let accuracy = 100 * (1 - errorStrokes/nStrokes)
 	const grade = accuracyGrade(accuracy)
 	accuracy = (Math.round(accuracy*10)/10).toFixed(1)
+
+	let sps = (nStrokes-1)/(minutes*60)
+	sps = (Math.round(sps/0.05)*0.05).toFixed(2)
+	let psps = (nStrokes-1 - errorStrokes)/(minutes*60)
+	psps = (Math.round(psps/0.05)*0.05).toFixed(2)
 	report = "Grade "+grade+" accuracy ("+
 		accuracy+"%): you erased "+
 		undoStrokes+" of "+nStrokes+" strokes."
-	report += "\n"+sps+" average strokes per second."
+	report += "\n"+sps+" average strokes per second"
+	if(accuracy !== 100) {
+		report += " (only "+psps+" per second were useful)"
+	}
+	report += "."
 	return report
 }
 
