@@ -523,8 +523,7 @@ TypeJig.prototype.getWords = function(n) {
 
 TypeJig.prototype.currentSpeed = function(seconds, prev) {
 	var minutes = seconds / 60;  // KEEP fractional part for WPM calculation!
-	seconds = Math.floor((seconds % 60) * 10) / 10;
-	var time = Math.floor(minutes)+':'+seconds;
+	var time = msToString(1000*seconds, false);
 
 	var wordsFromSpaces = this.input.value.split(/\s+/).length;
 	var wordsFromChars = this.input.value.length / 5;
