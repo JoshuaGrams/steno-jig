@@ -327,6 +327,19 @@ function errorToString(tree, i) {
 	return branches.join('=>')
 }
 
+function strokeIsUndo(stroke, prev) {
+	const t = 0, del = 1, add = 2
+	const onlyDeleted = stroke[del].length > 0 && stroke[add].length === 0
+	if(onlyDeleted) return true
+	if(prev == null) return false
+	const addedDeletion =  stroke[add].join('') === prev[del].join('')
+	const deletedAddition = stroke[del].join('') === prev[add].join('')
+	return addedDeletion && deletedAddition
+}
+
+function countUndoStrokes(strokes) {
+	return strokes.reduce((n,s,i) => n + strokeIsUndo(s, strokes[i-1]), 0)
+}
 
 function treeify(strokes) {
 	const t = 0, del = 1, add = 2
@@ -335,10 +348,7 @@ function treeify(strokes) {
 	for(let i=0; i<strokes.length; ++i) {
 		const S = strokes[i], T = tree[tree.length-1]
 
-		const onlyDeleted = S[del].length > 0 && S[add].length === 0
-		const addedDeletion = T && S[add].join('') === T[del].join('')
-		const deletedAddition = T && S[del].join('') === T[add].join('')
-		if(onlyDeleted || addedDeletion && deletedAddition) {
+		if(strokeIsUndo(S, T)) {
 			undone.unshift(tree.pop())
 		} else {  // add or extend token
 			tree.push([...S])
@@ -544,6 +554,32 @@ TypeJig.prototype.currentSpeed = function(seconds, prev) {
 	}
 }
 
+function accuracyGrade(percent) {
+	if(percent === 100) return 'SS'
+	else if(percent >= 98) return 'S'
+	else if(percent >= 95) return 'A'
+	else if(percent >= 90) return 'B'
+	else if(percent >= 80) return 'C'
+	else return 'D'
+}
+
+function strokeStats(strokes, minutes) {
+	let report = ''
+	const nStrokes = strokes.length
+	let sps = (nStrokes-1)/(minutes*60)
+	sps = (Math.round(sps/0.05)*0.05).toFixed(2)
+	const undoStrokes = countUndoStrokes(strokes)
+	const errorStrokes = 2*undoStrokes  // the bad stroke plus the *
+	let accuracy = 100 * (1 - errorStrokes/nStrokes)
+	const grade = accuracyGrade(accuracy)
+	accuracy = (Math.round(accuracy*10)/10).toFixed(1)
+	report = "Grade "+grade+" accuracy ("+
+		accuracy+"%): you erased "+
+		undoStrokes+" of "+nStrokes+" strokes."
+	report += "\n"+sps+" average strokes per second."
+	return report
+}
+
 TypeJig.prototype.endExercise = function(seconds) {
 	if(this.running) this.running = false; else return;
 
@@ -569,9 +605,8 @@ TypeJig.prototype.endExercise = function(seconds) {
 		if(this.errorCount === 0) results += ' with no uncorrected errors!';
 		else results += ', adjusting for ' + this.errorCount + ' incorrect word' + plural
 			+ ' (' + Math.floor(100*stats.accuracy) + '%) gives ' + Math.floor(stats.correctedWPM) + ' WPM.'
-		let sps = (this.changes.length-1)/(stats.minutes*60)
-		sps = (Math.round(sps/0.05)*0.05).toFixed(2)
-		results += " "+sps+" average strokes per second."
+
+		results = strokeStats(this.changes, stats.minutes) + '\n' + results
 	}
 	results = '\n\n' + results;
 	var start = this.resultsDisplay.textContent.length;
