@@ -337,28 +337,59 @@ function strokeIsUndo(stroke, prev) {
 	return addedDeletion && deletedAddition
 }
 
-function countUndoStrokes(strokes) {
-	return strokes.reduce((n,s,i) => n + strokeIsUndo(s, strokes[i-1]), 0)
+function renderStrokes(strokes, out) {
+	let spans = []
+	for(let i=0; i<strokes.length; ++i) {
+		const from = strokes[i][1].join('')
+		const to = strokes[i][2].join('')
+		if(strokeIsUndo(strokes[i], strokes[i-1])) {
+			if(spans.length > 0) {
+				let a = spans.length-1  // previous active stroke
+				while(a > 0 && spans[a].classList.contains("incorrect")) --a
+				spans[a].classList.add("incorrect")
+			}
+		} else {
+			const last = spans[spans.length-1]
+			if(from !== '' && last && from !== last.textContent) {
+				spans.push(N('span', from))
+			}
+			spans.push(N('span', to))
+		}
+	}
+	for(let i=0; i<spans.length; ++i) {
+		if(i > 0) N(out, '=>')
+		N(out, spans[i])
+	}
 }
 
-function treeify(strokes) {
-	const t = 0, del = 1, add = 2
-	const tree = []
-	let undone = []
-	for(let i=0; i<strokes.length; ++i) {
-		const S = strokes[i], T = tree[tree.length-1]
-
-		if(strokeIsUndo(S, T)) {
-			undone.unshift(tree.pop())
-		} else {  // add or extend token
-			tree.push([...S])
-			if(undone.length) {
-				tree[tree.length-1].push(undone)
-				undone = []
+function errorsInContext(strokes, context) {
+	context = context || 0
+	const errors = []
+	let s,e,n  // start, end, number of asterisks
+	for(let i=1; i<strokes.length; ++i) {
+		const undo = strokeIsUndo(strokes[i], strokes[i-1])
+		if(undo) {
+			if(n == null) {
+				s = i-1;  e = i+1;  n = 1
+			} else {
+				s = Math.max(s-1, 0);  ++e;  ++n
+			}
+		} else {
+			if(n > 0) {
+				++e;  --n
+			} else if(n === 0) {
+				s = Math.max(s - context, 0)
+				e = Math.min(e + context, strokes.length)
+				errors.push(strokes.slice(s, e))
+				n = null
 			}
 		}
 	}
-	return tree
+	return errors
+}
+
+function countUndoStrokes(strokes) {
+	return strokes.reduce((n,s,i) => n + strokeIsUndo(s, strokes[i-1]), 0)
 }
 
 TypeJig.prototype.answerChanged = function() {
@@ -622,15 +653,14 @@ TypeJig.prototype.endExercise = function(seconds) {
 
 	this.renderChart(this.liveWPM.WPMHistory, this.changes);
 
-	this.resultsDisplay.scrollIntoView(true);
+	N(this.resultsDisplay, N('h3', 'Corrected errors'))
+	errorsInContext(this.changes, 2).forEach(s => {
+		renderStrokes(s, this.resultsDisplay)
+		N(this.resultsDisplay, N('hr'))
+	})
+	N(this.resultsDisplay, "\n")
 
-	const tree = treeify(this.changes);
-	const errors = []
-	for(let i=0; i<tree.length; ++i) {
-		const x = errorToString(tree, i)
-		if(x) errors.push(x)
-	}
-	console.log(errors.join('\n'))
+	this.resultsDisplay.scrollIntoView(true);
 }
 
 TypeJig.prototype.addCursor = function(output) {
