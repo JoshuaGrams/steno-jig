@@ -68,7 +68,7 @@ function TypeJig(exercise, display, results, input, clock, hint, options) {
 	bindEvent(this.input, 'input', function(ev) {
 		if(!self.pendingChange) {
 			self.chordTime = Math.round(ev.timeStamp);
-			self.pendingChange = setTimeout(self.changeHandler, 5);
+			self.pendingChange = setTimeout(self.changeHandler, 25);
 		}
 	});
 
