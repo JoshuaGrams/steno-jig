@@ -359,3 +359,218 @@ function tokenize(string, parsed) {
 }
 
 tokenize.keepWhole = new Set(["Mr.", "Mrs.", "Dr."])
+
+function yyyy_mm_dd(now) {
+	if(now == null) now = new Date()
+	const yyyy = now.getFullYear()
+	const mm = (1+now.getMonth()+'').padStart(2, '0')
+	const dd = (now.getDate()+'').padStart(2, '0')
+	return yyyy+'_'+mm+'_'+dd
+}
+
+function recordExercise(store, strokes) {
+	try {
+		let n = +(store.count || 0)
+		const loc = window.location
+		const file = loc.pathname.replace(/^.*\//, '')
+		const args = loc.search
+		store[n] = JSON.stringify({
+			time: Date.now(),
+			title: document.getElementById('lesson-name').textContent,
+			location: file+args,
+			strokes: strokes
+		})
+		store.count = n+1
+	} catch(e) { return false }
+	return true
+}
+
+function clearExercises(store) {
+	const n = +(store.count || 0)
+	for(let i=0; i<n; ++i) store.removeItem(i)
+	store.removeItem('count')
+}
+
+function linkExercises(store, parentElement) {
+	const n = +(store.count || 0)
+	const exercises = []
+	for(let i=0; i<n; ++i) exercises.push(JSON.parse(store[i]))
+	const data = encodeURIComponent(JSON.stringify(exercises))
+	const url = 'data:application/json,'+data
+	const name = 'Download steno_jig_'+yyyy_mm_dd()+'.json'
+	N(parentElement, '\n[', N('a', name, {
+		href: url, download: name
+	}), '] [', N('a', 'Clear Stats', {
+		href: '#',
+		click: evt => {
+			evt.preventDefault()
+			clearExercises(store)
+		}
+	}), ']')
+}
+
+function listExercises(store, parentElement) {
+	const n = +(store.count || 0)
+	if(n === 0) return
+	const list = N('ul')
+	const loc = window.location
+	const thisfile = loc.pathname.replace(/^.*\//, '')
+	const extra = loc.search.length + thisfile.length
+	const baseurl = loc.href.substr(0, loc.href.length - extra)
+	N(parentElement, N('h3', "Recorded Exercises"))
+	for(let i=0; i<n; ++i) {
+		const ex = JSON.parse(store[i])
+		const item = N('li', N('a',
+			ex.title, {href: baseurl+ex.location}
+		), ': '+(new Date(ex.time)))
+		N(list, item)
+	}
+	N(parentElement, list)
+}
+
+function renderChart(strokes, elt) {
+	const msTotal = strokes[strokes.length-1][0]
+	const msStrokeAvg = strokes.length === 0 ? 250 : msTotal/(strokes.length-1)
+	strokes.forEach((x,i,a) =>
+		a[i].dt = a[i][0] - (a[i-1]||[-msStrokeAvg])[0])
+
+	smoothed = movingAvg(strokes)
+	const lo = smoothed.reduce((a,b) => Math.min(a,b.y), 0)
+	const hi = smoothed.reduce((a,b) => Math.max(a,b.y), 0)
+	const actualRange = hi - lo
+	const margin = 0.07 * actualRange
+	const minWPM = Math.round(Math.max(0, lo - margin))
+	const maxWPM = Math.round(hi + margin)
+	momentary = strokes.map(s => {
+		return { x: s[0]/1000, y: 1000/s.dt, delta: changeToString(...s) }
+	})
+
+	const colors = document.body.getAttribute('data-theme') === 'dark' ? {
+		words: '#cc5',
+		strokes: '#242',
+		strokesHover: '#aa4'
+	} : {
+		words: '#000',
+		strokes: '#accae8',
+		strokesHover: '#000'
+	}
+
+	const data = {
+		datasets: [
+			{
+				data: smoothed,
+				fill: false,
+				showLine: true,
+				borderColor: colors.words,
+				backgroundColor: colors.words,
+				pointRadius: 0,
+				pointHoverRadius: 0,
+				tension: 0.4,
+				yAxisID: 'wpm',
+			},
+			{
+				data: momentary,
+				fill: true,
+				backgroundColor: colors.strokes,
+				borderWidth: 0,
+				pointRadius: 0,
+				pointHoverBorderColor: colors.strokesHover,
+				yAxisID: 'sps',
+			}
+		],
+	}
+
+	const round05 = x => (Math.round(x/0.05)*0.05).toFixed(2)
+
+	const config = {
+		type: "scatter",
+		data: data,
+		options: {
+			animation: false,
+			responsive: false,
+			interaction: {
+				includeInvisible: true,
+				intersect: false,
+				axis: 'x',
+				mode: 'nearest',
+			},
+			plugins: {
+				legend: {display: false},
+				tooltip: {
+					callbacks: {
+						title: item => item[1] && item[1].raw.delta,
+						label: item => item.datasetIndex === 1 ?
+							round05(item.raw.y)+' strokes/second' :
+							Math.round(item.raw.y)+' wpm'
+					}
+				}
+			},
+			scales: {
+				x: {
+					min: 0, max: msTotal/1000,
+					ticks: {
+						stepSize: 5,
+						callback: (s,i,a) => msToString(s*1000)
+					}
+				},
+				wpm: {
+					type: 'linear', position: 'left',
+					min: minWPM, max: maxWPM
+				},
+				sps: {
+					type: 'linear', position: 'right',
+					// average stroke in the middle of the graph
+					min: 0, max: 2 * 1000/msStrokeAvg,
+					grid: {drawOnChartArea: false}
+				},
+			},
+			responsive: true,
+			maintainAspectRatio: false,
+		}
+	}
+
+	const outer = N('div', {
+		id: 'chart', style: {position: 'relative', overflow: 'auto'},
+	}, N('div', N('canvas'), {style: {position: 'absolute'}}))
+	N(elt, outer)
+	const inner = outer.firstElementChild
+	const canvas = inner.firstElementChild
+	const containerWidth = outer.parentNode.clientWidth
+	outer.style.width = containerWidth+'px'
+	const width = Math.max(containerWidth, msTotal/75)
+	inner.style.width = width+'px'; inner.style.height = 300+'px'
+	outer.style.height = (width<containerWidth ? 300 : 325)+'px'
+	return new Chart(canvas.getContext('2d'), config)
+}
+
+function renderResults(stats, strokes, elt, jig) {
+	var results = 'Time: ' + stats.time + ' - ' + Math.floor(stats.WPM)
+	if(stats.unit) {
+		results += ' ' + stats.unit
+	} else {
+		var plural = stats.errorCount===1 ? '' : 's'
+		results += ' WPM (chars per minute/5)'
+		if(stats.errorCount === 0) results += ' with no uncorrected errors!'
+		else results += ', adjusting for ' + stats.errorCount + ' incorrect word' + plural
+			+ ' (' + Math.floor(100*stats.accuracy) + '%) gives ' + Math.floor(stats.correctedWPM) + ' WPM.'
+
+		results = strokeStats(strokes, stats.minutes) + '\n' + results
+	}
+	results = '\n' + results
+	var start = elt.textContent.length
+	var end = start + results.length
+	elt.textContent += results
+
+	N(elt, N('h3', 'Corrected errors'))
+	errorsInContext(strokes, 2).forEach(s => {
+		renderStrokes(s, elt)
+		N(elt, N('hr'))
+	})
+	N(elt, "\n")
+
+	const chart = renderChart(strokes, elt)
+
+	elt.scrollIntoView(true)
+
+	return chart
+}

@@ -117,11 +117,12 @@ a, a:visited {
 	margin: 0 auto;
 }
 
-#exercise, #answer, #results {
+#exercise, #answer {
 	margin-top: -0.8em;
 	line-height: 3;
 }
 #results {
+	margin-top: 1em;
 	line-height: 1;
 	white-space: pre-wrap;
 }

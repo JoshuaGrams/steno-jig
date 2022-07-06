@@ -85,12 +85,6 @@ function TypeJig(exercise, display, results, input, clock, hint, options) {
 
 TypeJig.prototype.reset = function() {
 	this.liveWPM.reset();
-	if(this.wpmChart) {
-		this.wpmChart.destroy()
-		delete this.wpmChart
-		const outer = document.getElementById('chart')
-		if(outer) outer.remove()
-	}
 
 	this.actual = []
 	this.changes = []
@@ -580,6 +574,7 @@ TypeJig.prototype.currentSpeed = function(seconds, prev) {
 		wordsFromChars: wordsFromChars,
 		words: words,
 		WPM: WPM,
+		errorCount: this.errorCount,
 		correctedWPM: correctedWPM,
 		accuracy: accuracy,
 	}
@@ -631,36 +626,16 @@ TypeJig.prototype.endExercise = function(seconds) {
 
 	this.liveWPM.show(false)
 
-	if(localStorage && localStorage.show_stats === 'false') return
+	if(localStorage) {
+		if(localStorage.save_stats != null) {
+			recordExercise(localStorage, this.changes)
+		}
+		if(localStorage.show_stats === 'false') return
+	}
 
 	const stats = this.currentSpeed(seconds);
-	var results = 'Time: ' + stats.time + ' - ' + Math.floor(stats.WPM);
-	if(this.actualWords) {
-		results += ' ' + this.token.unit;
-	} else {
-		var plural = this.errorCount===1 ? '' : 's';
-		results += ' WPM (chars per minute/5)';
-		if(this.errorCount === 0) results += ' with no uncorrected errors!';
-		else results += ', adjusting for ' + this.errorCount + ' incorrect word' + plural
-			+ ' (' + Math.floor(100*stats.accuracy) + '%) gives ' + Math.floor(stats.correctedWPM) + ' WPM.'
-
-		results = strokeStats(this.changes, stats.minutes) + '\n' + results
-	}
-	results = '\n\n' + results;
-	var start = this.resultsDisplay.textContent.length;
-	var end = start + results.length;
-	this.resultsDisplay.textContent += results;
-
-	this.renderChart(this.liveWPM.WPMHistory, this.changes);
-
-	N(this.resultsDisplay, N('h3', 'Corrected errors'))
-	errorsInContext(this.changes, 2).forEach(s => {
-		renderStrokes(s, this.resultsDisplay)
-		N(this.resultsDisplay, N('hr'))
-	})
-	N(this.resultsDisplay, "\n")
-
-	this.resultsDisplay.scrollIntoView(true);
+	if(this.actualWords) stats.unit = this.token.unit
+	renderResults(stats, this.changes, this.resultsDisplay)
 }
 
 TypeJig.prototype.addCursor = function(output) {
@@ -872,129 +847,6 @@ function movingAvg(strokes) {
 	return result
 }
 
-TypeJig.prototype.renderChart = function(series, strokes) {
-	if(this.wpmChart) {
-		this.wpmChart.destroy()
-		delete this.wpmChart
-	}
-
-	const msTotal = strokes[strokes.length-1][0]
-	const msStrokeAvg = strokes.length === 0 ? 250 : msTotal/(strokes.length-1)
-	strokes.forEach((x,i,a) =>
-		a[i].dt = a[i][0] - (a[i-1]||[-msStrokeAvg])[0])
-
-	smoothed = movingAvg(strokes)
-	const lo = smoothed.reduce((a,b) => Math.min(a,b.y), 0)
-	const hi = smoothed.reduce((a,b) => Math.max(a,b.y), 0)
-	const actualRange = hi - lo
-	const margin = 0.07 * actualRange
-	const minWPM = Math.round(Math.max(0, lo - margin))
-	const maxWPM = Math.round(hi + margin)
-	momentary = strokes.map(s => {
-		return { x: s[0]/1000, y: 1000/s.dt, delta: changeToString(...s) }
-	})
-
-	const colors = document.body.getAttribute('data-theme') === 'dark' ? {
-		words: '#cc5',
-		strokes: '#242',
-		strokesHover: '#aa4'
-	} : {
-		words: '#000',
-		strokes: '#accae8',
-		strokesHover: '#000'
-	}
-
-	const unit = this.token.u
-	const data = {
-		datasets: [
-			{
-				data: smoothed,
-				fill: false,
-				showLine: true,
-				borderColor: colors.words,
-				backgroundColor: colors.words,
-				pointRadius: 0,
-				pointHoverRadius: 0,
-				tension: 0.4,
-				yAxisID: 'wpm',
-			},
-			{
-				data: momentary,
-				fill: true,
-				backgroundColor: colors.strokes,
-				borderWidth: 0,
-				pointRadius: 0,
-				pointHoverBorderColor: colors.strokesHover,
-				yAxisID: 'sps',
-			}
-		],
-	}
-
-	const round05 = x => (Math.round(x/0.05)*0.05).toFixed(2)
-
-	const config = {
-		type: "scatter",
-		data: data,
-		options: {
-			animation: false,
-			responsive: false,
-			interaction: {
-				includeInvisible: true,
-				intersect: false,
-				axis: 'x',
-				mode: 'nearest',
-			},
-			plugins: {
-				legend: {display: false},
-				tooltip: {
-					// filter: item => item.datasetIndex === 1,
-					callbacks: {
-						title: item => item[1] && item[1].raw.delta,
-						label: item => item.datasetIndex === 1 ?
-							round05(item.raw.y)+' strokes/second' :
-							Math.round(item.raw.y)+' wpm'
-					}
-				}
-			},
-			scales: {
-				x: {
-					min: 0, max: msTotal/1000,
-					ticks: {
-						stepSize: 5,
-						callback: (s,i,a) => msToString(s*1000)
-					}
-				},
-				wpm: {
-					type: 'linear', position: 'left',
-					min: minWPM, max: maxWPM
-				},
-				sps: {
-					type: 'linear', position: 'right',
-					// average stroke in the middle of the graph
-					min: 0, max: 2 * 1000/msStrokeAvg,
-					grid: {drawOnChartArea: false}
-				},
-			},
-			responsive: true,
-			maintainAspectRatio: false,
-		}
-	}
-
-	const outer = document.getElementById('chart') || N('div', {
-		id: 'chart', style: {position: 'relative', overflow: 'auto'},
-	}, N('div', N('canvas'), {style: {position: 'absolute'}}))
-	if(outer.parentNode == null) {
-		N(document.getElementById('results').parentNode, outer)
-	}
-	const inner = outer.firstElementChild
-	const canvas = inner.firstElementChild
-	const containerWidth = outer.parentNode.clientWidth
-	outer.style.width = containerWidth+'px'
-	const width = Math.max(containerWidth, msTotal/75)
-	inner.style.width = width+'px'; inner.style.height = 300+'px'
-	outer.style.height = (width<containerWidth ? 300 : 325)+'px'
-	this.wpmChart = new Chart(canvas.getContext('2d'), config)
-}
 
 // -----------------------------------------------------------------------
 

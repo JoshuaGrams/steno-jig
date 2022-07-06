@@ -43,6 +43,21 @@
 		label.setAttribute('for', 'night-mode')
 		label.appendChild(document.createTextNode(' Night Mode'))
 		wrapper.appendChild(label)
+
+		const saveStats = localStorage.save_stats != null
+		const statsCtrl = N('input', {
+			type: 'checkbox',
+			click: (evt) => {
+				if(statsCtrl.checked) localStorage.setItem('save_stats', 1)
+				else localStorage.removeItem('save_stats')
+			}
+		})
+		statsCtrl.checked = saveStats
+		N(wrapper, N('br'), N('label', statsCtrl, 'Record Stats'))
+		if(localStorage.count) {
+			linkExercises(localStorage, wrapper)
+			listExercises(localStorage, wrapper)
+		}
 	} else {
 		document.body.appendChild(document.createTextNode('localStorage not available.'))
 	}
