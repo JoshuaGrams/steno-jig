@@ -368,7 +368,7 @@ function yyyy_mm_dd(now) {
 	return yyyy+'_'+mm+'_'+dd
 }
 
-function recordExercise(store, strokes) {
+function recordExercise(store, strokes, stats) {
 	try {
 		let n = +(store.count || 0)
 		const loc = window.location
@@ -378,7 +378,8 @@ function recordExercise(store, strokes) {
 			time: Date.now(),
 			title: document.getElementById('lesson-name').textContent,
 			location: file+args,
-			strokes: strokes
+			strokes: strokes,
+			stats: stats
 		})
 		store.count = n+1
 	} catch(e) { return false }

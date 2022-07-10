@@ -626,15 +626,17 @@ TypeJig.prototype.endExercise = function(seconds) {
 
 	this.liveWPM.show(false)
 
+	const stats = this.currentSpeed(seconds);
+	if(this.actualWords) stats.unit = this.token.unit
+	stats.errorCount = this.errorCount
+
 	if(localStorage) {
 		if(localStorage.save_stats != null) {
-			recordExercise(localStorage, this.changes)
+			recordExercise(localStorage, this.changes, stats)
 		}
 		if(localStorage.show_stats === 'false') return
 	}
 
-	const stats = this.currentSpeed(seconds);
-	if(this.actualWords) stats.unit = this.token.unit
 	renderResults(stats, this.changes, this.resultsDisplay)
 }
 
