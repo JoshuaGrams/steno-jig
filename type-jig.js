@@ -581,8 +581,8 @@ TypeJig.prototype.currentSpeed = function(seconds, prev) {
 }
 
 function accuracyGrade(percent) {
-	if(percent === 100) return 'SS'
-	else if(percent >= 98) return 'S'
+	if(percent === 100) return 'S'
+	else if(percent >= 98) return 'A+'
 	else if(percent >= 95) return 'A'
 	else if(percent >= 90) return 'B'
 	else if(percent >= 80) return 'C'
