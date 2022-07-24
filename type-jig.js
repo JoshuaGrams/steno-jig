@@ -466,7 +466,8 @@ TypeJig.prototype.answerChanged = function() {
 
 	// End the exercise if the last word was answered correctly,
 	// or if we're off the end.
-	if(expected.tokens.length-a < match) {
+	const extra = actual.tokens.length - expected.tokens.length
+	if((match && extra >= 0) || extra >= 3) {
 		window.setTimeout(this.clock.stop.bind(this.clock))
 	}
 
