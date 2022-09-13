@@ -35442,6 +35442,84 @@ monkeytype = {
       "source": "Thorin Oakenshield - The Hobbit",
       "length": 93,
       "id": 6227
-    }
+    },
+	{
+		"text": "\"It's a very funny thing,\" said Bear, \"but there seem to be two animals now. This - whatever-it-was - has been joined by another - whatever-it-is - and the two of them are now proceeding in company. Would you mind coming with me, Piglet, in case they turn out to be \"Hostile Animals?\"",
+		"source": "Winnie-the-Pooh",
+		"length": 284,
+		"id": 100000
+	},
+	{
+		"text": "Yet profitability is not the purpose of but a limiting factor on business enterprise and business activity. Profit is not the explanation, cause, or rationale of business behavior and business decisions, but the test of their validity. If archangels instead of businessmen sat in directors' chairs, they would still have to be concerned with profitability, despite their total lack of personal interest in making profits.",
+		"source": "Management: Tasks, Responsibilities, Practices",
+		"length": 421,
+		"id": 100001
+	},
+	{
+		"text": "It is the customer who determines what a business is. It is the customer alone whose willingness to pay for a good or for a service converts economic resources into wealth, things into goods. What the business thinks it produces is not of first importance - especially not to the future of the business and to its success.",
+		"source": "Management: Tasks, Responsibilities, Practices",
+		"length": 322,
+		"id": 100002
+	},
+	{
+		"text": "There is no reason to believe that the people who staff the managerial and professional positions in our service institutions are any less qualified, any less competent or honest, or any less hard-working than the men who manage businesses. Conversely, there is no reason to believe that business managers, put in control of service institutions, would do better than the \"bureaucrats.\" Indeed, we know that they immediately became bureaucrats themselves.",
+		"source": "Management: Tasks, Responsibilities, Practices",
+		"length": 455,
+		"id": 100003
+	},
+	{
+		"text": "One of the shortest-lived creatures on the planet Earth is the adult common mayfly. It lasts for one day. The longest-living things are bristlecone pine trees, at 4,700 years and still counting. This may seem tough on mayflies. But the important thing is not how long your life is but how long it seems.",
+		"source": "Truckers",
+		"length": 303,
+		"id": 100004
+	},
+	{
+		"text": "Perhaps old mayflies sit around complaining about how life this minute isn't a patch on the good old minutes of long ago, when the world was young and the sun seemed so much brighter and larvae showed you a bit of respect.",
+		"source": "Truckers",
+		"length": 222,
+		"id": 100005
+	},
+	{
+		"text": "He'd thought it would be difficult, learning to drive, learning how a truck worked, learning to read, but they were, well, just tasks. You could see all the difficulties before you started. If you worked at them for long enough, then you were bound to succeed. He'd been right. The difficult thing was going to be all the people.",
+		"source": "Truckers",
+		"length": 329,
+		"id": 100006
+	},
+	{
+		"text": "Bit of a trade secret, see? Electricity can't abide rubber. It stops the stuff from biting you.",
+		"source": "Truckers",
+		"length": 95,
+		"id": 100007
+	},
+	{
+		"text": "Oliver was a very minor mage. His familiar reminded him of this several times a day. He only knew three spells, and one of them was to control his allergy to armadillo dander. His attempts to summon elementals resulted in nosebleeds, and there is nothing more embarrasing than having your elemental leave the circle to get you a tissue, pat you comfortingly, and then disappear in a puff of magic. The armadillo had about wet himself laughing. He was a very minor mage. Unfortunately, he was all they had.",
+		"source": "Minor Mage",
+		"length": 505,
+		"id": 100008
+	},
+	{
+		"text": "She looked up at the Frog Tree, at the bare branches. She could hear the rustling of the frogs hopping about in the leaves, and her heart clenched in her chest. It was one thing not to know that a tree with leaves that turned into frogs existed - quite another to know that it had existed once and now was dying.",
+		"source": "Summer in Orcus",
+		"length": 312,
+		"id": 100009
+	},
+	{
+		"text": "There's another trait on the side which I want to talk about; that trait is ambiguity. It took me a while to discover its importance. Most people like to believe that something is or is not true. Great scientists tolerate ambiguity very well. They believe the theory enough to go ahead; they doubt it enough to notice the errors and faults so they can step forward and create the new replacement theory. If you believe too much you'll never notice the flaws; if you doubt too much you won't get started. It requires a lovely balance. But most great scientists are well aware of why their theories are true and they're also well aware of some slight misfits which don't quite fit and they don't forget it.",
+		"source": "You and Your Research",
+		"length": 704,
+		"id": 100010
+	},
+	{
+		"text": "I just wanted to have a look at you, and thank you for her fine dreams and good memories. She'll be traveling light when she goes, and everything she packs counts.",
+		"source": "Mindtouch",
+		"length": 163,
+		"id": 100011
+	},
+	{
+		"text": "Today seemed a fine day for something pale, since the last time he'd had gelato he'd had chocolate. He ordered coconut and a cup of espresso and brought it to one of the last remaining tables, where he ate slowly, savoring not just the delicacy of the flavor, but the contentment in the store, so palpable he could feel it like a mantle on his shoulders, one that could warm him.",
+		"source": "Mindtouch",
+		"length": 379,
+		"id": 100012
+	}
   ]
 }
