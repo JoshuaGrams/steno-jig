@@ -42,7 +42,7 @@
 		'pup', 'pub', 'pull', 'pug', 'put', 'pus',
 		'war', 'wag', 'wad', 'was', 'wore',
 		'web', 'well', 'wet', 'wed',
-		'half', 'hag', 'hat', 'had', 'has', 'hop',
+		'half', 'hag', 'hat', 'has', 'hop',
 		'hog', 'hot', 'her', 'hell', 'head',
 		'huff', 'hub', 'hull', 'hug', 'hut',
 		'rap', 'rag', 'rat', 'roar', 'rob', 'roll', 'rot',

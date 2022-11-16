@@ -84,6 +84,7 @@ window.onload = function() {
 					strokes.style.position = 'fixed';
 				}
 				var translations = TypeJig.shortestTranslations(TypeJig.Translations.Plover);
+				translations['says'] = "SEZ";
 				var hints = new StenoDisplay(strokes, translations, true);
 			}
 			fields.menu = 'learn-plover'
