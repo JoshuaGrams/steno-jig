@@ -11280,7 +11280,7 @@ TypeJig.Translations.Plover = {
 	"resource": "RE/SORS",
 	"resource": ["REE/SORS","RE/SORS","ROURS"],
 	"resources": ["REE/SORS/-S","RE/SORSZ"],
-	"respect": "SPEKT",
+	"respect": "SBEKT",
 	"respectively": "SPEKT/IFL",
 	"respiration": "RECH/RAYSHN",
 	"respiratory": "RECH/TOHR",
