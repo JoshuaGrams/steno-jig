@@ -9804,7 +9804,7 @@ TypeJig.Translations.Plover = {
 	"perforate": "PEFR/RAYT",
 	"perforation": "PE*FR/RAYSHN",
 	"perform": "PORM",
-	"performance": ["PER/FORM/ANS","PORMS"],
+	"performance": "PER/FORM/ANS",
 	"performative": "PORM/TIF",
 	"performed": "PORMD",
 	"performer": "PORM/E*R",
