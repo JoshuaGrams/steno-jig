@@ -22,6 +22,7 @@
 			<form id="selectDrill">
 				<ul style="list-style-type: none">
 					<li><select name="drill"></select></li>
+					<li><label><input name="count" type="number" value="100"> Length (number of chords).</label></li>
 					<li><label><input name="hints" type="checkbox" value="yes" checked> Show hints?</label></li>
 					<li><label><input name="wpm" type="number" value="" step="5"> Speed (strokes per minute).</label></li>
 					<li><input type="submit" value="Go"></li>
@@ -133,8 +134,8 @@ function fromPseudo(stroke) {
 function saveFormState(form) {
     save({
         drill: form.drill.value,
+		count: form.count.value,
         hints: form.hints.checked,
-        timeLimit: form.timeLimit.value,
     });
 }
 
@@ -143,10 +144,10 @@ function loadFormState(form) {
     if (loaded.drill) {
         form.drill.value = loaded.drill;
     }
+	if(loaded.count) {
+		form.count.value = loaded.count
+	}
     form.hints.checked = loaded.hints;
-    if (loaded.timeLimit) {
-        form.timeLimit.value = loaded.timeLimit;
-    }
 }
 
 var LOCAL_STORAGE_KEY = "learn-plover-form";
