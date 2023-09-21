@@ -1,4 +1,5 @@
 var emSymbols = {
+	"FPBL": "↑←→↓",
 	"FR": "!¬↦¡",
 	"FP": "\"“”„",
 	"FRLG": "#©®™",
@@ -27,8 +28,7 @@ var emSymbols = {
 }
 var emGenerated = {};
 var emGeneratedKeyList = [];
-variants=["", "E", "U", "EU"];
-reps = ["", "S", "T", "TS"];
+var variants=["", "E", "U", "EU"];
 
 //Generate all strokes
 for(var symStroke in emSymbols){ //Symbol rows / all symbols
@@ -36,16 +36,10 @@ for(var symStroke in emSymbols){ //Symbol rows / all symbols
 	for(var i = 0; i < 4; i++){ //Symbols / symbol rows
 		var symbol = symbols[i];
 		var variantStroke = variants[i];
-		for(var r = 0; r < 4; r++){ //Repeated symbols / Symbols
-			var rep = r + 1;
-			var repStroke = reps[r];
-			var output = "";
-			for(var j = 0; j < rep; j++) output += symbol;
-			var stroke = "SKWH-"+variantStroke+symStroke+repStroke;
-			emGenerated[stroke] = output;
-			TypeJig.Translations.Plover[output] = stroke;
-			emGeneratedKeyList.push(stroke);
-		}
+		var stroke = "SKWHAO-"+variantStroke+symStroke;
+		emGenerated[stroke] = symbol;
+		TypeJig.Translations.Plover[symbol] = stroke;
+		emGeneratedKeyList.push(stroke);
 	}
 };
 console.log(emGenerated);
