@@ -141,6 +141,22 @@
 	</div>
 
 	<div class="form-section">
+		<div class="caption">Emily's Symbol Dictionary (with spacing)</div>
+
+		<form class="drill-options" action="emilySymbols.html">
+
+			Drill Length:
+			<input type="number" name="word_count" value="100" min="50" max="1000" step="50">
+			words <small>(plus the rest of the last sentence.)</small>
+			<br>
+
+			<script>document.write('<input type="hidden" name="seed" value="' + Math.random().toString() + '">')</script>
+
+			<button>Start Drill &rarr;</button>
+		</form>
+	</div>
+
+	<div class="form-section">
 		<div class="caption"><strong>Quotes</strong> from <a href="https://github.com/Miodec/monkeytype/blob/master/static/quotes/english.json">Monkeytype</a>.</div>
 
 		<form class="drill-options" action="monkeytype-quote.html">
